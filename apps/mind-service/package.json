@@ -1,0 +1,31 @@
+{
+  "name": "@mindos/mind-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "check": "biome check --write ."
+  },
+  "dependencies": {
+    "@mindos/shared-types": "workspace:*",
+    "@restatedev/restate-sdk": "^1.4.0",
+    "pg": "^8.13.0",
+    "zod": "^3.23.8",
+    "openai": "^4.70.0",
+    "@anthropic-ai/sdk": "^0.32.0",
+    "@google/generative-ai": "^0.21.0",
+    "pino": "^9.5.0",
+    "pino-pretty": "^11.3.0",
+    "undici": "^6.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/pg": "^8.11.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

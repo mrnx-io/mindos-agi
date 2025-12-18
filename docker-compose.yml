@@ -1,0 +1,285 @@
+# =============================================================================
+# MindOS 10/10 SOTA AGI Architecture - Docker Compose
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # Infrastructure Services
+  # ---------------------------------------------------------------------------
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-mindos}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  restate:
+    image: restatedev/restate:1.5
+    ports:
+      - "8081:8080"   # Ingress
+      - "9070:9070"   # Admin/UI
+    environment:
+      RESTATE_LOG_LEVEL: ${LOG_LEVEL:-info}
+    volumes:
+      - restate-data:/target/restate
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9070/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # Core Services
+  # ---------------------------------------------------------------------------
+
+  mind-service:
+    build:
+      context: ./apps/mind-service
+      dockerfile: Dockerfile
+    ports:
+      - "${MIND_SERVICE_PORT:-8080}:8080"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      PORT: 8080
+      DATABASE_URL: ${DATABASE_URL}
+      RESTATE_INGRESS_URL: ${RESTATE_INGRESS_URL}
+
+      # Model Keys
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      XAI_API_KEY: ${XAI_API_KEY}
+
+      # Model Routing
+      MODEL_PLANNER: ${MODEL_PLANNER}
+      MODEL_VERIFIER: ${MODEL_VERIFIER}
+      MODEL_WRITER: ${MODEL_WRITER}
+      MODEL_TOOLCALLER: ${MODEL_TOOLCALLER}
+      MODEL_TOOL_PROGRAM_COMPILER: ${MODEL_TOOL_PROGRAM_COMPILER}
+      MODEL_TOOL_PROGRAM_VERIFIER: ${MODEL_TOOL_PROGRAM_VERIFIER}
+      MODEL_METACOGNITION: ${MODEL_METACOGNITION}
+      MODEL_PLANNER_FALLBACK: ${MODEL_PLANNER_FALLBACK}
+
+      # Thresholds
+      RISK_AUTO_EXECUTE_MAX: ${RISK_AUTO_EXECUTE_MAX}
+      RISK_REQUIRE_APPROVAL_MIN: ${RISK_REQUIRE_APPROVAL_MIN}
+      MAX_AGENT_ITERS: ${MAX_AGENT_ITERS}
+      CONFIDENCE_THRESHOLD: ${CONFIDENCE_THRESHOLD}
+
+      # Service URLs
+      TOOLMESH_URL: ${TOOLMESH_URL}
+      TOOLMESH_TOKEN: ${TOOLMESH_TOKEN}
+      EXECUTOR_URL: ${EXECUTOR_URL}
+      EXECUTOR_TOKEN: ${EXECUTOR_TOKEN}
+      GROUNDING_SERVICE_URL: ${GROUNDING_SERVICE_URL}
+      GROUNDING_TOKEN: ${GROUNDING_TOKEN}
+      SWARM_COORDINATOR_URL: ${SWARM_COORDINATOR_URL}
+      GRAPHITI_MCP_URL: ${GRAPHITI_MCP_URL}
+
+      # Feature Flags
+      ENABLE_METACOGNITION: ${ENABLE_METACOGNITION}
+      ENABLE_WORLD_MODEL: ${ENABLE_WORLD_MODEL}
+      ENABLE_GROUNDING_VERIFICATION: ${ENABLE_GROUNDING_VERIFICATION}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      restate:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  toolmesh:
+    build:
+      context: ./apps/toolmesh
+      dockerfile: Dockerfile
+    ports:
+      - "${TOOLMESH_PORT:-9000}:9000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      PORT: 9000
+      DATABASE_URL: ${DATABASE_URL}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      TOOLMESH_TOKEN: ${TOOLMESH_TOKEN}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL}
+      TOOLMESH_REFRESH_ON_BOOT: ${TOOLMESH_REFRESH_ON_BOOT}
+      MCP_CONFIG_PATH: /app/mcp.servers.json
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+    volumes:
+      - ./apps/toolmesh/mcp.servers.json:/app/mcp.servers.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  executor:
+    build:
+      context: ./apps/executor
+      dockerfile: Dockerfile
+    ports:
+      - "${EXECUTOR_PORT:-9100}:9100"
+    environment:
+      PORT: 9100
+      TOOLMESH_URL: http://toolmesh:9000
+      TOOLMESH_TOKEN: ${TOOLMESH_TOKEN}
+      EXECUTOR_TOKEN: ${EXECUTOR_TOKEN}
+      EXECUTOR_MAX_TOOL_CALLS: ${EXECUTOR_MAX_TOOL_CALLS}
+      EXECUTOR_MAX_SEARCH_CALLS: ${EXECUTOR_MAX_SEARCH_CALLS}
+      EXECUTOR_TIMEOUT_MS: ${EXECUTOR_TIMEOUT_MS}
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+    depends_on:
+      toolmesh:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9100/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # Advanced Services (10/10 SOTA Features)
+  # ---------------------------------------------------------------------------
+
+  grounding-service:
+    build:
+      context: ./apps/grounding-service
+      dockerfile: Dockerfile
+    ports:
+      - "${GROUNDING_SERVICE_PORT:-9200}:9200"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      PORT: 9200
+      DATABASE_URL: ${DATABASE_URL}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      GROUNDING_TOKEN: ${GROUNDING_TOKEN}
+      GROUNDING_CONFIDENCE_THRESHOLD: ${GROUNDING_CONFIDENCE_THRESHOLD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  drift-monitor:
+    build:
+      context: ./apps/drift-monitor
+      dockerfile: Dockerfile
+    ports:
+      - "${DRIFT_MONITOR_PORT:-9300}:9300"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      PORT: 9300
+      DATABASE_URL: ${DATABASE_URL}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      DRIFT_CHECK_INTERVAL_MS: ${DRIFT_CHECK_INTERVAL_MS}
+      DRIFT_QUALITY_THRESHOLD: ${DRIFT_QUALITY_THRESHOLD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9300/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  swarm-coordinator:
+    build:
+      context: ./apps/swarm-coordinator
+      dockerfile: Dockerfile
+    ports:
+      - "${SWARM_COORDINATOR_PORT:-9400}:9400"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      PORT: 9400
+      DATABASE_URL: ${DATABASE_URL}
+      RESTATE_INGRESS_URL: ${RESTATE_INGRESS_URL}
+      SWARM_CONSENSUS_TIMEOUT_MS: ${SWARM_CONSENSUS_TIMEOUT_MS}
+      SWARM_MAX_AGENTS: ${SWARM_MAX_AGENTS}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      restate:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9400/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # Optional: Knowledge Graph Memory
+  # ---------------------------------------------------------------------------
+
+  graphiti:
+    image: zepai/graphiti-mcp:latest
+    ports:
+      - "8000:8000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-password}
+    depends_on:
+      - neo4j
+    profiles:
+      - with-graphiti
+
+  neo4j:
+    image: neo4j:5
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-password}
+    volumes:
+      - neo4j-data:/data
+    profiles:
+      - with-graphiti
+
+# -----------------------------------------------------------------------------
+# Volumes
+# -----------------------------------------------------------------------------
+
+volumes:
+  pgdata:
+  restate-data:
+  neo4j-data:
+
+# -----------------------------------------------------------------------------
+# Networks
+# -----------------------------------------------------------------------------
+
+networks:
+  default:
+    name: mindos-network

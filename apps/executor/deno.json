@@ -1,0 +1,16 @@
+{
+  "name": "@mindos/executor",
+  "version": "0.1.0",
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --watch src/server.ts",
+    "start": "deno run --allow-net --allow-env src/server.ts",
+    "check": "deno check src/server.ts"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true
+  },
+  "imports": {
+    "@std/http": "jsr:@std/http@1.0.0"
+  }
+}
