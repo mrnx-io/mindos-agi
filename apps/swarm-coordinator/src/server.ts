@@ -2,34 +2,35 @@
 // MindOS - Swarm Coordinator Service (Multi-Agent Orchestration)
 // =============================================================================
 
-import Fastify from "fastify"
-import websocket from "@fastify/websocket"
 import cors from "@fastify/cors"
-import { z } from "zod"
+import websocket from "@fastify/websocket"
+import { EventEmitter } from "eventemitter3"
+import Fastify from "fastify"
 import pg from "pg"
 import pino from "pino"
-import { EventEmitter } from "eventemitter3"
 import type { WebSocket } from "ws"
+import { z } from "zod"
 
 // -----------------------------------------------------------------------------
 // Configuration
 // -----------------------------------------------------------------------------
 
 const env = {
-  PORT: parseInt(process.env.PORT ?? "3005"),
+  PORT: Number.parseInt(process.env.PORT ?? "3005"),
   HOST: process.env.HOST ?? "0.0.0.0",
   DATABASE_URL: process.env.DATABASE_URL ?? "",
   LOG_LEVEL: process.env.LOG_LEVEL ?? "info",
-  CONSENSUS_TIMEOUT_MS: parseInt(process.env.CONSENSUS_TIMEOUT_MS ?? "30000"),
-  MAX_SWARM_SIZE: parseInt(process.env.MAX_SWARM_SIZE ?? "10"),
-  HEARTBEAT_INTERVAL_MS: parseInt(process.env.HEARTBEAT_INTERVAL_MS ?? "5000"),
+  CONSENSUS_TIMEOUT_MS: Number.parseInt(process.env.CONSENSUS_TIMEOUT_MS ?? "30000"),
+  MAX_SWARM_SIZE: Number.parseInt(process.env.MAX_SWARM_SIZE ?? "10"),
+  HEARTBEAT_INTERVAL_MS: Number.parseInt(process.env.HEARTBEAT_INTERVAL_MS ?? "5000"),
 }
 
 const logger = pino({
   level: env.LOG_LEVEL,
-  transport: process.env.NODE_ENV !== "production"
-    ? { target: "pino-pretty", options: { colorize: true } }
-    : undefined,
+  transport:
+    process.env.NODE_ENV !== "production"
+      ? { target: "pino-pretty", options: { colorize: true } }
+      : undefined,
 })
 
 // -----------------------------------------------------------------------------
@@ -128,10 +129,7 @@ const events = new EventEmitter()
 const activeSwarms = new Map<string, SwarmInstance>()
 const agentConnections = new Map<string, SwarmAgent>()
 
-function createSwarmInstance(
-  name: string,
-  objective: string
-): SwarmInstance {
+function createSwarmInstance(name: string, objective: string): SwarmInstance {
   const swarm: SwarmInstance = {
     swarm_id: crypto.randomUUID(),
     name,
@@ -236,7 +234,10 @@ async function initiateLeaderElection(swarm: SwarmInstance): Promise<void> {
   swarm.consensus_state.current_term++
   swarm.consensus_state.votes.clear()
 
-  logger.info({ swarmId: swarm.swarm_id, term: swarm.consensus_state.current_term }, "Leader election started")
+  logger.info(
+    { swarmId: swarm.swarm_id, term: swarm.consensus_state.current_term },
+    "Leader election started"
+  )
 
   broadcastToSwarm(swarm.swarm_id, {
     type: "election_started",
@@ -310,9 +311,15 @@ async function proposeAction(
   } else {
     // Set timeout for voting
     setTimeout(async () => {
-      const p = swarm.consensus_state.pending_proposals.find((pr) => pr.proposal_id === proposal.proposal_id)
+      const p = swarm.consensus_state.pending_proposals.find(
+        (pr) => pr.proposal_id === proposal.proposal_id
+      )
       if (p && p.status === "pending") {
-        await resolveProposal(swarm, proposal.proposal_id, p.votes_for.length >= p.votes_against.length ? "accepted" : "rejected")
+        await resolveProposal(
+          swarm,
+          proposal.proposal_id,
+          p.votes_for.length >= p.votes_against.length ? "accepted" : "rejected"
+        )
       }
     }, env.CONSENSUS_TIMEOUT_MS)
   }
@@ -414,11 +421,20 @@ async function executeDecision(swarm: SwarmInstance, proposal: Proposal): Promis
         target_agent_id: string
         priority: string
       }
-      await delegateTask(swarm.swarm_id, task_id, target_agent_id, proposal.proposer_id, priority as TaskDelegation["priority"])
+      await delegateTask(
+        swarm.swarm_id,
+        task_id,
+        target_agent_id,
+        proposal.proposer_id,
+        priority as TaskDelegation["priority"]
+      )
       break
     }
     case "role_assignment": {
-      const { agent_id, new_role } = proposal.content as { agent_id: string; new_role: SwarmAgent["role"] }
+      const { agent_id, new_role } = proposal.content as {
+        agent_id: string
+        new_role: SwarmAgent["role"]
+      }
       const agent = swarm.agents.find((a) => a.agent_id === agent_id)
       if (agent) {
         agent.role = new_role
@@ -487,10 +503,12 @@ async function delegateTask(
   // Notify the target agent
   const agentSocket = targetAgent.socket
   if (agentSocket) {
-    agentSocket.send(JSON.stringify({
-      type: "task_delegated",
-      delegation,
-    }))
+    agentSocket.send(
+      JSON.stringify({
+        type: "task_delegated",
+        delegation,
+      })
+    )
   }
 
   return delegation
@@ -524,6 +542,14 @@ async function updateDelegationStatus(
     status,
   })
 
+  // Analyze collaboration patterns after task completion
+  if ((status === "completed" || status === "failed") && swarm) {
+    // Run async - don't block the status update
+    analyzeCollaborationPatterns(swarm).catch((err) => {
+      logger.error({ err, swarmId: swarm.swarm_id }, "Failed to analyze collaboration patterns")
+    })
+  }
+
   return true
 }
 
@@ -536,7 +562,8 @@ function selectBestAgent(swarm: SwarmInstance, taskCapabilities: string[]): Swar
 
     // Score based on capability overlap
     const overlap = agent.capabilities.filter((c) => taskCapabilities.includes(c)).length
-    const specializationBonus = agent.specialization && taskCapabilities.includes(agent.specialization) ? 3 : 0
+    const specializationBonus =
+      agent.specialization && taskCapabilities.includes(agent.specialization) ? 3 : 0
     const score = overlap + specializationBonus
 
     if (score > bestScore) {
@@ -567,8 +594,10 @@ function detectSpecialization(swarm: SwarmInstance): void {
 
     // Simplified: would analyze task type in production
     const taskType = "general"
-    const counts = taskCounts.get(agentId)!
-    counts.set(taskType, (counts.get(taskType) ?? 0) + 1)
+    const counts = taskCounts.get(agentId)
+    if (counts) {
+      counts.set(taskType, (counts.get(taskType) ?? 0) + 1)
+    }
   }
 
   // Detect if any agent is doing 70%+ of a task type
@@ -601,10 +630,228 @@ function detectSpecialization(swarm: SwarmInstance): void {
 async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<EmergentBehavior[]> {
   const behaviors: EmergentBehavior[] = []
 
-  // Detect collaboration chains
-  // Would analyze task dependencies and handoffs in production
+  // Get completed delegations for this swarm
+  const delegations = swarmDelegations.get(swarm.swarm_id) ?? []
+  const completedDelegations = delegations.filter(
+    (d) => d.status === "completed" || d.status === "failed"
+  )
+
+  if (completedDelegations.length < 3) {
+    return behaviors // Not enough data
+  }
+
+  // 1. Detect handoff patterns (Agent A → Agent B chains)
+  const handoffCounts = new Map<string, { count: number; success_rate: number }>()
+
+  for (let i = 1; i < completedDelegations.length; i++) {
+    const prev = completedDelegations[i - 1]
+    const curr = completedDelegations[i]
+
+    // Check if they're close in time (within 5 minutes)
+    const timeDiff = Math.abs(
+      new Date(curr.delegated_at).getTime() -
+        new Date(prev.completed_at ?? prev.delegated_at).getTime()
+    )
+
+    if (timeDiff < 5 * 60 * 1000 && prev.assigned_agent !== curr.assigned_agent) {
+      const handoffKey = `${prev.assigned_agent}→${curr.assigned_agent}`
+      const existing = handoffCounts.get(handoffKey) ?? { count: 0, success_rate: 0 }
+      existing.count++
+      existing.success_rate =
+        (existing.success_rate * (existing.count - 1) + (curr.status === "completed" ? 1 : 0)) /
+        existing.count
+      handoffCounts.set(handoffKey, existing)
+    }
+  }
+
+  // Report significant handoff patterns
+  for (const [handoff, stats] of handoffCounts) {
+    if (stats.count >= 3 && stats.success_rate > 0.7) {
+      const [from, to] = handoff.split("→")
+      behaviors.push({
+        behavior_id: crypto.randomUUID(),
+        swarm_id: swarm.swarm_id,
+        type: "handoff_pattern",
+        description: `Effective handoff pattern detected: ${from} → ${to} (${Math.round(stats.success_rate * 100)}% success)`,
+        evidence: [{ handoff, count: stats.count, success_rate: stats.success_rate }],
+        significance: 0.7 + stats.count * 0.02,
+        detected_at: new Date().toISOString(),
+      })
+    }
+  }
+
+  // 2. Detect efficiency gains (faster execution over time)
+  const executionTimes: number[] = []
+  for (const delegation of completedDelegations) {
+    if (delegation.completed_at) {
+      const duration =
+        new Date(delegation.completed_at).getTime() - new Date(delegation.delegated_at).getTime()
+      executionTimes.push(duration)
+    }
+  }
+
+  if (executionTimes.length >= 5) {
+    const firstHalf = executionTimes.slice(0, Math.floor(executionTimes.length / 2))
+    const secondHalf = executionTimes.slice(Math.floor(executionTimes.length / 2))
+
+    const avgFirst = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length
+    const avgSecond = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length
+
+    const improvement = (avgFirst - avgSecond) / avgFirst
+
+    if (improvement > 0.15) {
+      // 15%+ improvement
+      behaviors.push({
+        behavior_id: crypto.randomUUID(),
+        swarm_id: swarm.swarm_id,
+        type: "efficiency_gain",
+        description: `Swarm execution time improved by ${Math.round(improvement * 100)}% over ${completedDelegations.length} tasks`,
+        evidence: [
+          {
+            first_half_avg_ms: avgFirst,
+            second_half_avg_ms: avgSecond,
+            improvement_percent: improvement * 100,
+            sample_size: executionTimes.length,
+          },
+        ],
+        significance: Math.min(0.95, 0.6 + improvement),
+        detected_at: new Date().toISOString(),
+      })
+    }
+  }
+
+  // 3. Detect novel strategies (unusual but successful agent combinations)
+  const capabilityCombinations = new Map<string, { count: number; success: number }>()
+
+  for (const delegation of completedDelegations) {
+    const agent = swarm.agents.find((a) => a.agent_id === delegation.assigned_agent)
+    if (!agent) continue
+
+    // Create a capability signature
+    const capSig = [...agent.capabilities].sort().join(",")
+    const taskType = delegation.task_type ?? "general"
+    const key = `${taskType}:${capSig}`
+
+    const existing = capabilityCombinations.get(key) ?? { count: 0, success: 0 }
+    existing.count++
+    if (delegation.status === "completed") existing.success++
+    capabilityCombinations.set(key, existing)
+  }
+
+  // Find novel successful combinations (low count but high success)
+  for (const [combo, stats] of capabilityCombinations) {
+    if (stats.count >= 2 && stats.count <= 5 && stats.success / stats.count > 0.8) {
+      const [taskType, capabilities] = combo.split(":")
+      behaviors.push({
+        behavior_id: crypto.randomUUID(),
+        swarm_id: swarm.swarm_id,
+        type: "novel_strategy",
+        description: `Novel effective strategy: ${capabilities} capabilities for ${taskType} tasks`,
+        evidence: [
+          {
+            task_type: taskType,
+            capabilities: capabilities.split(","),
+            success_rate: stats.success / stats.count,
+            occurrences: stats.count,
+          },
+        ],
+        significance: 0.75,
+        detected_at: new Date().toISOString(),
+      })
+    }
+  }
+
+  // 4. Detect load balancing emergence
+  const agentTaskCounts = new Map<string, number>()
+  for (const delegation of completedDelegations) {
+    const count = agentTaskCounts.get(delegation.assigned_agent) ?? 0
+    agentTaskCounts.set(delegation.assigned_agent, count + 1)
+  }
+
+  if (agentTaskCounts.size >= 3) {
+    const counts = Array.from(agentTaskCounts.values())
+    const avg = counts.reduce((a, b) => a + b, 0) / counts.length
+    const variance = counts.reduce((sum, c) => sum + (c - avg) ** 2, 0) / counts.length
+    const stdDev = Math.sqrt(variance)
+    const coefficientOfVariation = stdDev / avg
+
+    // Low CV indicates good load balancing
+    if (coefficientOfVariation < 0.3) {
+      behaviors.push({
+        behavior_id: crypto.randomUUID(),
+        swarm_id: swarm.swarm_id,
+        type: "load_balance",
+        description: `Effective load balancing emerged (CV: ${(coefficientOfVariation * 100).toFixed(1)}%)`,
+        evidence: [
+          {
+            agent_count: agentTaskCounts.size,
+            task_distribution: Object.fromEntries(agentTaskCounts),
+            coefficient_of_variation: coefficientOfVariation,
+          },
+        ],
+        significance: 0.8 - coefficientOfVariation,
+        detected_at: new Date().toISOString(),
+      })
+    }
+  }
+
+  // 5. Detect collaboration clusters
+  const collaborationPairs = new Map<string, number>()
+
+  // Look for agents that frequently work on related tasks
+  for (let i = 0; i < completedDelegations.length - 1; i++) {
+    for (let j = i + 1; j < completedDelegations.length; j++) {
+      const d1 = completedDelegations[i]
+      const d2 = completedDelegations[j]
+
+      // Check if they worked on overlapping timeframes
+      const overlap = checkTimeOverlap(
+        d1.delegated_at,
+        d1.completed_at ?? d1.delegated_at,
+        d2.delegated_at,
+        d2.completed_at ?? d2.delegated_at
+      )
+
+      if (overlap && d1.assigned_agent !== d2.assigned_agent) {
+        const pairKey = [d1.assigned_agent, d2.assigned_agent].sort().join(":")
+        const count = collaborationPairs.get(pairKey) ?? 0
+        collaborationPairs.set(pairKey, count + 1)
+      }
+    }
+  }
+
+  // Report collaboration clusters
+  for (const [pair, count] of collaborationPairs) {
+    if (count >= 3) {
+      const [agent1, agent2] = pair.split(":")
+      behaviors.push({
+        behavior_id: crypto.randomUUID(),
+        swarm_id: swarm.swarm_id,
+        type: "collaboration_cluster",
+        description: `Agents ${agent1} and ${agent2} frequently collaborate (${count} overlapping tasks)`,
+        evidence: [{ agents: [agent1, agent2], overlap_count: count }],
+        significance: Math.min(0.9, 0.5 + count * 0.1),
+        detected_at: new Date().toISOString(),
+      })
+    }
+  }
+
+  // Persist all detected behaviors
+  for (const behavior of behaviors) {
+    persistEmergentBehavior(behavior)
+    events.emit("emergent_behavior", behavior)
+  }
 
   return behaviors
+}
+
+function checkTimeOverlap(start1: string, end1: string, start2: string, end2: string): boolean {
+  const s1 = new Date(start1).getTime()
+  const e1 = new Date(end1).getTime()
+  const s2 = new Date(start2).getTime()
+  const e2 = new Date(end2).getTime()
+
+  return s1 < e2 && s2 < e1
 }
 
 // -----------------------------------------------------------------------------
@@ -738,7 +985,12 @@ const JoinSwarmSchema = z.object({
 
 const ProposeActionSchema = z.object({
   proposer_id: z.string().uuid(),
-  type: z.enum(["task_delegation", "role_assignment", "evidence_reconciliation", "swarm_dissolution"]),
+  type: z.enum([
+    "task_delegation",
+    "role_assignment",
+    "evidence_reconciliation",
+    "swarm_dissolution",
+  ]),
   content: z.record(z.unknown()),
 })
 
@@ -768,7 +1020,7 @@ app.get("/health", async () => ({
 }))
 
 // Create swarm
-app.post("/swarms", async (request, reply) => {
+app.post("/swarms", async (request, _reply) => {
   const body = CreateSwarmSchema.parse(request.body)
 
   const swarm = createSwarmInstance(body.name, body.objective)
@@ -864,11 +1116,13 @@ app.post("/swarms/:swarmId/propose", async (request, reply) => {
 // Vote on proposal
 app.post("/swarms/:swarmId/vote", async (request, reply) => {
   const { swarmId } = request.params as { swarmId: string }
-  const body = z.object({
-    agent_id: z.string().uuid(),
-    proposal_id: z.string().uuid(),
-    vote: z.enum(["for", "against"]),
-  }).parse(request.body)
+  const body = z
+    .object({
+      agent_id: z.string().uuid(),
+      proposal_id: z.string().uuid(),
+      vote: z.enum(["for", "against"]),
+    })
+    .parse(request.body)
 
   const success = await voteOnProposal(swarmId, body.agent_id, body.proposal_id, body.vote)
 
@@ -922,11 +1176,11 @@ app.post("/swarms/:swarmId/delegate", async (request, reply) => {
 })
 
 // Get emergent behaviors
-app.get("/swarms/:swarmId/behaviors", async (request, reply) => {
+app.get("/swarms/:swarmId/behaviors", async (request, _reply) => {
   const { swarmId } = request.params as { swarmId: string }
 
   const result = await pool.query(
-    `SELECT * FROM emergent_behaviors WHERE swarm_id = $1 ORDER BY detected_at DESC LIMIT 50`,
+    "SELECT * FROM emergent_behaviors WHERE swarm_id = $1 ORDER BY detected_at DESC LIMIT 50",
     [swarmId]
   )
 

@@ -3,7 +3,7 @@
 // =============================================================================
 
 import { z } from "zod"
-import { UUIDSchema, TimestampSchema, JSONSchema, DecisionSchema } from "./schemas.js"
+import { JSONSchema, TimestampSchema, UUIDSchema } from "./schemas.js"
 
 // -----------------------------------------------------------------------------
 // Observation Kinds
@@ -58,17 +58,19 @@ export const ConfidenceAssessmentSchema = z.object({
   target: z.string(), // What we're assessing confidence about
   target_type: z.enum(["decision", "prediction", "memory", "tool_output", "belief"]),
   confidence: ConfidenceIntervalSchema,
-  factors: z.array(z.object({
-    factor: z.string(),
-    impact: z.number().min(-1).max(1), // Negative = reduces confidence
-    weight: z.number().min(0).max(1),
-  })),
+  factors: z.array(
+    z.object({
+      factor: z.string(),
+      impact: z.number().min(-1).max(1), // Negative = reduces confidence
+      weight: z.number().min(0).max(1),
+    })
+  ),
   epistemic_status: z.enum([
-    "known",      // High confidence, strong evidence
-    "believed",   // Moderate confidence
-    "suspected",  // Low confidence
-    "uncertain",  // Cannot assess
-    "unknown",    // No information
+    "known", // High confidence, strong evidence
+    "believed", // Moderate confidence
+    "suspected", // Low confidence
+    "uncertain", // Cannot assess
+    "unknown", // No information
   ]),
 })
 export type ConfidenceAssessment = z.infer<typeof ConfidenceAssessmentSchema>
@@ -78,10 +80,10 @@ export type ConfidenceAssessment = z.infer<typeof ConfidenceAssessmentSchema>
 // -----------------------------------------------------------------------------
 
 export const UncertaintyTypeSchema = z.enum([
-  "aleatoric",   // Inherent randomness
-  "epistemic",   // Lack of knowledge
-  "model",       // Model limitations
-  "input",       // Input quality issues
+  "aleatoric", // Inherent randomness
+  "epistemic", // Lack of knowledge
+  "model", // Model limitations
+  "input", // Input quality issues
 ])
 export type UncertaintyType = z.infer<typeof UncertaintyTypeSchema>
 
@@ -105,16 +107,20 @@ export const HypothesisSchema = z.object({
   context: z.string(),
   prior_probability: z.number().min(0).max(1),
   current_probability: z.number().min(0).max(1),
-  supporting_evidence: z.array(z.object({
-    evidence_id: UUIDSchema.optional(),
-    description: z.string(),
-    strength: z.number().min(0).max(1),
-  })),
-  contradicting_evidence: z.array(z.object({
-    evidence_id: UUIDSchema.optional(),
-    description: z.string(),
-    strength: z.number().min(0).max(1),
-  })),
+  supporting_evidence: z.array(
+    z.object({
+      evidence_id: UUIDSchema.optional(),
+      description: z.string(),
+      strength: z.number().min(0).max(1),
+    })
+  ),
+  contradicting_evidence: z.array(
+    z.object({
+      evidence_id: UUIDSchema.optional(),
+      description: z.string(),
+      strength: z.number().min(0).max(1),
+    })
+  ),
   testable: z.boolean(),
   test_plan: z.string().optional(),
   status: z.enum(["proposed", "testing", "supported", "refuted", "inconclusive"]),
@@ -129,10 +135,12 @@ export const BeliefUpdateSchema = z.object({
   belief: z.string(),
   prior: z.number().min(0).max(1),
   posterior: z.number().min(0).max(1),
-  evidence: z.array(z.object({
-    description: z.string(),
-    likelihood_ratio: z.number().positive(),
-  })),
+  evidence: z.array(
+    z.object({
+      description: z.string(),
+      likelihood_ratio: z.number().positive(),
+    })
+  ),
   update_method: z.enum(["bayesian", "heuristic", "override"]),
   timestamp: TimestampSchema,
 })
@@ -155,17 +163,21 @@ export type IntrospectionTrigger = z.infer<typeof IntrospectionTriggerSchema>
 export const IntrospectionResultSchema = z.object({
   trigger: IntrospectionTriggerSchema,
   questions_asked: z.array(z.string()),
-  answers: z.array(z.object({
-    question: z.string(),
-    answer: z.string(),
-    confidence: z.number().min(0).max(1),
-  })),
+  answers: z.array(
+    z.object({
+      question: z.string(),
+      answer: z.string(),
+      confidence: z.number().min(0).max(1),
+    })
+  ),
   insights: z.array(z.string()),
-  action_items: z.array(z.object({
-    action: z.string(),
-    priority: z.enum(["low", "medium", "high"]),
-    rationale: z.string(),
-  })),
+  action_items: z.array(
+    z.object({
+      action: z.string(),
+      priority: z.enum(["low", "medium", "high"]),
+      rationale: z.string(),
+    })
+  ),
   duration_ms: z.number().int(),
 })
 export type IntrospectionResult = z.infer<typeof IntrospectionResultSchema>
@@ -178,12 +190,14 @@ export const CapabilityAssessmentSchema = z.object({
   capability: z.string(),
   current_level: z.number().min(0).max(1),
   confidence_in_assessment: z.number().min(0).max(1),
-  recent_performance: z.array(z.object({
-    task_id: UUIDSchema,
-    success: z.boolean(),
-    difficulty: z.number().min(0).max(1),
-    timestamp: TimestampSchema,
-  })),
+  recent_performance: z.array(
+    z.object({
+      task_id: UUIDSchema,
+      success: z.boolean(),
+      difficulty: z.number().min(0).max(1),
+      timestamp: TimestampSchema,
+    })
+  ),
   trend: z.enum(["improving", "stable", "declining", "insufficient_data"]),
   recommendations: z.array(z.string()),
 })

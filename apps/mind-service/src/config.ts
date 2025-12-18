@@ -24,11 +24,22 @@ const EnvSchema = z.object({
   MODEL_FALLBACK_2: z.string().default("gemini-3-pro"),
   MODEL_FAST: z.string().default("gpt-5.2-mini"),
 
+  // xAI Agent Tools Configuration
+  XAI_ENABLE_AGENT_TOOLS: z.coerce.boolean().default(true),
+  XAI_AGENT_TOOLS_ENABLED: z.string().default("web_search,x_search,code_execution,mcp"),
+  XAI_PREFER_AGENT_TOOLS: z.coerce.boolean().default(false),
+  XAI_CODE_EXECUTION_TIMEOUT_MS: z.coerce.number().default(300000),
+
   // Service URLs
   TOOLMESH_URL: z.string().url().default("http://localhost:3001"),
   EXECUTOR_URL: z.string().url().default("http://localhost:3002"),
   GROUNDING_SERVICE_URL: z.string().url().default("http://localhost:3003"),
   SWARM_COORDINATOR_URL: z.string().url().default("http://localhost:3005"),
+
+  // Service Tokens (for inter-service authentication)
+  TOOLMESH_TOKEN: z.string().optional(),
+  EXECUTOR_TOKEN: z.string().optional(),
+  GROUNDING_TOKEN: z.string().optional(),
 
   // Restate
   RESTATE_ADMIN_URL: z.string().url().default("http://localhost:9070"),
@@ -43,6 +54,54 @@ const EnvSchema = z.object({
   ENABLE_WORLD_MODEL: z.coerce.boolean().default(true),
   ENABLE_SWARM: z.coerce.boolean().default(true),
   ENABLE_GROUNDING: z.coerce.boolean().default(true),
+
+  // Metacognition & Self-Improvement (Workstream A)
+  ENABLE_HYPOTHESIS_ACTIONS: z.coerce.boolean().default(true),
+  ENABLE_AUTO_CALIBRATION: z.coerce.boolean().default(true),
+  ENABLE_AUTO_CONFLICT_RESOLUTION: z.coerce.boolean().default(true),
+  ENABLE_SKILL_EFFECTIVENESS_TRACKING: z.coerce.boolean().default(true),
+  CALIBRATION_MAX_SINGLE_ADJUSTMENT: z.coerce.number().min(0).max(0.2).default(0.05),
+  CALIBRATION_MAX_CUMULATIVE_DRIFT: z.coerce.number().min(0).max(0.5).default(0.2),
+  CALIBRATION_COOLDOWN_MS: z.coerce.number().default(86400000), // 24 hours
+  CONFLICT_AUTO_RESOLVE_THRESHOLD: z.coerce.number().min(0).max(1).default(0.5),
+
+  // World Model Integration (Workstream B)
+  ENABLE_WORLD_MODEL_SIMULATION: z.coerce.boolean().default(true),
+  WORLD_MODEL_LOOKAHEAD_STEPS: z.coerce.number().int().min(1).max(10).default(3),
+  WORLD_MODEL_LOOKAHEAD_INTERVAL: z.coerce.number().int().min(1).default(2),
+  WORLD_MODEL_CHECKPOINT_THRESHOLD: z.coerce.number().min(0).max(1).default(0.6),
+  WORLD_MODEL_CHECKPOINT_TTL_MS: z.coerce.number().default(3600000), // 1 hour
+  WORLD_MODEL_HISTORY_LOOKBACK_DAYS: z.coerce.number().int().min(1).default(30),
+  ENABLE_COUNTERFACTUAL_ANALYSIS: z.coerce.boolean().default(true),
+
+  // Swarm Collaboration (Workstream C)
+  SWARM_DELEGATION_MIN_STEPS: z.coerce.number().int().min(1).default(5),
+  SWARM_DELEGATION_MIN_DURATION_MS: z.coerce.number().default(120000), // 2 minutes
+  SWARM_DELEGATION_RISK_THRESHOLD: z.coerce.number().min(0).max(1).default(0.6),
+  MAX_SWARM_SIZE: z.coerce.number().int().min(1).default(10),
+  SWARM_COLLABORATION_ANALYSIS_ENABLED: z.coerce.boolean().default(true),
+  SWARM_SPECIALIZATION_THRESHOLD: z.coerce.number().min(0).max(1).default(0.7),
+
+  // Cross-Verification (Workstream D)
+  CROSS_VERIFY_ALL_WEB_SEARCH: z.coerce.boolean().default(true),
+  CROSS_VERIFY_MIN_CONFIDENCE: z.coerce.number().min(0).max(1).default(0.6),
+  CROSS_VERIFY_REQUIRE_CORROBORATION: z.coerce.boolean().default(false),
+
+  // Notification Settings (for significant self-modifications)
+  NOTIFICATION_WEBHOOK_URL: z.string().url().optional(),
+  NOTIFICATION_SLACK_WEBHOOK_URL: z.string().url().optional(),
+  NOTIFY_ON_SIGNIFICANT_CALIBRATION: z.coerce.boolean().default(true),
+  NOTIFY_ON_SKILL_CREATION: z.coerce.boolean().default(true),
+  NOTIFY_ON_CONFLICT_ESCALATION: z.coerce.boolean().default(true),
+  SIGNIFICANT_CALIBRATION_THRESHOLD: z.coerce.number().min(0).max(1).default(0.1),
+
+  // On-Demand Tool Discovery Configuration
+  ENABLE_ON_DEMAND_TOOLS: z.coerce.boolean().default(true),
+  ENABLE_PROACTIVE_TOOL_DISCOVERY: z.coerce.boolean().default(true),
+  TOOL_DISCOVERY_INITIAL_K: z.coerce.number().int().min(1).max(50).default(8),
+  TOOL_DISCOVERY_EXPANSION_K: z.coerce.number().int().min(1).max(20).default(5),
+  TOOL_DISCOVERY_MIN_SIMILARITY: z.coerce.number().min(0).max(1).default(0.4),
+  TOOL_DISCOVERY_CACHE_TTL_MS: z.coerce.number().default(300000),
 
   // Logging
   LOG_LEVEL: z.enum(["trace", "debug", "info", "warn", "error"]).default("info"),
@@ -104,11 +163,22 @@ const MODEL_CONFIGS: Record<string, Omit<ModelConfig, "apiKey">> = {
 
   // Google - Gemini 3 (Dec 2025)
   "gemini-3-pro": { provider: "google", model: "gemini-3-pro", maxTokens: 8192, temperature: 0.7 },
-  "gemini-3-flash": { provider: "google", model: "gemini-3-flash", maxTokens: 8192, temperature: 0.7 },
+  "gemini-3-flash": {
+    provider: "google",
+    model: "gemini-3-flash",
+    maxTokens: 8192,
+    temperature: 0.7,
+  },
 
-  // xAI - Grok 4.1 (Nov 2025)
-  "grok-4.1": { provider: "xai", model: "grok-4.1", maxTokens: 8192, temperature: 0.7 },
-  "grok-4.1-fast": { provider: "xai", model: "grok-4.1-fast", maxTokens: 8192, temperature: 0.7 },
+  // xAI - Grok 4.1 (Dec 2025) - 2M context, 128K output
+  "grok-4-1": { provider: "xai", model: "grok-4-1", maxTokens: 131072, temperature: 0.7 },
+  "grok-4-1-fast": { provider: "xai", model: "grok-4-1-fast", maxTokens: 131072, temperature: 0.7 },
+  "grok-4-1-fast-reasoning": {
+    provider: "xai",
+    model: "grok-4-1-fast-reasoning",
+    maxTokens: 131072,
+    temperature: 0.7,
+  },
 }
 
 export function getModelConfig(modelId: string): ModelConfig {
@@ -164,14 +234,22 @@ const CIRCUIT_RESET_MS = 60000 // 1 minute
 
 export function getCircuitState(modelId: string): CircuitState {
   if (!circuitBreakers.has(modelId)) {
-    circuitBreakers.set(modelId, {
+    const newState: CircuitState = {
       failures: 0,
       lastFailure: null,
       open: false,
       halfOpenAt: null,
-    })
+    }
+    circuitBreakers.set(modelId, newState)
+    return newState
   }
-  return circuitBreakers.get(modelId)!
+  // TypeScript now knows the value exists because has() returned true
+  const state = circuitBreakers.get(modelId)
+  if (!state) {
+    // This should never happen, but satisfies TypeScript
+    throw new Error(`Circuit state not found for model ${modelId}`)
+  }
+  return state
 }
 
 export function recordSuccess(modelId: string): void {

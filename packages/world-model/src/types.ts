@@ -13,12 +13,14 @@ export const EntitySchema = z.object({
   type: z.string(),
   name: z.string(),
   properties: z.record(z.unknown()),
-  relationships: z.array(z.object({
-    target_id: z.string().uuid(),
-    relation_type: z.string(),
-    strength: z.number().min(0).max(1),
-    metadata: z.record(z.unknown()).optional(),
-  })),
+  relationships: z.array(
+    z.object({
+      target_id: z.string().uuid(),
+      relation_type: z.string(),
+      strength: z.number().min(0).max(1),
+      metadata: z.record(z.unknown()).optional(),
+    })
+  ),
   last_observed: z.string().datetime(),
   confidence: z.number().min(0).max(1),
 })
@@ -93,22 +95,28 @@ export type SimulationConfig = z.infer<typeof SimulationConfigSchema>
 export const SimulationResultSchema = z.object({
   simulation_id: z.string().uuid(),
   initial_state: WorldStateSchema,
-  action_sequence: z.array(z.object({
-    action_id: z.string().uuid(),
-    action_type: z.string(),
-    parameters: z.record(z.unknown()),
-  })),
-  predicted_states: z.array(z.object({
-    state: WorldStateSchema,
-    probability: z.number().min(0).max(1),
-    path_from_initial: z.array(z.string().uuid()),
-  })),
-  side_effects: z.array(z.object({
-    effect_type: z.string(),
-    affected_entities: z.array(z.string().uuid()),
-    severity: z.enum(["negligible", "minor", "moderate", "major", "critical"]),
-    reversible: z.boolean(),
-  })),
+  action_sequence: z.array(
+    z.object({
+      action_id: z.string().uuid(),
+      action_type: z.string(),
+      parameters: z.record(z.unknown()),
+    })
+  ),
+  predicted_states: z.array(
+    z.object({
+      state: WorldStateSchema,
+      probability: z.number().min(0).max(1),
+      path_from_initial: z.array(z.string().uuid()),
+    })
+  ),
+  side_effects: z.array(
+    z.object({
+      effect_type: z.string(),
+      affected_entities: z.array(z.string().uuid()),
+      severity: z.enum(["negligible", "minor", "moderate", "major", "critical"]),
+      reversible: z.boolean(),
+    })
+  ),
   risk_assessment: z.object({
     overall_risk: z.number().min(0).max(1),
     failure_probability: z.number().min(0).max(1),
@@ -128,7 +136,12 @@ export type SimulationResult = z.infer<typeof SimulationResultSchema>
 export const PredictionSchema = z.object({
   prediction_id: z.string().uuid(),
   identity_id: z.string().uuid(),
-  prediction_type: z.enum(["state_change", "event_occurrence", "goal_outcome", "resource_availability"]),
+  prediction_type: z.enum([
+    "state_change",
+    "event_occurrence",
+    "goal_outcome",
+    "resource_availability",
+  ]),
   target_description: z.string(),
   predicted_outcome: z.record(z.unknown()),
   confidence: z.number().min(0).max(1),
@@ -154,12 +167,14 @@ export type Prediction = z.infer<typeof PredictionSchema>
 export const CounterfactualSchema = z.object({
   counterfactual_id: z.string().uuid(),
   original_event_id: z.string().uuid(),
-  altered_conditions: z.array(z.object({
-    entity_id: z.string().uuid(),
-    property: z.string(),
-    original_value: z.unknown(),
-    counterfactual_value: z.unknown(),
-  })),
+  altered_conditions: z.array(
+    z.object({
+      entity_id: z.string().uuid(),
+      property: z.string(),
+      original_value: z.unknown(),
+      counterfactual_value: z.unknown(),
+    })
+  ),
   predicted_alternate_outcome: z.record(z.unknown()),
   divergence_point: z.string().datetime(),
   causal_explanation: z.string(),

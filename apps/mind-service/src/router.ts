@@ -2,20 +2,23 @@
 // MindOS - Multi-Model Router
 // =============================================================================
 
-import OpenAI from "openai"
 import Anthropic from "@anthropic-ai/sdk"
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import OpenAI from "openai"
 import {
+  type ModelConfig,
   env,
-  modelChain,
   getModelConfig,
   isCircuitOpen,
-  recordSuccess,
+  modelChain,
   recordFailure,
-  type ModelConfig,
+  recordSuccess,
 } from "./config.js"
 import { createLogger } from "./logger.js"
-import type { ModelResponse } from "./types.js"
+import type { XaiAgentTool, XaiAgentToolType } from "./types.js"
+
+// Re-export xAI types for backwards compatibility
+export type { XaiAgentTool, XaiAgentToolType }
 
 const log = createLogger("router")
 
@@ -26,6 +29,7 @@ const log = createLogger("router")
 let openaiClient: OpenAI | null = null
 let anthropicClient: Anthropic | null = null
 let googleClient: GoogleGenerativeAI | null = null
+let xaiClient: OpenAI | null = null
 
 function getOpenAI(): OpenAI {
   if (!openaiClient) {
@@ -55,6 +59,19 @@ function getGoogle(): GoogleGenerativeAI {
     googleClient = new GoogleGenerativeAI(env.GOOGLE_AI_API_KEY)
   }
   return googleClient
+}
+
+function getXai(): OpenAI {
+  if (!xaiClient) {
+    if (!env.XAI_API_KEY) {
+      throw new Error("XAI_API_KEY not configured")
+    }
+    xaiClient = new OpenAI({
+      apiKey: env.XAI_API_KEY,
+      baseURL: "https://api.x.ai/v1",
+    })
+  }
+  return xaiClient
 }
 
 // -----------------------------------------------------------------------------
@@ -109,6 +126,35 @@ export interface CompletionResult {
 }
 
 // -----------------------------------------------------------------------------
+// xAI Agent Tools Types
+// -----------------------------------------------------------------------------
+
+// XaiAgentTool and XaiAgentToolType are imported from types.js and re-exported above
+
+export interface XaiCompletionOptions extends CompletionOptions {
+  xaiAgentTools?: XaiAgentTool[]
+}
+
+export interface XaiServerToolCall {
+  id: string
+  type: "server_tool_use"
+  name: XaiAgentToolType
+  input: Record<string, unknown>
+}
+
+export interface XaiServerToolResult {
+  id: string
+  type: "server_tool_result"
+  name: XaiAgentToolType
+  output: unknown
+}
+
+export interface XaiCompletionResult extends CompletionResult {
+  serverToolCalls?: XaiServerToolCall[]
+  serverToolResults?: XaiServerToolResult[]
+}
+
+// -----------------------------------------------------------------------------
 // Provider Implementations
 // -----------------------------------------------------------------------------
 
@@ -119,26 +165,47 @@ async function callOpenAI(
   const client = getOpenAI()
   const start = Date.now()
 
-  const response = await client.chat.completions.create({
+  // Build request body, only including properties that have values
+  // to satisfy exactOptionalPropertyTypes
+  // Explicitly set stream: false to help TypeScript narrow the response type
+  const requestBody: OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming = {
     model: config.model,
     messages: options.messages,
     temperature: options.temperature ?? config.temperature,
     max_tokens: options.maxTokens ?? config.maxTokens,
-    tools: options.tools,
-    tool_choice: options.toolChoice,
-    response_format: options.jsonMode ? { type: "json_object" } : undefined,
-    ...(options.reasoningEffort && { reasoning_effort: options.reasoningEffort }),
-  })
+    stream: false,
+  }
 
-  const message = response.choices[0].message
-  const toolCalls: ToolCall[] = message.tool_calls?.map((tc) => ({
-    id: tc.id,
-    type: tc.type,
-    function: {
-      name: tc.function.name,
-      arguments: tc.function.arguments,
-    },
-  })) ?? []
+  if (options.tools && options.tools.length > 0) {
+    requestBody.tools = options.tools
+  }
+  if (options.toolChoice) {
+    requestBody.tool_choice = options.toolChoice
+  }
+  if (options.jsonMode) {
+    requestBody.response_format = { type: "json_object" }
+  }
+  // OpenAI only supports low/medium/high for reasoning_effort
+  if (options.reasoningEffort && options.reasoningEffort !== "xhigh") {
+    requestBody.reasoning_effort = options.reasoningEffort as "low" | "medium" | "high"
+  }
+
+  const response = await client.chat.completions.create(requestBody)
+
+  const firstChoice = response.choices[0]
+  if (!firstChoice) {
+    throw new Error("OpenAI returned no choices")
+  }
+  const message = firstChoice.message
+  const toolCalls: ToolCall[] =
+    message.tool_calls?.map((tc) => ({
+      id: tc.id,
+      type: tc.type,
+      function: {
+        name: tc.function.name,
+        arguments: tc.function.arguments,
+      },
+    })) ?? []
 
   return {
     content: message.content,
@@ -151,7 +218,7 @@ async function callOpenAI(
       totalTokens: response.usage?.total_tokens ?? 0,
     },
     latencyMs: Date.now() - start,
-    finishReason: response.choices[0].finish_reason,
+    finishReason: firstChoice.finish_reason,
   }
 }
 
@@ -178,13 +245,24 @@ async function callAnthropic(
     input_schema: t.function.parameters as Anthropic.Tool.InputSchema,
   }))
 
-  const response = await client.messages.create({
+  // Build request body conditionally to satisfy exactOptionalPropertyTypes
+  // Explicitly set stream: false to help TypeScript narrow the response type
+  const requestBody: Anthropic.Messages.MessageCreateParamsNonStreaming = {
     model: config.model,
     max_tokens: options.maxTokens ?? config.maxTokens,
-    system: systemMessage?.content,
     messages: nonSystemMessages,
-    tools,
-  })
+    stream: false,
+  }
+
+  // Only include system if it has a value
+  if (systemMessage?.content) {
+    requestBody.system = systemMessage.content
+  }
+  if (tools && tools.length > 0) {
+    requestBody.tools = tools
+  }
+
+  const response = await client.messages.create(requestBody)
 
   // Extract content and tool calls
   let content: string | null = null
@@ -240,11 +318,20 @@ async function callGoogle(
     }))
 
   const lastMessage = options.messages[options.messages.length - 1]
+  if (!lastMessage) {
+    throw new Error("No messages provided to Google model")
+  }
 
-  const chat = model.startChat({
+  // Build chat config conditionally to satisfy exactOptionalPropertyTypes
+  const chatConfig: Parameters<typeof model.startChat>[0] = {
     history,
-    systemInstruction: systemMessage ? { parts: [{ text: systemMessage.content }] } : undefined,
-  })
+  }
+  if (systemMessage) {
+    // systemInstruction can be a string directly
+    chatConfig.systemInstruction = systemMessage.content
+  }
+
+  const chat = model.startChat(chatConfig)
 
   const result = await chat.sendMessage(lastMessage.content)
   const response = result.response
@@ -265,13 +352,137 @@ async function callGoogle(
 }
 
 // -----------------------------------------------------------------------------
+// xAI Helper Functions (extracted to reduce complexity)
+// -----------------------------------------------------------------------------
+
+interface XaiRawMessage {
+  content: string | null
+  tool_calls?: unknown[]
+  server_tool_calls?: Array<{ id: string; name: string; input: string | Record<string, unknown> }>
+  server_tool_results?: Array<{ id: string; name: string; output: unknown }>
+}
+
+function buildXaiToolsArray(options: XaiCompletionOptions): unknown[] {
+  const allTools: unknown[] = [...(options.tools ?? [])]
+
+  if (!options.xaiAgentTools || !env.XAI_ENABLE_AGENT_TOOLS) {
+    return allTools
+  }
+
+  const enabledTools = env.XAI_AGENT_TOOLS_ENABLED.split(",")
+  for (const agentTool of options.xaiAgentTools) {
+    if (enabledTools.includes(agentTool.type)) {
+      allTools.push(agentTool)
+    }
+  }
+
+  return allTools
+}
+
+function parseFunctionToolCalls(
+  rawToolCalls: OpenAI.ChatCompletionMessageToolCall[] | undefined
+): ToolCall[] {
+  if (!rawToolCalls) return []
+
+  return rawToolCalls
+    .filter((tc) => tc.type === "function")
+    .map((tc) => ({
+      id: tc.id,
+      type: tc.type,
+      function: { name: tc.function.name, arguments: tc.function.arguments },
+    }))
+}
+
+function parseServerToolCalls(rawMessage: XaiRawMessage): XaiServerToolCall[] {
+  if (!rawMessage.server_tool_calls) return []
+
+  return rawMessage.server_tool_calls.map((stc) => ({
+    id: stc.id,
+    type: "server_tool_use" as const,
+    name: stc.name as XaiAgentToolType,
+    input: typeof stc.input === "string" ? JSON.parse(stc.input) : stc.input,
+  }))
+}
+
+function parseServerToolResults(rawMessage: XaiRawMessage): XaiServerToolResult[] {
+  if (!rawMessage.server_tool_results) return []
+
+  return rawMessage.server_tool_results.map((str) => ({
+    id: str.id,
+    type: "server_tool_result" as const,
+    name: str.name as XaiAgentToolType,
+    output: str.output,
+  }))
+}
+
+// -----------------------------------------------------------------------------
+// xAI Completion
+// -----------------------------------------------------------------------------
+
+async function callXai(
+  config: ModelConfig,
+  options: XaiCompletionOptions
+): Promise<XaiCompletionResult> {
+  const client = getXai()
+  const start = Date.now()
+
+  const allTools = buildXaiToolsArray(options)
+
+  // Build request body conditionally to satisfy exactOptionalPropertyTypes
+  // xAI uses OpenAI-compatible API
+  const requestBody: OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming = {
+    model: config.model,
+    messages: options.messages,
+    temperature: options.temperature ?? config.temperature,
+    max_tokens: options.maxTokens ?? config.maxTokens,
+    stream: false,
+  }
+
+  if (allTools.length > 0) {
+    requestBody.tools = allTools as OpenAI.Chat.Completions.ChatCompletionTool[]
+  }
+  if (options.toolChoice) {
+    requestBody.tool_choice = options.toolChoice
+  }
+  if (options.jsonMode) {
+    requestBody.response_format = { type: "json_object" }
+  }
+
+  const response = await client.chat.completions.create(requestBody)
+
+  const firstChoice = response.choices[0]
+  if (!firstChoice) {
+    throw new Error("xAI returned no choices")
+  }
+  const message = firstChoice.message
+  const rawMessage = message as unknown as XaiRawMessage
+
+  const toolCalls = parseFunctionToolCalls(message.tool_calls)
+  const serverToolCalls = parseServerToolCalls(rawMessage)
+  const serverToolResults = parseServerToolResults(rawMessage)
+
+  return {
+    content: message.content,
+    toolCalls,
+    serverToolCalls: serverToolCalls.length > 0 ? serverToolCalls : [],
+    serverToolResults: serverToolResults.length > 0 ? serverToolResults : [],
+    model: config.model,
+    provider: "xai",
+    usage: {
+      promptTokens: response.usage?.prompt_tokens ?? 0,
+      completionTokens: response.usage?.completion_tokens ?? 0,
+      totalTokens: response.usage?.total_tokens ?? 0,
+    },
+    latencyMs: Date.now() - start,
+    finishReason: firstChoice.finish_reason,
+  }
+}
+
+// -----------------------------------------------------------------------------
 // Unified Router
 // -----------------------------------------------------------------------------
 
-async function callModel(
-  modelId: string,
-  options: CompletionOptions
-): Promise<CompletionResult> {
+async function callModel(modelId: string, options: CompletionOptions): Promise<CompletionResult> {
   const config = getModelConfig(modelId)
 
   if (!config.apiKey) {
@@ -286,8 +497,7 @@ async function callModel(
     case "google":
       return callGoogle(config, options)
     case "xai":
-      // xAI uses OpenAI-compatible API
-      return callOpenAI({ ...config, provider: "openai" }, options)
+      return callXai(config, options)
     default:
       throw new Error(`Unknown provider: ${config.provider}`)
   }
@@ -298,7 +508,9 @@ export async function complete(
   preferFast = false
 ): Promise<CompletionResult> {
   // Select model chain based on preference
-  const models = preferFast ? [modelChain.fast, ...modelChain.fallbacks] : [modelChain.primary, ...modelChain.fallbacks]
+  const models = preferFast
+    ? [modelChain.fast, ...modelChain.fallbacks]
+    : [modelChain.primary, ...modelChain.fallbacks]
 
   // Try each model in the chain
   let lastError: Error | null = null
@@ -367,9 +579,7 @@ export async function completeJson<T>(
 // Tool Calling
 // -----------------------------------------------------------------------------
 
-export async function completeWithTools(
-  options: CompletionOptions
-): Promise<CompletionResult> {
+export async function completeWithTools(options: CompletionOptions): Promise<CompletionResult> {
   if (!options.tools || options.tools.length === 0) {
     throw new Error("Tools required for tool calling")
   }
@@ -409,6 +619,40 @@ export async function* stream(
     const result = await complete(options)
     yield { delta: result.content ?? "", done: true }
   }
+}
+
+// -----------------------------------------------------------------------------
+// xAI Agent Tools Completion
+// -----------------------------------------------------------------------------
+
+export async function completeWithXaiAgentTools(
+  options: XaiCompletionOptions,
+  agentTools: XaiAgentToolType[] = ["web_search"]
+): Promise<XaiCompletionResult> {
+  // Filter out 'mcp' type as it requires additional configuration (server_label, server_url)
+  // Only simple tool types (web_search, x_search, code_execution, collections_search) can be auto-mapped
+  const simpleToolTypes = agentTools.filter(
+    (type): type is Exclude<XaiAgentToolType, "mcp"> => type !== "mcp"
+  )
+  const xaiTools: XaiAgentTool[] = simpleToolTypes.map((type) => ({ type }))
+  const modelId = env.MODEL_FAST.includes("grok") ? env.MODEL_FAST : "grok-4-1-fast"
+  const config = getModelConfig(modelId)
+
+  log.info({ modelId, agentTools }, "Calling xAI with Agent Tools")
+
+  return callXai(config, { ...options, xaiAgentTools: xaiTools })
+}
+
+// Direct xAI call with specific model (for advanced use cases)
+export async function callXaiDirect(
+  modelId: string,
+  options: XaiCompletionOptions
+): Promise<XaiCompletionResult> {
+  const config = getModelConfig(modelId)
+  if (config.provider !== "xai") {
+    throw new Error(`Model ${modelId} is not an xAI model`)
+  }
+  return callXai(config, options)
 }
 
 // -----------------------------------------------------------------------------

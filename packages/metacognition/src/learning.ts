@@ -3,7 +3,7 @@
 // =============================================================================
 
 import type pg from "pg"
-import type { LearningRecord, Hypothesis } from "./types.js"
+import type { Hypothesis, LearningRecord } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Learning Engine Interface
@@ -85,10 +85,9 @@ export function createLearningEngine(pool: pg.Pool): LearningEngine {
     context: LearningContext
   ): Promise<LearningApplication> {
     // Fetch learning record
-    const result = await pool.query(
-      `SELECT * FROM learning_records WHERE record_id = $1`,
-      [recordId]
-    )
+    const result = await pool.query("SELECT * FROM learning_records WHERE record_id = $1", [
+      recordId,
+    ])
 
     if (result.rows.length === 0) {
       throw new Error(`Learning record ${recordId} not found`)
@@ -113,13 +112,7 @@ export function createLearningEngine(pool: pg.Pool): LearningEngine {
         `INSERT INTO learning_applications (
           application_id, record_id, context, applied_at, successful
         ) VALUES ($1, $2, $3, $4, $5)`,
-        [
-          crypto.randomUUID(),
-          recordId,
-          JSON.stringify(context),
-          new Date().toISOString(),
-          true,
-        ]
+        [crypto.randomUUID(), recordId, JSON.stringify(context), new Date().toISOString(), true]
       )
     }
 
@@ -158,42 +151,38 @@ export function createLearningEngine(pool: pg.Pool): LearningEngine {
   async function measureEffectiveness(recordId: string): Promise<EffectivenessMeasurement> {
     // Get application history
     const applications = await pool.query(
-      `SELECT * FROM learning_applications WHERE record_id = $1`,
+      "SELECT * FROM learning_applications WHERE record_id = $1",
       [recordId]
     )
 
     const successfulApplications = applications.rows.filter((a) => a.successful)
 
     // Calculate generalization success (applications in different contexts)
-    const uniqueContexts = new Set(
-      applications.rows.map((a) => JSON.stringify(a.context))
-    )
+    const uniqueContexts = new Set(applications.rows.map((a) => JSON.stringify(a.context)))
 
     const measurement: EffectivenessMeasurement = {
       record_id: recordId,
       application_count: applications.rows.length,
-      success_rate: applications.rows.length > 0
-        ? successfulApplications.length / applications.rows.length
-        : 0,
+      success_rate:
+        applications.rows.length > 0 ? successfulApplications.length / applications.rows.length : 0,
       avg_improvement: 0.1, // Would calculate from actual outcome data
       generalization_success: uniqueContexts.size / Math.max(applications.rows.length, 1),
     }
 
     // Update record with effectiveness score
-    await pool.query(
-      `UPDATE learning_records SET effectiveness_score = $1 WHERE record_id = $2`,
-      [measurement.success_rate, recordId]
-    )
+    await pool.query("UPDATE learning_records SET effectiveness_score = $1 WHERE record_id = $2", [
+      measurement.success_rate,
+      recordId,
+    ])
 
     return measurement
   }
 
   async function consolidateLearnings(identityId: string): Promise<ConsolidationResult> {
     // Fetch all learnings for identity
-    const learnings = await pool.query(
-      `SELECT * FROM learning_records WHERE identity_id = $1`,
-      [identityId]
-    )
+    const learnings = await pool.query("SELECT * FROM learning_records WHERE identity_id = $1", [
+      identityId,
+    ])
 
     let recordsMerged = 0
     let generalizationsCreated = 0
@@ -210,7 +199,7 @@ export function createLearningEngine(pool: pg.Pool): LearningEngine {
     }
 
     // Process each group
-    for (const [key, group] of lessonGroups) {
+    for (const [_key, group] of lessonGroups) {
       if (group.length > 1) {
         // Merge similar learnings
         const merged = mergeLearnings(group)
@@ -270,7 +259,8 @@ function mergeLearnings(group: Array<Record<string, unknown>>): Record<string, u
 
   // Use most recent lesson text
   const sortedByDate = [...group].sort(
-    (a, b) => new Date(b.created_at as string).getTime() - new Date(a.created_at as string).getTime()
+    (a, b) =>
+      new Date(b.created_at as string).getTime() - new Date(a.created_at as string).getTime()
   )
 
   return {
@@ -336,7 +326,7 @@ function extractCommonPattern(lessons: string[]): string {
 // -----------------------------------------------------------------------------
 
 export async function learnFromHypothesisResolution(
-  pool: pg.Pool,
+  _pool: pg.Pool,
   hypothesis: Hypothesis,
   learningEngine: LearningEngine
 ): Promise<LearningRecord | null> {
@@ -344,15 +334,17 @@ export async function learnFromHypothesisResolution(
     return null
   }
 
-  const lessonLearned = hypothesis.status === "confirmed"
-    ? `Confirmed: ${hypothesis.statement}`
-    : `Rejected hypothesis: ${hypothesis.statement} - alternative explanations needed`
+  const lessonLearned =
+    hypothesis.status === "confirmed"
+      ? `Confirmed: ${hypothesis.statement}`
+      : `Rejected hypothesis: ${hypothesis.statement} - alternative explanations needed`
 
-  const learningType = hypothesis.hypothesis_type === "root_cause"
-    ? "error_correction"
-    : hypothesis.hypothesis_type === "improvement"
-      ? "strategy_refinement"
-      : "knowledge_integration"
+  const learningType =
+    hypothesis.hypothesis_type === "root_cause"
+      ? "error_correction"
+      : hypothesis.hypothesis_type === "improvement"
+        ? "strategy_refinement"
+        : "knowledge_integration"
 
   return learningEngine.recordLearning({
     identity_id: hypothesis.identity_id,

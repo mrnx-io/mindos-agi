@@ -3,7 +3,7 @@
 // =============================================================================
 
 import type pg from "pg"
-import type { RiskAssessment, RiskCategory, RiskLevel, PolicyProfile } from "./types.js"
+import type { PolicyProfile, RiskAssessment, RiskCategory, RiskLevel } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Risk Scorer Interface
@@ -47,25 +47,57 @@ const RISK_FACTORS: RiskFactor[] = [
     weight: 0.25,
     evaluate: (input) => {
       const details = JSON.stringify(input.action_details).toLowerCase()
-      if (details.includes("password") || details.includes("secret") || details.includes("credential")) return 1.0
-      if (details.includes("personal") || details.includes("pii") || details.includes("private")) return 0.8
+      if (
+        details.includes("password") ||
+        details.includes("secret") ||
+        details.includes("credential")
+      )
+        return 1.0
+      if (details.includes("personal") || details.includes("pii") || details.includes("private"))
+        return 0.8
       if (details.includes("internal") || details.includes("confidential")) return 0.6
       return 0.2
     },
-    description: (score) => score > 0.7 ? "Involves sensitive data" : score > 0.4 ? "May involve private data" : "Low data sensitivity",
+    description: (score) =>
+      score > 0.7
+        ? "Involves sensitive data"
+        : score > 0.4
+          ? "May involve private data"
+          : "Low data sensitivity",
   },
   {
     name: "reversibility",
     weight: 0.2,
     evaluate: (input) => {
       const actionType = input.action_type.toLowerCase()
-      if (actionType.includes("delete") || actionType.includes("drop") || actionType.includes("remove")) return 1.0
-      if (actionType.includes("modify") || actionType.includes("update") || actionType.includes("change")) return 0.6
-      if (actionType.includes("create") || actionType.includes("add") || actionType.includes("insert")) return 0.3
-      if (actionType.includes("read") || actionType.includes("get") || actionType.includes("list")) return 0.1
+      if (
+        actionType.includes("delete") ||
+        actionType.includes("drop") ||
+        actionType.includes("remove")
+      )
+        return 1.0
+      if (
+        actionType.includes("modify") ||
+        actionType.includes("update") ||
+        actionType.includes("change")
+      )
+        return 0.6
+      if (
+        actionType.includes("create") ||
+        actionType.includes("add") ||
+        actionType.includes("insert")
+      )
+        return 0.3
+      if (actionType.includes("read") || actionType.includes("get") || actionType.includes("list"))
+        return 0.1
       return 0.5
     },
-    description: (score) => score > 0.7 ? "Irreversible action" : score > 0.4 ? "Partially reversible" : "Easily reversible",
+    description: (score) =>
+      score > 0.7
+        ? "Irreversible action"
+        : score > 0.4
+          ? "Partially reversible"
+          : "Easily reversible",
   },
   {
     name: "scope",
@@ -73,22 +105,35 @@ const RISK_FACTORS: RiskFactor[] = [
     evaluate: (input) => {
       const details = JSON.stringify(input.action_details).toLowerCase()
       if (details.includes("all") || details.includes("*") || details.includes("global")) return 0.9
-      if (details.includes("batch") || details.includes("bulk") || details.includes("multiple")) return 0.7
+      if (details.includes("batch") || details.includes("bulk") || details.includes("multiple"))
+        return 0.7
       return 0.3
     },
-    description: (score) => score > 0.7 ? "Wide scope of impact" : score > 0.4 ? "Moderate scope" : "Limited scope",
+    description: (score) =>
+      score > 0.7 ? "Wide scope of impact" : score > 0.4 ? "Moderate scope" : "Limited scope",
   },
   {
     name: "external_interaction",
     weight: 0.15,
     evaluate: (input) => {
       const details = JSON.stringify(input.action_details).toLowerCase()
-      if (details.includes("external") || details.includes("api") || details.includes("http")) return 0.8
-      if (details.includes("email") || details.includes("notification") || details.includes("webhook")) return 0.9
+      if (details.includes("external") || details.includes("api") || details.includes("http"))
+        return 0.8
+      if (
+        details.includes("email") ||
+        details.includes("notification") ||
+        details.includes("webhook")
+      )
+        return 0.9
       if (details.includes("payment") || details.includes("transaction")) return 1.0
       return 0.1
     },
-    description: (score) => score > 0.7 ? "External system interaction" : score > 0.3 ? "Limited external interaction" : "Internal only",
+    description: (score) =>
+      score > 0.7
+        ? "External system interaction"
+        : score > 0.3
+          ? "Limited external interaction"
+          : "Internal only",
   },
   {
     name: "authentication_context",
@@ -100,17 +145,27 @@ const RISK_FACTORS: RiskFactor[] = [
       if (context.verified_user) return 0.3
       return 0.5
     },
-    description: (score) => score > 0.7 ? "Elevated privileges" : score > 0.4 ? "Standard privileges" : "Limited privileges",
+    description: (score) =>
+      score > 0.7
+        ? "Elevated privileges"
+        : score > 0.4
+          ? "Standard privileges"
+          : "Limited privileges",
   },
   {
     name: "historical_risk",
     weight: 0.1,
-    evaluate: (input) => {
+    evaluate: (_input) => {
       // This would typically query historical data
       // Placeholder returns moderate risk
       return 0.5
     },
-    description: (score) => score > 0.7 ? "High historical risk" : score > 0.4 ? "Moderate historical risk" : "Low historical risk",
+    description: (score) =>
+      score > 0.7
+        ? "High historical risk"
+        : score > 0.4
+          ? "Moderate historical risk"
+          : "Low historical risk",
   },
 ]
 
@@ -124,16 +179,29 @@ export function createRiskScorer(pool: pg.Pool): RiskScorer {
     const details = JSON.stringify(input.action_details).toLowerCase()
     const actionType = input.action_type.toLowerCase()
 
-    if (details.includes("data") || details.includes("record") || actionType.includes("read") || actionType.includes("query")) {
+    if (
+      details.includes("data") ||
+      details.includes("record") ||
+      actionType.includes("read") ||
+      actionType.includes("query")
+    ) {
       categories.push("data_access")
     }
     if (details.includes("http") || details.includes("api") || details.includes("external")) {
       categories.push("external_communication")
     }
-    if (actionType.includes("modify") || actionType.includes("delete") || actionType.includes("create")) {
+    if (
+      actionType.includes("modify") ||
+      actionType.includes("delete") ||
+      actionType.includes("create")
+    ) {
       categories.push("system_modification")
     }
-    if (details.includes("payment") || details.includes("transaction") || details.includes("money")) {
+    if (
+      details.includes("payment") ||
+      details.includes("transaction") ||
+      details.includes("money")
+    ) {
       categories.push("financial")
     }
     if (details.includes("user") || details.includes("identity") || details.includes("profile")) {
@@ -228,10 +296,9 @@ export function createRiskScorer(pool: pg.Pool): RiskScorer {
   }
 
   async function getProfile(identityId: string): Promise<PolicyProfile | null> {
-    const result = await pool.query(
-      `SELECT * FROM policy_profiles WHERE identity_id = $1`,
-      [identityId]
-    )
+    const result = await pool.query("SELECT * FROM policy_profiles WHERE identity_id = $1", [
+      identityId,
+    ])
 
     if (result.rows.length === 0) return null
 
@@ -341,7 +408,7 @@ export function createRiskScorer(pool: pg.Pool): RiskScorer {
 
     // Get assessment details
     const assessmentResult = await pool.query(
-      `SELECT * FROM risk_assessments WHERE assessment_id = $1`,
+      "SELECT * FROM risk_assessments WHERE assessment_id = $1",
       [assessmentId]
     )
 

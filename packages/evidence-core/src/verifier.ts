@@ -3,9 +3,9 @@
 // =============================================================================
 
 import type pg from "pg"
-import type { EvidenceRecord, VerificationResult, MerkleProof } from "./types.js"
-import { computeEvidenceHash, canonicalize } from "./hasher.js"
-import { buildMerkleTree, generateMerkleProof, verifyMerkleProof } from "./merkle.js"
+import { computeEvidenceHash } from "./hasher.js"
+import { buildMerkleTree, verifyMerkleProof } from "./merkle.js"
+import type { EvidenceRecord, MerkleProof, VerificationResult } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Evidence Verifier Interface
@@ -46,10 +46,9 @@ export interface TamperingIssue {
 
 export function createEvidenceVerifier(pool: pg.Pool): EvidenceVerifier {
   async function verify(evidenceId: string): Promise<VerificationResult> {
-    const result = await pool.query(
-      `SELECT * FROM evidence_ledger WHERE evidence_id = $1`,
-      [evidenceId]
-    )
+    const result = await pool.query("SELECT * FROM evidence_ledger WHERE evidence_id = $1", [
+      evidenceId,
+    ])
 
     if (result.rows.length === 0) {
       throw new Error(`Evidence ${evidenceId} not found`)
@@ -72,7 +71,7 @@ export function createEvidenceVerifier(pool: pg.Pool): EvidenceVerifier {
 
     for (const parentHash of evidence.parent_hashes ?? []) {
       const parentResult = await pool.query(
-        `SELECT evidence_id FROM evidence_ledger WHERE content_hash = $1`,
+        "SELECT evidence_id FROM evidence_ledger WHERE content_hash = $1",
         [parentHash]
       )
 
@@ -111,7 +110,7 @@ export function createEvidenceVerifier(pool: pg.Pool): EvidenceVerifier {
 
     // Get all hashes for Merkle tree
     const hashResult = await pool.query(
-      `SELECT content_hash FROM evidence_ledger WHERE evidence_id = ANY($1) ORDER BY timestamp ASC`,
+      "SELECT content_hash FROM evidence_ledger WHERE evidence_id = ANY($1) ORDER BY timestamp ASC",
       [evidenceIds]
     )
 
@@ -120,7 +119,11 @@ export function createEvidenceVerifier(pool: pg.Pool): EvidenceVerifier {
 
     if (hashes.length > 0) {
       const tree = buildMerkleTree(hashes)
-      merkleRoot = tree[tree.length - 1][0].hash
+      const topLevel = tree[tree.length - 1]
+      const rootNode = topLevel?.[0]
+      if (rootNode) {
+        merkleRoot = rootNode.hash
+      }
     }
 
     return {
@@ -135,7 +138,7 @@ export function createEvidenceVerifier(pool: pg.Pool): EvidenceVerifier {
 
   async function verifyWithMerkleProof(evidenceId: string, proof: MerkleProof): Promise<boolean> {
     const result = await pool.query(
-      `SELECT content_hash FROM evidence_ledger WHERE evidence_id = $1`,
+      "SELECT content_hash FROM evidence_ledger WHERE evidence_id = $1",
       [evidenceId]
     )
 
@@ -153,20 +156,21 @@ export function createEvidenceVerifier(pool: pg.Pool): EvidenceVerifier {
   async function detectTampering(evidenceId: string): Promise<TamperingReport> {
     const issues: TamperingIssue[] = []
 
-    const result = await pool.query(
-      `SELECT * FROM evidence_ledger WHERE evidence_id = $1`,
-      [evidenceId]
-    )
+    const result = await pool.query("SELECT * FROM evidence_ledger WHERE evidence_id = $1", [
+      evidenceId,
+    ])
 
     if (result.rows.length === 0) {
       return {
         evidence_id: evidenceId,
         tampered: true,
-        issues: [{
-          issue_type: "content_modified",
-          description: "Evidence record not found",
-          severity: "critical",
-        }],
+        issues: [
+          {
+            issue_type: "content_modified",
+            description: "Evidence record not found",
+            severity: "critical",
+          },
+        ],
         checked_at: new Date().toISOString(),
       }
     }
@@ -202,7 +206,7 @@ export function createEvidenceVerifier(pool: pg.Pool): EvidenceVerifier {
     // Check 2: Parent existence
     for (const parentHash of evidence.parent_hashes ?? []) {
       const parentResult = await pool.query(
-        `SELECT evidence_id FROM evidence_ledger WHERE content_hash = $1`,
+        "SELECT evidence_id FROM evidence_ledger WHERE content_hash = $1",
         [parentHash]
       )
 
@@ -218,7 +222,7 @@ export function createEvidenceVerifier(pool: pg.Pool): EvidenceVerifier {
     // Check 3: Timestamp ordering (parents should be before children)
     for (const parentHash of evidence.parent_hashes ?? []) {
       const parentResult = await pool.query(
-        `SELECT timestamp FROM evidence_ledger WHERE content_hash = $1`,
+        "SELECT timestamp FROM evidence_ledger WHERE content_hash = $1",
         [parentHash]
       )
 
@@ -278,7 +282,7 @@ export async function batchVerify(
         batch.map(async (id) => {
           try {
             return { id, result: await verifier.verify(id) }
-          } catch (error) {
+          } catch (_error) {
             return {
               id,
               result: {

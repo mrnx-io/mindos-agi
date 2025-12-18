@@ -3,9 +3,9 @@
 // =============================================================================
 
 import { createHash } from "node:crypto"
-import { query, queryOne, withTransaction, type TransactionClient } from "./db.js"
+import { type TransactionClient, query, queryOne } from "./db.js"
 import { createLogger } from "./logger.js"
-import type { EvidenceKind, EvidenceRecord, CreateEvidenceRequest } from "./types.js"
+import type { CreateEvidenceRequest, EvidenceKind, EvidenceRecord } from "./types.js"
 
 const log = createLogger("evidence")
 
@@ -108,24 +108,23 @@ export async function createEvidence(
     : await query<EvidenceRow>(sql, params)
 
   const row = result.rows[0]
+  if (!row) {
+    throw new Error("Failed to create evidence record")
+  }
   log.info({ evidenceId: row.evidence_id, kind: row.kind, hash: row.hash }, "Evidence created")
 
   return rowToEvidence(row)
 }
 
 export async function getEvidence(evidenceId: string): Promise<EvidenceRecord | null> {
-  const row = await queryOne<EvidenceRow>(
-    "SELECT * FROM evidence_ledger WHERE evidence_id = $1",
-    [evidenceId]
-  )
+  const row = await queryOne<EvidenceRow>("SELECT * FROM evidence_ledger WHERE evidence_id = $1", [
+    evidenceId,
+  ])
   return row ? rowToEvidence(row) : null
 }
 
 export async function getEvidenceByHash(hash: string): Promise<EvidenceRecord | null> {
-  const row = await queryOne<EvidenceRow>(
-    "SELECT * FROM evidence_ledger WHERE hash = $1",
-    [hash]
-  )
+  const row = await queryOne<EvidenceRow>("SELECT * FROM evidence_ledger WHERE hash = $1", [hash])
   return row ? rowToEvidence(row) : null
 }
 
@@ -173,7 +172,10 @@ export async function verifyEvidence(
     )
     log.info({ evidenceId, source }, "Evidence verified")
   } else {
-    log.warn({ evidenceId, expectedHash: evidence.hash, actualHash }, "Evidence verification failed")
+    log.warn(
+      { evidenceId, expectedHash: evidence.hash, actualHash },
+      "Evidence verification failed"
+    )
   }
 
   return {
@@ -226,8 +228,8 @@ function rowToEvidence(row: EvidenceRow): EvidenceRecord {
     kind: row.kind,
     ref: row.ref,
     hash: row.hash,
-    payload: row.payload,
-    meta: row.meta,
+    payload: row.payload as Record<string, unknown>,
+    meta: row.meta as Record<string, unknown> | undefined,
     parent_hash: row.parent_hash,
     merkle_root: row.merkle_root,
     verified_at: row.verified_at?.toISOString() ?? null,

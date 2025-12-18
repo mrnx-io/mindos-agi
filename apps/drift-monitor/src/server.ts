@@ -2,35 +2,40 @@
 // MindOS - Drift Monitor Service (Model Quality Monitoring)
 // =============================================================================
 
-import Fastify from "fastify"
 import cors from "@fastify/cors"
-import { z } from "zod"
+import { CronJob } from "cron"
+import Fastify from "fastify"
+import OpenAI from "openai"
 import pg from "pg"
 import pino from "pino"
-import OpenAI from "openai"
-import { CronJob } from "cron"
+import { z } from "zod"
 
 // -----------------------------------------------------------------------------
 // Configuration
 // -----------------------------------------------------------------------------
 
 const env = {
-  PORT: parseInt(process.env.PORT ?? "3004"),
+  PORT: Number.parseInt(process.env.PORT ?? "3004"),
   HOST: process.env.HOST ?? "0.0.0.0",
   DATABASE_URL: process.env.DATABASE_URL ?? "",
   OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? "",
   ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ?? "",
   LOG_LEVEL: process.env.LOG_LEVEL ?? "info",
-  PROBE_INTERVAL_MINUTES: parseInt(process.env.PROBE_INTERVAL_MINUTES ?? "15"),
-  QUALITY_THRESHOLD: parseFloat(process.env.QUALITY_THRESHOLD ?? "0.85"),
+  PROBE_INTERVAL_MINUTES: Number.parseInt(process.env.PROBE_INTERVAL_MINUTES ?? "15"),
+  QUALITY_THRESHOLD: Number.parseFloat(process.env.QUALITY_THRESHOLD ?? "0.85"),
   ALERT_WEBHOOK_URL: process.env.ALERT_WEBHOOK_URL ?? "",
+  MONITORED_MODELS: (
+    process.env.DRIFT_MONITORED_MODELS ??
+    "gpt-5.2,gpt-5.2-mini,claude-opus-4-5-20251101,gemini-3-pro"
+  ).split(","),
 }
 
 const logger = pino({
   level: env.LOG_LEVEL,
-  transport: process.env.NODE_ENV !== "production"
-    ? { target: "pino-pretty", options: { colorize: true } }
-    : undefined,
+  transport:
+    process.env.NODE_ENV !== "production"
+      ? { target: "pino-pretty", options: { colorize: true } }
+      : undefined,
 })
 
 // -----------------------------------------------------------------------------
@@ -114,7 +119,8 @@ const STANDARD_PROBES: Omit<QualityProbe, "probe_id">[] = [
   {
     model_id: "*",
     probe_type: "instruction",
-    prompt: "Write exactly 3 bullet points about the benefits of exercise. Each bullet must start with a verb.",
+    prompt:
+      "Write exactly 3 bullet points about the benefits of exercise. Each bullet must start with a verb.",
     expected_patterns: ["•", "-", "*"],
     scoring_criteria: "Exactly 3 bullets, each starting with a verb",
   },
@@ -215,7 +221,7 @@ async function runProbe(probe: QualityProbe, modelId: string): Promise<ProbeResu
 
 async function getBaseline(modelId: string): Promise<ModelFingerprint | null> {
   const result = await pool.query(
-    `SELECT * FROM model_fingerprints WHERE model_id = $1 ORDER BY created_at DESC LIMIT 1`,
+    "SELECT * FROM model_fingerprints WHERE model_id = $1 ORDER BY created_at DESC LIMIT 1",
     [modelId]
   )
   return result.rows[0] ?? null
@@ -413,7 +419,7 @@ async function sendAlertNotification(alert: DriftAlert): Promise<void> {
 // Scheduled Probing
 // -----------------------------------------------------------------------------
 
-const MONITORED_MODELS = ["gpt-4o", "gpt-4o-mini", "gpt-3.5-turbo"]
+const MONITORED_MODELS = env.MONITORED_MODELS
 
 async function runScheduledProbes(): Promise<void> {
   logger.info("Running scheduled model probes")
@@ -478,17 +484,15 @@ app.get("/health", async () => ({
 }))
 
 // Run probes for a specific model
-app.post("/probe", async (request, reply) => {
+app.post("/probe", async (request, _reply) => {
   const body = RunProbeSchema.parse(request.body)
 
   const probeTypes = body.probes ?? ["capability", "consistency", "instruction", "format"]
-  const probes = STANDARD_PROBES
-    .filter((p) => probeTypes.includes(p.probe_type))
-    .map((p, i) => ({
-      ...p,
-      probe_id: `probe-${body.model_id}-${p.probe_type}-${i}`,
-      model_id: body.model_id,
-    }))
+  const probes = STANDARD_PROBES.filter((p) => probeTypes.includes(p.probe_type)).map((p, i) => ({
+    ...p,
+    probe_id: `probe-${body.model_id}-${p.probe_type}-${i}`,
+    model_id: body.model_id,
+  }))
 
   const results: ProbeResult[] = []
   for (const probe of probes) {
@@ -513,7 +517,7 @@ app.post("/probe", async (request, reply) => {
 })
 
 // Get alerts
-app.get("/alerts", async (request, reply) => {
+app.get("/alerts", async (request, _reply) => {
   const query = GetAlertsSchema.parse(request.query)
 
   let sql = "SELECT * FROM drift_alerts WHERE 1=1"
@@ -555,12 +559,12 @@ app.get("/fingerprints/:modelId", async (request, reply) => {
 })
 
 // Get probe history
-app.get("/probes/:modelId", async (request, reply) => {
+app.get("/probes/:modelId", async (request, _reply) => {
   const { modelId } = request.params as { modelId: string }
-  const limit = parseInt((request.query as Record<string, string>).limit ?? "50")
+  const limit = Number.parseInt((request.query as Record<string, string>).limit ?? "50")
 
   const result = await pool.query(
-    `SELECT * FROM model_probe_results WHERE model_id = $1 ORDER BY created_at DESC LIMIT $2`,
+    "SELECT * FROM model_probe_results WHERE model_id = $1 ORDER BY created_at DESC LIMIT $2",
     [modelId, limit]
   )
 
@@ -568,7 +572,7 @@ app.get("/probes/:modelId", async (request, reply) => {
 })
 
 // Model comparison
-app.get("/compare", async (request, reply) => {
+app.get("/compare", async (_request, _reply) => {
   const fingerprints: Record<string, ModelFingerprint | null> = {}
 
   for (const modelId of MONITORED_MODELS) {
@@ -584,7 +588,10 @@ app.get("/compare", async (request, reply) => {
   `)
 
   const alertMap = Object.fromEntries(
-    alertCounts.rows.map((r: { model_id: string; alert_count: string }) => [r.model_id, parseInt(r.alert_count)])
+    alertCounts.rows.map((r: { model_id: string; alert_count: string }) => [
+      r.model_id,
+      Number.parseInt(r.alert_count),
+    ])
   )
 
   return {
@@ -592,15 +599,14 @@ app.get("/compare", async (request, reply) => {
       model_id: id,
       fingerprint: fingerprints[id],
       recent_alerts: alertMap[id] ?? 0,
-      status: (fingerprints[id]?.quality_baseline ?? 0) >= env.QUALITY_THRESHOLD
-        ? "healthy"
-        : "degraded",
+      status:
+        (fingerprints[id]?.quality_baseline ?? 0) >= env.QUALITY_THRESHOLD ? "healthy" : "degraded",
     })),
   }
 })
 
 // Trigger baseline refresh
-app.post("/refresh-baseline/:modelId", async (request, reply) => {
+app.post("/refresh-baseline/:modelId", async (request, _reply) => {
   const { modelId } = request.params as { modelId: string }
 
   // Delete existing baseline

@@ -73,6 +73,7 @@ export type Task = z.infer<typeof TaskSchema>
 
 export const ActionKindSchema = z.enum([
   "tool",
+  "tool_call", // Alias for "tool" used by mind-service
   "write_report",
   "ask_approval",
   "delegate",
@@ -131,6 +132,23 @@ export const TaskStepSchema = z.object({
   duration_ms: z.number().int().optional(),
   model_used: z.string().optional(),
   created_at: TimestampSchema,
+  // Extended fields used by prompts.ts
+  description: z.string().optional(),
+  summary: z.string().optional(),
+  action: z
+    .object({
+      kind: ActionKindSchema,
+      tool: z.string().optional(),
+    })
+    .optional(),
+  result: z
+    .object({
+      success: z.boolean(),
+      output: JSONSchema.optional(),
+    })
+    .optional(),
+  started_at: TimestampSchema.optional(),
+  completed_at: TimestampSchema.optional(),
 })
 export type TaskStep = z.infer<typeof TaskStepSchema>
 

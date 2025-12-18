@@ -2,7 +2,8 @@
 // MindOS - Prompt Templates
 // =============================================================================
 
-import type { CoreSelf, PolicyProfile, Tool, ExecutionContext, TaskStep } from "./types.js"
+import { env } from "./config.js"
+import type { CoreSelf, ExecutionContext, PolicyProfile, TaskStep, Tool } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // System Prompt
@@ -14,8 +15,12 @@ export function buildSystemPrompt(
   availableTools: Tool[]
 ): string {
   const values = coreSelf.values.map((v) => `- ${v.name}: ${v.description}`).join("\n")
-  const goals = coreSelf.goals.map((g) => `- ${g.name} (priority ${g.priority}): ${g.description}`).join("\n")
-  const constraints = coreSelf.constraints.map((c) => `- [${c.type}] ${c.name}: ${c.description}`).join("\n")
+  const goals = coreSelf.goals
+    .map((g) => `- ${g.name} (priority ${g.priority}): ${g.description}`)
+    .join("\n")
+  const constraints = coreSelf.constraints
+    .map((c) => `- [${c.type}] ${c.name}: ${c.description}`)
+    .join("\n")
   const tools = availableTools.map((t) => `- ${t.name}: ${t.description}`).join("\n")
 
   return `You are an autonomous AI agent operating within the MindOS framework.
@@ -33,6 +38,7 @@ ${constraints || "No explicit constraints defined."}
 
 ## Available Tools
 ${tools || "No tools currently available."}
+${buildToolDiscoveryInstructions()}
 
 ## Operating Principles
 
@@ -66,6 +72,43 @@ When planning or executing tasks, structure your thinking as:
 - If in doubt, ask for clarification rather than proceeding
 
 Remember: You have persistent memory and identity across sessions. Your actions affect your future self and the humans who rely on you.`
+}
+
+/**
+ * Build tool discovery instructions for MCP-Zero style proactive discovery.
+ * Returns empty string if proactive discovery is disabled.
+ */
+function buildToolDiscoveryInstructions(): string {
+  if (!env.ENABLE_PROACTIVE_TOOL_DISCOVERY) {
+    return ""
+  }
+
+  return `
+
+## Tool Discovery
+
+You have access to a dynamic tool registry with semantic search. The tools listed above were automatically discovered based on your current task.
+
+**If you need a capability not in your current tool list**, you can request it:
+
+\`\`\`
+<tool_request>
+{"capability": "description of what you need", "reason": "why you need it", "priority": "high|medium|low"}
+</tool_request>
+\`\`\`
+
+The system will semantically search for matching tools and add them to your context.
+
+**Guidelines:**
+- Only request tools when genuinely needed - the initial set was chosen based on your task goal
+- Be specific about the capability you need (e.g., "send email via SMTP" not just "communicate")
+- Use "high" priority for tools critical to the current step, "medium" for helpful tools, "low" for optional enhancements
+- You may continue working after making a request - tools will be available for subsequent steps
+
+**Example:**
+<tool_request>
+{"capability": "convert markdown to PDF document", "reason": "user requested final output as PDF", "priority": "high"}
+</tool_request>`
 }
 
 // -----------------------------------------------------------------------------
@@ -136,7 +179,10 @@ export function buildDecisionPrompt(
   goal: string
 ): string {
   const historyStr = history
-    .map((s, i) => `${i + 1}. ${s.action.kind}: ${s.result?.success ? "✓" : "✗"} - ${s.summary || "No summary"}`)
+    .map(
+      (s, i) =>
+        `${i + 1}. ${s.action?.kind ?? "unknown"}: ${s.result?.success ? "✓" : "✗"} - ${s.summary || "No summary"}`
+    )
     .join("\n")
 
   return `## Decision Point
@@ -185,11 +231,12 @@ export function buildReflectionPrompt(
 ): string {
   const stepSummary = steps
     .map((s, i) => {
-      const duration = s.completed_at && s.started_at
-        ? new Date(s.completed_at).getTime() - new Date(s.started_at).getTime()
-        : 0
+      const duration =
+        s.completed_at && s.started_at
+          ? new Date(s.completed_at).getTime() - new Date(s.started_at).getTime()
+          : 0
       return `${i + 1}. ${s.description}
-   - Tool: ${s.action.tool || "none"}
+   - Tool: ${s.action?.tool || "none"}
    - Success: ${s.result?.success ? "Yes" : "No"}
    - Duration: ${duration}ms
    - Output: ${JSON.stringify(s.result?.output).slice(0, 200)}...`
@@ -254,14 +301,12 @@ Respond with JSON:
 // Metacognitive Prompt
 // -----------------------------------------------------------------------------
 
-export function buildMetacognitivePrompt(
-  currentState: {
-    goal: string
-    step: number
-    recentDecisions: string[]
-    concerns: string[]
-  }
-): string {
+export function buildMetacognitivePrompt(currentState: {
+  goal: string
+  step: number
+  recentDecisions: string[]
+  concerns: string[]
+}): string {
   return `## Metacognitive Check
 
 You are pausing to reflect on your current reasoning process.
@@ -334,15 +379,14 @@ Respond with JSON:
 // Tool Selection Prompt
 // -----------------------------------------------------------------------------
 
-export function buildToolSelectionPrompt(
-  intent: string,
-  availableTools: Tool[]
-): string {
+export function buildToolSelectionPrompt(intent: string, availableTools: Tool[]): string {
   const toolDescriptions = availableTools
-    .map((t) => `### ${t.name}
+    .map(
+      (t) => `### ${t.name}
 - Description: ${t.description}
 - Parameters: ${JSON.stringify(t.parameters)}
-- Risk level: ${t.risk_level || "unknown"}`)
+- Risk level: ${t.risk_level || "unknown"}`
+    )
     .join("\n\n")
 
   return `## Tool Selection

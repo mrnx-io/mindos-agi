@@ -2,21 +2,13 @@
 // Deep Introspection Module
 // =============================================================================
 
-import type {
-  SelfObservation,
-  IntrospectionResult,
-  IntrospectionTrigger,
-} from "./types.js"
+import type { IntrospectionTrigger, SelfObservation } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Introspection Strategies
 // -----------------------------------------------------------------------------
 
-export type IntrospectionStrategy =
-  | "breadth_first"
-  | "depth_first"
-  | "targeted"
-  | "adaptive"
+export type IntrospectionStrategy = "breadth_first" | "depth_first" | "targeted" | "adaptive"
 
 export interface IntrospectionConfig {
   strategy: IntrospectionStrategy
@@ -44,9 +36,7 @@ export interface PerformanceSnapshot {
 // Deep Analysis Functions
 // -----------------------------------------------------------------------------
 
-export function analyzePerformanceTrends(
-  history: PerformanceSnapshot[]
-): PerformanceTrendAnalysis {
+export function analyzePerformanceTrends(history: PerformanceSnapshot[]): PerformanceTrendAnalysis {
   if (history.length < 2) {
     return {
       success_rate_trend: "stable",
@@ -160,7 +150,8 @@ function detectAnomalies(history: PerformanceSnapshot[]): PerformanceAnomaly[] {
 
   for (const metric of metrics) {
     const mean = metric.values.reduce((a, b) => a + b, 0) / metric.values.length
-    const variance = metric.values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / metric.values.length
+    const variance =
+      metric.values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / metric.values.length
     const stdDev = Math.sqrt(variance)
 
     for (let i = 0; i < metric.values.length; i++) {
@@ -230,9 +221,7 @@ export function buildSelfModel(
   const biases = detectBiases(observations)
 
   // Extract strengths and growth areas
-  const strengths = capabilities
-    .filter((c) => c.proficiency > 0.7)
-    .map((c) => c.capability)
+  const strengths = capabilities.filter((c) => c.proficiency > 0.7).map((c) => c.capability)
 
   const growthAreas = capabilities
     .filter((c) => c.proficiency < 0.5 || c.recent_trend === "declining")
@@ -310,9 +299,7 @@ function identifyLimitations(
   }
 
   // Check for knowledge gaps
-  const lowPerformanceAreas = history
-    .filter((h) => h.success_rate < 0.5)
-    .map((h) => h.timestamp)
+  const lowPerformanceAreas = history.filter((h) => h.success_rate < 0.5).map((h) => h.timestamp)
 
   if (lowPerformanceAreas.length > 3) {
     limitations.push({
@@ -423,13 +410,15 @@ export function shouldTriggerIntrospection(
     const recentPerf = performanceObs.slice(-5)
     const olderPerf = performanceObs.slice(0, 5)
 
-    const recentAvg = recentPerf.reduce((sum, o) => {
-      return sum + ((o.content as Record<string, number>).performance ?? 0.5)
-    }, 0) / recentPerf.length
+    const recentAvg =
+      recentPerf.reduce((sum, o) => {
+        return sum + ((o.content as Record<string, number>).performance ?? 0.5)
+      }, 0) / recentPerf.length
 
-    const olderAvg = olderPerf.reduce((sum, o) => {
-      return sum + ((o.content as Record<string, number>).performance ?? 0.5)
-    }, 0) / olderPerf.length
+    const olderAvg =
+      olderPerf.reduce((sum, o) => {
+        return sum + ((o.content as Record<string, number>).performance ?? 0.5)
+      }, 0) / olderPerf.length
 
     if (olderAvg - recentAvg > config.performance_drop_threshold) {
       return {

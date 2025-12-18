@@ -6,7 +6,7 @@ import OpenAI from "openai"
 import { env } from "../config.js"
 import { createLogger } from "../logger.js"
 
-const log = createLogger("embeddings")
+const _log = createLogger("embeddings")
 
 // -----------------------------------------------------------------------------
 // OpenAI Client

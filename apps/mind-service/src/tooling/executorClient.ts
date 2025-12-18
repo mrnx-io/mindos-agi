@@ -12,6 +12,11 @@ const log = createLogger("executor-client")
 // Types
 // -----------------------------------------------------------------------------
 
+export interface RequestContext {
+  correlationId?: string
+  identityId?: string
+}
+
 export interface ExecutionRequest {
   code: string
   language: "typescript" | "javascript"
@@ -47,19 +52,43 @@ export interface ExecutionResult {
 async function executorRequest<T>(
   path: string,
   method: "GET" | "POST" = "GET",
-  body?: unknown
+  body?: unknown,
+  context?: RequestContext
 ): Promise<T> {
   const url = `${env.EXECUTOR_URL}${path}`
 
+  // Build headers with authentication and context propagation
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  }
+
+  // Add authorization header if token is configured
+  if (env.EXECUTOR_TOKEN) {
+    headers.Authorization = `Bearer ${env.EXECUTOR_TOKEN}`
+  }
+
+  // Add correlation ID for distributed tracing
+  if (context?.correlationId) {
+    headers["x-correlation-id"] = context.correlationId
+  }
+
+  // Add identity context
+  if (context?.identityId) {
+    headers["x-identity-id"] = context.identityId
+  }
+
   try {
-    const response = await request(url, {
+    // Build request options conditionally to satisfy exactOptionalPropertyTypes
+    const requestOptions: Parameters<typeof request>[1] = {
       method,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    })
+      headers,
+    }
+    if (body) {
+      requestOptions.body = JSON.stringify(body)
+    }
+
+    const response = await request(url, requestOptions)
 
     return (await response.body.json()) as T
   } catch (err) {
@@ -72,26 +101,33 @@ async function executorRequest<T>(
 // Code Execution
 // -----------------------------------------------------------------------------
 
-export async function executeCode(request: ExecutionRequest): Promise<ExecutionResult> {
-  const start = Date.now()
-
+export async function executeCode(
+  request: ExecutionRequest,
+  context?: RequestContext
+): Promise<ExecutionResult> {
   log.info(
     {
       language: request.language,
       codeLength: request.code.length,
       timeout: request.timeout_ms,
+      correlationId: context?.correlationId,
     },
     "Executing code in sandbox"
   )
 
-  const result = await executorRequest<ExecutionResult>("/execute", "POST", {
-    code: request.code,
-    language: request.language,
-    context: request.context ?? {},
-    permissions: request.permissions ?? getDefaultPermissions(),
-    timeout_ms: request.timeout_ms ?? 30000,
-    memory_limit_mb: request.memory_limit_mb ?? 128,
-  })
+  const result = await executorRequest<ExecutionResult>(
+    "/execute",
+    "POST",
+    {
+      code: request.code,
+      language: request.language,
+      context: request.context ?? {},
+      permissions: request.permissions ?? getDefaultPermissions(),
+      timeout_ms: request.timeout_ms ?? 30000,
+      memory_limit_mb: request.memory_limit_mb ?? 128,
+    },
+    context
+  )
 
   log.info(
     {
@@ -112,14 +148,15 @@ export async function executeCode(request: ExecutionRequest): Promise<ExecutionR
 
 export async function preflightCode(
   code: string,
-  language: "typescript" | "javascript"
+  language: "typescript" | "javascript",
+  context?: RequestContext
 ): Promise<{
   valid: boolean
   errors: string[]
   warnings: string[]
   requiredPermissions: ExecutionPermissions
 }> {
-  return executorRequest("/preflight", "POST", { code, language })
+  return executorRequest("/preflight", "POST", { code, language }, context)
 }
 
 // -----------------------------------------------------------------------------
@@ -171,10 +208,7 @@ export function getPrivilegedPermissions(): ExecutionPermissions {
 // Code Templates
 // -----------------------------------------------------------------------------
 
-export function wrapCodeWithContext(
-  code: string,
-  context: Record<string, unknown>
-): string {
+export function wrapCodeWithContext(code: string, context: Record<string, unknown>): string {
   const contextSetup = Object.entries(context)
     .map(([key, value]) => `const ${key} = ${JSON.stringify(value)};`)
     .join("\n")

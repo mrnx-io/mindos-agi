@@ -3,7 +3,7 @@
 // =============================================================================
 
 import type pg from "pg"
-import type { ApprovalRequest, ApprovalStatus, RiskAssessment } from "./types.js"
+import type { ApprovalRequest, ApprovalStatus, RiskAssessment, RiskCategory } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Approval Manager Interface
@@ -91,10 +91,7 @@ export function createApprovalManager(pool: pg.Pool): ApprovalManager {
   }
 
   async function getApproval(approvalId: string): Promise<ApprovalRequest | null> {
-    const result = await pool.query(
-      `SELECT * FROM approvals WHERE approval_id = $1`,
-      [approvalId]
-    )
+    const result = await pool.query("SELECT * FROM approvals WHERE approval_id = $1", [approvalId])
 
     if (result.rows.length === 0) return null
 
@@ -106,11 +103,11 @@ export function createApprovalManager(pool: pg.Pool): ApprovalManager {
     const params: unknown[] = []
 
     if (taskId) {
-      query += ` AND task_id = $1`
+      query += " AND task_id = $1"
       params.push(taskId)
     }
 
-    query += ` ORDER BY requested_at ASC`
+    query += " ORDER BY requested_at ASC"
 
     const result = await pool.query(query, params)
     return result.rows.map(rowToApproval)
@@ -150,10 +147,7 @@ export function createApprovalManager(pool: pg.Pool): ApprovalManager {
       [status, now, responderId, reason, approvalId]
     )
 
-    const result = await pool.query(
-      `SELECT * FROM approvals WHERE approval_id = $1`,
-      [approvalId]
-    )
+    const result = await pool.query("SELECT * FROM approvals WHERE approval_id = $1", [approvalId])
 
     if (result.rows.length === 0) {
       throw new Error(`Approval ${approvalId} not found`)
@@ -204,12 +198,7 @@ export function createApprovalManager(pool: pg.Pool): ApprovalManager {
           `INSERT INTO events (event_id, identity_id, event_type, payload, timestamp)
            SELECT $1, identity_id, 'approval_expired', $2, $3
            FROM tasks WHERE task_id = $4`,
-          [
-            crypto.randomUUID(),
-            JSON.stringify({ approval_id: approvalId }),
-            now,
-            approval.task_id,
-          ]
+          [crypto.randomUUID(), JSON.stringify({ approval_id: approvalId }), now, approval.task_id]
         )
       }
     }
@@ -217,10 +206,7 @@ export function createApprovalManager(pool: pg.Pool): ApprovalManager {
     return expiredIds
   }
 
-  async function waitForApproval(
-    approvalId: string,
-    timeoutMs: number = 60000
-  ): Promise<ApprovalRequest> {
+  async function waitForApproval(approvalId: string, timeoutMs = 60000): Promise<ApprovalRequest> {
     const startTime = Date.now()
     const pollInterval = 1000
 
@@ -237,10 +223,9 @@ export function createApprovalManager(pool: pg.Pool): ApprovalManager {
 
       // Check if expired
       if (new Date(approval.expires_at) < new Date()) {
-        await pool.query(
-          `UPDATE approvals SET status = 'expired' WHERE approval_id = $1`,
-          [approvalId]
-        )
+        await pool.query(`UPDATE approvals SET status = 'expired' WHERE approval_id = $1`, [
+          approvalId,
+        ])
         return { ...approval, status: "expired" }
       }
 
@@ -298,10 +283,7 @@ export interface AutoApprovalCondition {
 }
 
 export function createAutoApprovalEvaluator(rules: AutoApprovalRule[]) {
-  return function shouldAutoApprove(
-    assessment: RiskAssessment,
-    actionType: string
-  ): boolean {
+  return function shouldAutoApprove(assessment: RiskAssessment, actionType: string): boolean {
     for (const rule of rules) {
       if (!rule.enabled) continue
 
@@ -319,8 +301,8 @@ export function createAutoApprovalEvaluator(rules: AutoApprovalRule[]) {
 
       // Check categories
       if (condition.allowed_categories && condition.allowed_categories.length > 0) {
-        const hasMatchingCategory = assessment.categories.some(
-          (c) => condition.allowed_categories!.includes(c)
+        const hasMatchingCategory = assessment.categories.some((c: RiskCategory) =>
+          condition.allowed_categories?.includes(c)
         )
         if (!hasMatchingCategory) continue
       }

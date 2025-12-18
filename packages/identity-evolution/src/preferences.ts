@@ -41,15 +41,15 @@ export function createPreferenceEngine(pool: pg.Pool): PreferenceEngine {
     identityId: string,
     category?: Preference["category"]
   ): Promise<Preference[]> {
-    let query = `SELECT * FROM preferences WHERE identity_id = $1`
+    let query = "SELECT * FROM preferences WHERE identity_id = $1"
     const params: unknown[] = [identityId]
 
     if (category) {
-      query += ` AND category = $2`
+      query += " AND category = $2"
       params.push(category)
     }
 
-    query += ` ORDER BY confidence DESC`
+    query += " ORDER BY confidence DESC"
 
     const result = await pool.query(query, params)
 
@@ -66,12 +66,9 @@ export function createPreferenceEngine(pool: pg.Pool): PreferenceEngine {
     }))
   }
 
-  async function getPreference(
-    identityId: string,
-    key: string
-  ): Promise<Preference | null> {
+  async function getPreference(identityId: string, key: string): Promise<Preference | null> {
     const result = await pool.query(
-      `SELECT * FROM preferences WHERE identity_id = $1 AND key = $2`,
+      "SELECT * FROM preferences WHERE identity_id = $1 AND key = $2",
       [identityId, key]
     )
 
@@ -155,7 +152,10 @@ export function createPreferenceEngine(pool: pg.Pool): PreferenceEngine {
         // Positive signals increase confidence
         if (JSON.stringify(existing.value) === JSON.stringify(signal.observed_value)) {
           newValue = existing.value
-          newConfidence = Math.min(1, priorConfidence + signalWeight * signal.confidence * (1 - priorConfidence))
+          newConfidence = Math.min(
+            1,
+            priorConfidence + signalWeight * signal.confidence * (1 - priorConfidence)
+          )
         } else {
           // Conflicting evidence
           if (signal.confidence > priorConfidence) {
@@ -195,15 +195,18 @@ export function createPreferenceEngine(pool: pg.Pool): PreferenceEngine {
     const preferencesUpdated: string[] = []
 
     // Group by category
-    const byCategory = preferences.reduce((acc, p) => {
-      const category = p.category
-      if (!acc[category]) acc[category] = []
-      acc[category].push(p)
-      return acc
-    }, {} as Record<string, Preference[]>)
+    const byCategory = preferences.reduce(
+      (acc, p) => {
+        const category = p.category
+        if (!acc[category]) acc[category] = []
+        acc[category].push(p)
+        return acc
+      },
+      {} as Record<string, Preference[]>
+    )
 
     // Check for conflicts within categories
-    for (const [category, prefs] of Object.entries(byCategory)) {
+    for (const [_category, prefs] of Object.entries(byCategory)) {
       // Look for contradictory preferences
       for (let i = 0; i < prefs.length; i++) {
         for (let j = i + 1; j < prefs.length; j++) {
@@ -211,12 +214,12 @@ export function createPreferenceEngine(pool: pg.Pool): PreferenceEngine {
             conflictsFound++
 
             // Resolve by keeping higher confidence
-            const winner = prefs[i].confidence > prefs[j].confidence ? prefs[i] : prefs[j]
+            const _winner = prefs[i].confidence > prefs[j].confidence ? prefs[i] : prefs[j]
             const loser = prefs[i].confidence > prefs[j].confidence ? prefs[j] : prefs[i]
 
             // Reduce loser's confidence
             await pool.query(
-              `UPDATE preferences SET confidence = confidence * 0.5 WHERE preference_id = $1`,
+              "UPDATE preferences SET confidence = confidence * 0.5 WHERE preference_id = $1",
               [loser.preference_id]
             )
 
@@ -300,11 +303,14 @@ export function detectLearningPatterns(signals: PreferenceSignal[]): LearningPat
   const patterns: LearningPattern[] = []
 
   // Group signals by key
-  const signalsByKey = signals.reduce((acc, s) => {
-    if (!acc[s.key]) acc[s.key] = []
-    acc[s.key].push(s)
-    return acc
-  }, {} as Record<string, PreferenceSignal[]>)
+  const signalsByKey = signals.reduce(
+    (acc, s) => {
+      if (!acc[s.key]) acc[s.key] = []
+      acc[s.key].push(s)
+      return acc
+    },
+    {} as Record<string, PreferenceSignal[]>
+  )
 
   for (const [key, keySignals] of Object.entries(signalsByKey)) {
     if (keySignals.length < 2) continue

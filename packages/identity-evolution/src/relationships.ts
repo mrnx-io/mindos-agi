@@ -12,7 +12,9 @@ import type { Relationship } from "./types.js"
 export interface RelationshipManager {
   getRelationship(identityId: string, entityId: string): Promise<Relationship | null>
   getAllRelationships(identityId: string): Promise<Relationship[]>
-  createRelationship(relationship: Omit<Relationship, "relationship_id" | "created_at">): Promise<Relationship>
+  createRelationship(
+    relationship: Omit<Relationship, "relationship_id" | "created_at">
+  ): Promise<Relationship>
   updateRelationship(relationshipId: string, updates: Partial<Relationship>): Promise<Relationship>
   recordInteraction(relationshipId: string, interaction: Interaction): Promise<void>
   recallContext(relationshipId: string, query?: string): Promise<ContextMemory[]>
@@ -49,7 +51,7 @@ export function createRelationshipManager(pool: pg.Pool): RelationshipManager {
     entityId: string
   ): Promise<Relationship | null> {
     const result = await pool.query(
-      `SELECT * FROM relationships WHERE identity_id = $1 AND entity_id = $2`,
+      "SELECT * FROM relationships WHERE identity_id = $1 AND entity_id = $2",
       [identityId, entityId]
     )
 
@@ -75,7 +77,7 @@ export function createRelationshipManager(pool: pg.Pool): RelationshipManager {
 
   async function getAllRelationships(identityId: string): Promise<Relationship[]> {
     const result = await pool.query(
-      `SELECT * FROM relationships WHERE identity_id = $1 ORDER BY last_interaction DESC`,
+      "SELECT * FROM relationships WHERE identity_id = $1 ORDER BY last_interaction DESC",
       [identityId]
     )
 
@@ -135,10 +137,9 @@ export function createRelationshipManager(pool: pg.Pool): RelationshipManager {
     relationshipId: string,
     updates: Partial<Relationship>
   ): Promise<Relationship> {
-    const result = await pool.query(
-      `SELECT * FROM relationships WHERE relationship_id = $1`,
-      [relationshipId]
-    )
+    const result = await pool.query("SELECT * FROM relationships WHERE relationship_id = $1", [
+      relationshipId,
+    ])
 
     if (result.rows.length === 0) {
       throw new Error(`Relationship ${relationshipId} not found`)
@@ -193,10 +194,9 @@ export function createRelationshipManager(pool: pg.Pool): RelationshipManager {
     relationshipId: string,
     interaction: Interaction
   ): Promise<void> {
-    const result = await pool.query(
-      `SELECT * FROM relationships WHERE relationship_id = $1`,
-      [relationshipId]
-    )
+    const result = await pool.query("SELECT * FROM relationships WHERE relationship_id = $1", [
+      relationshipId,
+    ])
 
     if (result.rows.length === 0) {
       throw new Error(`Relationship ${relationshipId} not found`)
@@ -229,7 +229,6 @@ export function createRelationshipManager(pool: pg.Pool): RelationshipManager {
       case "negative":
         trustDelta = -0.1
         break
-      case "neutral":
       default:
         trustDelta = 0.01
         break
@@ -256,12 +255,9 @@ export function createRelationshipManager(pool: pg.Pool): RelationshipManager {
     )
   }
 
-  async function recallContext(
-    relationshipId: string,
-    query?: string
-  ): Promise<ContextMemory[]> {
+  async function recallContext(relationshipId: string, query?: string): Promise<ContextMemory[]> {
     const result = await pool.query(
-      `SELECT context_memory FROM relationships WHERE relationship_id = $1`,
+      "SELECT context_memory FROM relationships WHERE relationship_id = $1",
       [relationshipId]
     )
 
@@ -380,27 +376,34 @@ export function analyzeRelationships(relationships: Relationship[]): Relationshi
   }
 
   // Count by type
-  const byType = relationships.reduce((acc, r) => {
-    acc[r.relationship_type] = (acc[r.relationship_type] ?? 0) + 1
-    return acc
-  }, {} as Record<string, number>)
+  const byType = relationships.reduce(
+    (acc, r) => {
+      acc[r.relationship_type] = (acc[r.relationship_type] ?? 0) + 1
+      return acc
+    },
+    {} as Record<string, number>
+  )
 
   // Calculate averages
   const avgTrust = relationships.reduce((sum, r) => sum + r.trust_level, 0) / relationships.length
-  const avgFamiliarity = relationships.reduce((sum, r) => sum + r.familiarity, 0) / relationships.length
+  const avgFamiliarity =
+    relationships.reduce((sum, r) => sum + r.familiarity, 0) / relationships.length
 
   // Find extremes
-  const mostTrusted = relationships.reduce((best, r) =>
-    r.trust_level > (best?.trust_level ?? 0) ? r : best
-  , null as Relationship | null)
+  const mostTrusted = relationships.reduce(
+    (best, r) => (r.trust_level > (best?.trust_level ?? 0) ? r : best),
+    null as Relationship | null
+  )
 
-  const mostFamiliar = relationships.reduce((best, r) =>
-    r.familiarity > (best?.familiarity ?? 0) ? r : best
-  , null as Relationship | null)
+  const mostFamiliar = relationships.reduce(
+    (best, r) => (r.familiarity > (best?.familiarity ?? 0) ? r : best),
+    null as Relationship | null
+  )
 
-  const mostActive = relationships.reduce((best, r) =>
-    r.interaction_count > (best?.interaction_count ?? 0) ? r : best
-  , null as Relationship | null)
+  const mostActive = relationships.reduce(
+    (best, r) => (r.interaction_count > (best?.interaction_count ?? 0) ? r : best),
+    null as Relationship | null
+  )
 
   // Find relationships needing attention
   const now = Date.now()
@@ -477,7 +480,8 @@ function analyzeInteractionPatterns(
 
   // Frequency pattern
   if (relationship.interaction_count > 10) {
-    const avgPerMonth = relationship.interaction_count /
+    const avgPerMonth =
+      relationship.interaction_count /
       ((Date.now() - new Date(relationship.created_at).getTime()) / (30 * 24 * 60 * 60 * 1000))
 
     patterns.push({
@@ -493,20 +497,26 @@ function analyzeInteractionPatterns(
 
     patterns.push({
       pattern_type: "sentiment",
-      description: avgSentiment > 0.3 ? "Generally positive interactions" :
-        avgSentiment < -0.3 ? "Often challenging interactions" :
-          "Neutral/mixed interactions",
+      description:
+        avgSentiment > 0.3
+          ? "Generally positive interactions"
+          : avgSentiment < -0.3
+            ? "Often challenging interactions"
+            : "Neutral/mixed interactions",
       value: avgSentiment,
     })
   }
 
   // Topic pattern
   const allKeyPoints = memories.flatMap((m) => m.key_points)
-  const topicCounts = allKeyPoints.reduce((acc, topic) => {
-    const normalized = topic.toLowerCase()
-    acc[normalized] = (acc[normalized] ?? 0) + 1
-    return acc
-  }, {} as Record<string, number>)
+  const topicCounts = allKeyPoints.reduce(
+    (acc, topic) => {
+      const normalized = topic.toLowerCase()
+      acc[normalized] = (acc[normalized] ?? 0) + 1
+      return acc
+    },
+    {} as Record<string, number>
+  )
 
   const topTopics = Object.entries(topicCounts)
     .sort(([, a], [, b]) => b - a)
@@ -532,13 +542,19 @@ function extractSuggestedTopics(memories: ContextMemory[]): string[] {
   const keyPoints = positiveMemories.flatMap((m) => m.key_points)
 
   // Count occurrences
-  const topicCounts = keyPoints.reduce((acc, point) => {
-    const words = point.toLowerCase().split(/\s+/).filter((w) => w.length > 4)
-    for (const word of words) {
-      acc[word] = (acc[word] ?? 0) + 1
-    }
-    return acc
-  }, {} as Record<string, number>)
+  const topicCounts = keyPoints.reduce(
+    (acc, point) => {
+      const words = point
+        .toLowerCase()
+        .split(/\s+/)
+        .filter((w) => w.length > 4)
+      for (const word of words) {
+        acc[word] = (acc[word] ?? 0) + 1
+      }
+      return acc
+    },
+    {} as Record<string, number>
+  )
 
   // Return top topics
   return Object.entries(topicCounts)

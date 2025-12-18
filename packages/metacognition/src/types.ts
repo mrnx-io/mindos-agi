@@ -102,21 +102,25 @@ export const IntrospectionResultSchema = z.object({
   identity_id: z.string().uuid(),
   trigger: IntrospectionTriggerSchema,
   observations: z.array(SelfObservationSchema),
-  insights: z.array(z.object({
-    insight_id: z.string().uuid(),
-    category: z.enum(["strength", "weakness", "opportunity", "threat", "pattern", "anomaly"]),
-    description: z.string(),
-    confidence: z.number().min(0).max(1),
-    actionable: z.boolean(),
-    suggested_actions: z.array(z.string()),
-  })),
+  insights: z.array(
+    z.object({
+      insight_id: z.string().uuid(),
+      category: z.enum(["strength", "weakness", "opportunity", "threat", "pattern", "anomaly"]),
+      description: z.string(),
+      confidence: z.number().min(0).max(1),
+      actionable: z.boolean(),
+      suggested_actions: z.array(z.string()),
+    })
+  ),
   hypotheses_generated: z.array(z.string().uuid()),
-  belief_updates: z.array(z.object({
-    belief_id: z.string(),
-    previous_value: z.unknown(),
-    new_value: z.unknown(),
-    reason: z.string(),
-  })),
+  belief_updates: z.array(
+    z.object({
+      belief_id: z.string(),
+      previous_value: z.unknown(),
+      new_value: z.unknown(),
+      reason: z.string(),
+    })
+  ),
   duration_ms: z.number(),
   created_at: z.string().datetime(),
 })
@@ -152,7 +156,12 @@ export type Belief = z.infer<typeof BeliefSchema>
 export const BeliefUpdateSchema = z.object({
   update_id: z.string().uuid(),
   belief_id: z.string().uuid(),
-  update_type: z.enum(["confidence_change", "evidence_added", "contradiction_detected", "validation"]),
+  update_type: z.enum([
+    "confidence_change",
+    "evidence_added",
+    "contradiction_detected",
+    "validation",
+  ]),
   previous_confidence: z.number().min(0).max(1),
   new_confidence: z.number().min(0).max(1),
   reason: z.string(),

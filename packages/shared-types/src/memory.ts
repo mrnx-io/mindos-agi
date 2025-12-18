@@ -3,17 +3,17 @@
 // =============================================================================
 
 import { z } from "zod"
-import { UUIDSchema, TimestampSchema, JSONSchema } from "./schemas.js"
+import { JSONSchema, TimestampSchema, UUIDSchema } from "./schemas.js"
 
 // -----------------------------------------------------------------------------
 // Memory Kinds
 // -----------------------------------------------------------------------------
 
 export const MemoryKindSchema = z.enum([
-  "semantic",     // Factual knowledge
-  "procedural",   // Skills and procedures
-  "constraint",   // Rules and limitations
-  "preference",   // Learned preferences
+  "semantic", // Factual knowledge
+  "procedural", // Skills and procedures
+  "constraint", // Rules and limitations
+  "preference", // Learned preferences
   "relationship", // Entity relationships
 ])
 export type MemoryKind = z.infer<typeof MemoryKindSchema>
@@ -25,15 +25,21 @@ export type MemoryKind = z.infer<typeof MemoryKindSchema>
 export const SemanticMemorySchema = z.object({
   memory_id: UUIDSchema,
   identity_id: UUIDSchema,
-  kind: MemoryKindSchema,
-  text: z.string(),
-  embedding: z.array(z.number()).optional(), // Vector embedding
-  meta: JSONSchema,
-  confidence: z.number().min(0).max(1),
-  access_count: z.number().int().min(0),
-  last_accessed_at: TimestampSchema.nullable().optional(),
+  content: z.string(),
+  embedding: z.string(), // pgvector format string for transport
+  metadata: JSONSchema,
+  source_event_id: z.string().nullable().optional(),
   created_at: TimestampSchema,
-  updated_at: TimestampSchema,
+  accessed_at: TimestampSchema,
+  access_count: z.number().int().min(0),
+  decay_factor: z.number().min(0).max(1),
+  // Legacy fields for backwards compatibility
+  kind: MemoryKindSchema.optional(),
+  text: z.string().optional(),
+  meta: JSONSchema.optional(),
+  confidence: z.number().min(0).max(1).optional(),
+  last_accessed_at: TimestampSchema.nullable().optional(),
+  updated_at: TimestampSchema.optional(),
 })
 export type SemanticMemory = z.infer<typeof SemanticMemorySchema>
 
@@ -52,12 +58,15 @@ export const MemoryQuerySchema = z.object({
 export type MemoryQuery = z.infer<typeof MemoryQuerySchema>
 
 export const MemorySearchResultSchema = z.object({
-  memory_id: UUIDSchema,
-  text: z.string(),
-  kind: MemoryKindSchema,
-  score: z.number(), // Similarity score
-  confidence: z.number(),
-  meta: JSONSchema,
+  memory: SemanticMemorySchema,
+  similarity: z.number(),
+  // Legacy fields for backwards compatibility
+  memory_id: UUIDSchema.optional(),
+  text: z.string().optional(),
+  kind: MemoryKindSchema.optional(),
+  score: z.number().optional(), // Similarity score
+  confidence: z.number().optional(),
+  meta: JSONSchema.optional(),
 })
 export type MemorySearchResult = z.infer<typeof MemorySearchResultSchema>
 
@@ -120,19 +129,34 @@ export const SkillSchema = z.object({
   skill_id: UUIDSchema,
   identity_id: UUIDSchema,
   name: z.string(),
-  version: z.string(),
   description: z.string(),
-  triggers: z.array(z.string()), // When to use this skill
-  procedure: z.string(), // The actual skill content/instructions
-  examples: z.array(z.object({
-    input: z.string(),
-    output: z.string(),
-  })).optional(),
-  performance_stats: z.object({
-    uses: z.number().int(),
-    successes: z.number().int(),
-    avg_duration_ms: z.number().optional(),
-  }).optional(),
+  trigger_patterns: z.array(z.string()),
+  tool_sequence: z.unknown(), // JSON-stored tool sequence
+  preconditions: z.unknown(), // JSON-stored preconditions
+  postconditions: z.unknown(), // JSON-stored postconditions
+  success_rate: z.number().min(0).max(1),
+  execution_count: z.number().int().min(0),
+  version: z.number().int().min(1),
+  created_at: TimestampSchema,
+  updated_at: TimestampSchema,
+  // Legacy fields for backwards compatibility
+  triggers: z.array(z.string()).optional(),
+  procedure: z.string().optional(),
+  examples: z
+    .array(
+      z.object({
+        input: z.string(),
+        output: z.string(),
+      })
+    )
+    .optional(),
+  performance_stats: z
+    .object({
+      uses: z.number().int(),
+      successes: z.number().int(),
+      avg_duration_ms: z.number().optional(),
+    })
+    .optional(),
   deprecated: z.boolean().default(false),
   superseded_by: UUIDSchema.optional(),
 })
@@ -144,13 +168,22 @@ export type Skill = z.infer<typeof SkillSchema>
 
 export const KGEdgeSchema = z.object({
   edge_id: UUIDSchema,
-  subject: z.string(),
-  predicate: z.string(),
-  object: z.string(),
+  identity_id: UUIDSchema,
+  source_entity: z.string(),
+  relation: z.string(),
+  target_entity: z.string(),
   confidence: z.number().min(0).max(1),
   valid_from: TimestampSchema,
+  valid_to: TimestampSchema.nullable(),
+  source_evidence_ids: z.array(z.string()),
+  created_at: TimestampSchema,
+  updated_at: TimestampSchema,
+  // Legacy fields for backwards compatibility
+  subject: z.string().optional(),
+  predicate: z.string().optional(),
+  object: z.string().optional(),
   valid_until: TimestampSchema.nullable().optional(),
-  source_type: z.string(),
+  source_type: z.string().optional(),
   source_reference: z.string().optional(),
 })
 export type KGEdge = z.infer<typeof KGEdgeSchema>

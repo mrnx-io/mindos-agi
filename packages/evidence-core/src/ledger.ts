@@ -3,9 +3,9 @@
 // =============================================================================
 
 import type pg from "pg"
-import type { EvidenceRecord, EvidenceChain } from "./types.js"
-import { computeEvidenceHash, canonicalize, combineHashes } from "./hasher.js"
+import { canonicalize, computeEvidenceHash } from "./hasher.js"
 import { buildMerkleTree, getMerkleRoot } from "./merkle.js"
+import type { EvidenceChain, EvidenceRecord } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Evidence Ledger Interface
@@ -39,7 +39,7 @@ export function createEvidenceLedger(pool: pg.Pool): EvidenceLedger {
     const parentHashes: string[] = []
     if (input.parent_evidence_ids && input.parent_evidence_ids.length > 0) {
       const parentResult = await pool.query(
-        `SELECT content_hash FROM evidence_ledger WHERE evidence_id = ANY($1)`,
+        "SELECT content_hash FROM evidence_ledger WHERE evidence_id = ANY($1)",
         [input.parent_evidence_ids]
       )
       for (const row of parentResult.rows) {
@@ -93,10 +93,9 @@ export function createEvidenceLedger(pool: pg.Pool): EvidenceLedger {
   }
 
   async function get(evidenceId: string): Promise<EvidenceRecord | null> {
-    const result = await pool.query(
-      `SELECT * FROM evidence_ledger WHERE evidence_id = $1`,
-      [evidenceId]
-    )
+    const result = await pool.query("SELECT * FROM evidence_ledger WHERE evidence_id = $1", [
+      evidenceId,
+    ])
 
     if (result.rows.length === 0) return null
 
@@ -114,10 +113,9 @@ export function createEvidenceLedger(pool: pg.Pool): EvidenceLedger {
   }
 
   async function getByHash(contentHash: string): Promise<EvidenceRecord | null> {
-    const result = await pool.query(
-      `SELECT * FROM evidence_ledger WHERE content_hash = $1`,
-      [contentHash]
-    )
+    const result = await pool.query("SELECT * FROM evidence_ledger WHERE content_hash = $1", [
+      contentHash,
+    ])
 
     if (result.rows.length === 0) return null
 
@@ -164,7 +162,7 @@ export function createEvidenceLedger(pool: pg.Pool): EvidenceLedger {
   async function createChain(evidenceIds: string[]): Promise<EvidenceChain> {
     // Get all evidence records
     const result = await pool.query(
-      `SELECT * FROM evidence_ledger WHERE evidence_id = ANY($1) ORDER BY timestamp ASC`,
+      "SELECT * FROM evidence_ledger WHERE evidence_id = ANY($1) ORDER BY timestamp ASC",
       [evidenceIds]
     )
 
@@ -176,9 +174,14 @@ export function createEvidenceLedger(pool: pg.Pool): EvidenceLedger {
     const merkleTree = buildMerkleTree(hashes)
     const merkleRoot = getMerkleRoot(merkleTree)
 
+    const rootId = evidenceIds[0]
+    if (!rootId) {
+      throw new Error("Cannot create chain without evidence")
+    }
+
     const chain: EvidenceChain = {
       chain_id: crypto.randomUUID(),
-      root_evidence_id: evidenceIds[0],
+      root_evidence_id: rootId,
       evidence_ids: evidenceIds,
       merkle_root: merkleRoot,
       created_at: new Date().toISOString(),

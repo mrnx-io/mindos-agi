@@ -2,9 +2,9 @@
 // Semantic Memory System (Vector-Based)
 // =============================================================================
 
-import type pg from "pg"
 import type OpenAI from "openai"
-import type { SemanticMemory, MemoryQuery } from "./types.js"
+import type pg from "pg"
+import type { MemoryQuery, SemanticMemory } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Semantic Memory Interface
@@ -14,7 +14,11 @@ export interface SemanticMemoryStore {
   store(input: StoreSemanticInput): Promise<SemanticMemory>
   retrieve(memoryId: string): Promise<SemanticMemory | null>
   search(identityId: string, query: MemoryQuery): Promise<SemanticSearchResult[]>
-  searchByEmbedding(identityId: string, embedding: number[], limit?: number): Promise<SemanticSearchResult[]>
+  searchByEmbedding(
+    identityId: string,
+    embedding: number[],
+    limit?: number
+  ): Promise<SemanticSearchResult[]>
   update(memoryId: string, updates: Partial<SemanticMemory>): Promise<SemanticMemory>
   delete(memoryId: string): Promise<void>
   getByCategory(identityId: string, category: string): Promise<SemanticMemory[]>
@@ -42,7 +46,7 @@ export interface SemanticSearchResult {
 export function createSemanticMemoryStore(
   pool: pg.Pool,
   openai: OpenAI,
-  embeddingModel: string = "text-embedding-3-small"
+  embeddingModel = "text-embedding-3-small"
 ): SemanticMemoryStore {
   async function generateEmbedding(text: string): Promise<number[]> {
     const response = await openai.embeddings.create({
@@ -50,7 +54,11 @@ export function createSemanticMemoryStore(
       input: text,
     })
 
-    return response.data[0].embedding
+    const embedding = response.data[0]?.embedding
+    if (!embedding) {
+      throw new Error("Failed to generate embedding")
+    }
+    return embedding
   }
 
   async function store(input: StoreSemanticInput): Promise<SemanticMemory> {
@@ -94,20 +102,16 @@ export function createSemanticMemoryStore(
   }
 
   async function retrieve(memoryId: string): Promise<SemanticMemory | null> {
-    const result = await pool.query(
-      `SELECT * FROM semantic_memories WHERE memory_id = $1`,
-      [memoryId]
-    )
+    const result = await pool.query("SELECT * FROM semantic_memories WHERE memory_id = $1", [
+      memoryId,
+    ])
 
     if (result.rows.length === 0) return null
 
     return rowToMemory(result.rows[0])
   }
 
-  async function search(
-    identityId: string,
-    query: MemoryQuery
-  ): Promise<SemanticSearchResult[]> {
+  async function search(identityId: string, query: MemoryQuery): Promise<SemanticSearchResult[]> {
     if (query.embedding) {
       return searchByEmbedding(identityId, query.embedding, query.limit)
     }
@@ -118,7 +122,7 @@ export function createSemanticMemoryStore(
     }
 
     // Fallback to text search
-    let sql = `SELECT * FROM semantic_memories WHERE identity_id = $1`
+    let sql = "SELECT * FROM semantic_memories WHERE identity_id = $1"
     const params: unknown[] = [identityId]
     let paramIndex = 2
 
@@ -154,7 +158,7 @@ export function createSemanticMemoryStore(
   async function searchByEmbedding(
     identityId: string,
     embedding: number[],
-    limit: number = 10
+    limit = 10
   ): Promise<SemanticSearchResult[]> {
     const result = await pool.query(
       `SELECT *,
@@ -221,16 +225,10 @@ export function createSemanticMemoryStore(
   }
 
   async function deleteMemory(memoryId: string): Promise<void> {
-    await pool.query(
-      `DELETE FROM semantic_memories WHERE memory_id = $1`,
-      [memoryId]
-    )
+    await pool.query("DELETE FROM semantic_memories WHERE memory_id = $1", [memoryId])
   }
 
-  async function getByCategory(
-    identityId: string,
-    category: string
-  ): Promise<SemanticMemory[]> {
+  async function getByCategory(identityId: string, category: string): Promise<SemanticMemory[]> {
     const result = await pool.query(
       `SELECT * FROM semantic_memories
        WHERE identity_id = $1 AND category = $2
@@ -241,10 +239,7 @@ export function createSemanticMemoryStore(
     return result.rows.map(rowToMemory)
   }
 
-  async function getByTags(
-    identityId: string,
-    tags: string[]
-  ): Promise<SemanticMemory[]> {
+  async function getByTags(identityId: string, tags: string[]): Promise<SemanticMemory[]> {
     const result = await pool.query(
       `SELECT * FROM semantic_memories
        WHERE identity_id = $1 AND tags && $2

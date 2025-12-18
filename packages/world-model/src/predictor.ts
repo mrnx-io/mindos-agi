@@ -77,10 +77,7 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
     const timeHorizon = options.time_horizon_hours ?? 24
 
     // Analyze historical patterns for this property
-    const patterns = await analyzeHistoricalPatterns(
-      currentState.identity_id,
-      targetProperty
-    )
+    const patterns = await analyzeHistoricalPatterns(currentState.identity_id, targetProperty)
 
     // Generate prediction based on patterns
     const prediction: Prediction = {
@@ -116,7 +113,7 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
     context: Record<string, unknown>,
     options: PredictionOptions = {}
   ): Promise<Prediction> {
-    const timeHorizon = options.time_horizon_hours ?? 24
+    const _timeHorizon = options.time_horizon_hours ?? 24
     const identityId = (context.identity_id as string) ?? "system"
 
     // Analyze event frequency and patterns
@@ -157,13 +154,10 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
   async function predictGoalOutcome(
     goalId: string,
     currentState: WorldState,
-    options: PredictionOptions = {}
+    _options: PredictionOptions = {}
   ): Promise<Prediction> {
     // Fetch goal details
-    const goalResult = await pool.query(
-      `SELECT * FROM tasks WHERE task_id = $1`,
-      [goalId]
-    )
+    const goalResult = await pool.query("SELECT * FROM tasks WHERE task_id = $1", [goalId])
 
     if (goalResult.rows.length === 0) {
       throw new Error(`Goal ${goalId} not found`)
@@ -175,17 +169,22 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
     const similarGoals = await findSimilarGoals(goal, currentState.identity_id)
 
     // Calculate success probability
-    const successRate = similarGoals.length > 0
-      ? similarGoals.filter((g) => g.status === "completed").length / similarGoals.length
-      : 0.5
+    const successRate =
+      similarGoals.length > 0
+        ? similarGoals.filter((g) => g.status === "completed").length / similarGoals.length
+        : 0.5
 
     // Estimate completion time
-    const avgDuration = similarGoals.length > 0
-      ? similarGoals
-          .filter((g) => g.completed_at)
-          .reduce((sum, g) => sum + (new Date(g.completed_at).getTime() - new Date(g.created_at).getTime()), 0) /
-        similarGoals.filter((g) => g.completed_at).length
-      : 3600000 // Default 1 hour
+    const avgDuration =
+      similarGoals.length > 0
+        ? similarGoals
+            .filter((g) => g.completed_at)
+            .reduce(
+              (sum, g) =>
+                sum + (new Date(g.completed_at).getTime() - new Date(g.created_at).getTime()),
+              0
+            ) / similarGoals.filter((g) => g.completed_at).length
+        : 3600000 // Default 1 hour
 
     const prediction: Prediction = {
       prediction_id: crypto.randomUUID(),
@@ -226,10 +225,9 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
     actualOutcome: Record<string, unknown>
   ): Promise<PredictionValidation> {
     // Fetch prediction
-    const result = await pool.query(
-      `SELECT * FROM predictions WHERE prediction_id = $1`,
-      [predictionId]
-    )
+    const result = await pool.query("SELECT * FROM predictions WHERE prediction_id = $1", [
+      predictionId,
+    ])
 
     if (result.rows.length === 0) {
       throw new Error(`Prediction ${predictionId} not found`)
@@ -252,12 +250,7 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
         actual_outcome = $2,
         accuracy_score = $3
       WHERE prediction_id = $4`,
-      [
-        new Date().toISOString(),
-        JSON.stringify(actualOutcome),
-        accuracyScore,
-        predictionId,
-      ]
+      [new Date().toISOString(), JSON.stringify(actualOutcome), accuracyScore, predictionId]
     )
 
     return {
@@ -292,11 +285,11 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
     let totalAccuracy = 0
 
     for (const row of result.rows) {
-      totalPredictions += parseInt(row.total)
-      validatedPredictions += parseInt(row.validated)
+      totalPredictions += Number.parseInt(row.total)
+      validatedPredictions += Number.parseInt(row.validated)
       if (row.type_accuracy) {
-        accuracyByType[row.prediction_type] = parseFloat(row.type_accuracy)
-        totalAccuracy += parseFloat(row.type_accuracy)
+        accuracyByType[row.prediction_type] = Number.parseFloat(row.type_accuracy)
+        totalAccuracy += Number.parseFloat(row.type_accuracy)
       }
     }
 
@@ -319,8 +312,8 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
   // -----------------------------------------------------------------------------
 
   async function analyzeHistoricalPatterns(
-    identityId: string,
-    property: string
+    _identityId: string,
+    _property: string
   ): Promise<{
     trend: "increasing" | "decreasing" | "stable"
     volatility: number
@@ -364,7 +357,8 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
     // Calculate average interval
     let totalInterval = 0
     for (let i = 0; i < result.rows.length - 1; i++) {
-      const interval = new Date(result.rows[i].created_at).getTime() -
+      const interval =
+        new Date(result.rows[i].created_at).getTime() -
         new Date(result.rows[i + 1].created_at).getTime()
       totalInterval += interval
     }
@@ -393,10 +387,7 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
     }
   }
 
-  function calculateConfidence(
-    patterns: { volatility: number },
-    state: WorldState
-  ): number {
+  function calculateConfidence(patterns: { volatility: number }, state: WorldState): number {
     const baseConfidence = 0.7
     const volatilityPenalty = patterns.volatility * 0.3
     const uncertaintyPenalty = state.uncertainty_bounds.overall * 0.2
@@ -406,7 +397,7 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
 
   function calculateEventProbability(
     patterns: { frequency: number; avg_interval_ms: number },
-    context: Record<string, unknown>
+    _context: Record<string, unknown>
   ): number {
     if (patterns.frequency === 0) return 0.3
 
@@ -422,7 +413,9 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
   async function findSimilarGoals(
     goal: { goal: string; identity_id: string },
     identityId: string
-  ): Promise<Array<{ task_id: string; status: string; created_at: string; completed_at?: string }>> {
+  ): Promise<
+    Array<{ task_id: string; status: string; created_at: string; completed_at?: string }>
+  > {
     const result = await pool.query(
       `SELECT task_id, status, created_at, completed_at
        FROM tasks
@@ -434,10 +427,7 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
     return result.rows
   }
 
-  function identifyBlockers(
-    goal: Record<string, unknown>,
-    state: WorldState
-  ): string[] {
+  function identifyBlockers(_goal: Record<string, unknown>, state: WorldState): string[] {
     const blockers: string[] = []
 
     if (state.uncertainty_bounds.overall > 0.5) {
@@ -474,7 +464,7 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
         matches++
       } else if (typeof predicted[key] === "number" && typeof actual[key] === "number") {
         // Partial credit for numeric values
-        const diff = Math.abs(predicted[key] as number - (actual[key] as number))
+        const diff = Math.abs((predicted[key] as number) - (actual[key] as number))
         const maxVal = Math.max(Math.abs(predicted[key] as number), Math.abs(actual[key] as number))
         matches += maxVal > 0 ? Math.max(0, 1 - diff / maxVal) : 1
       }
@@ -491,7 +481,9 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
 
     for (const key of Object.keys(predicted)) {
       if (JSON.stringify(predicted[key]) !== JSON.stringify(actual[key])) {
-        deviations.push(`${key}: predicted ${JSON.stringify(predicted[key])}, actual ${JSON.stringify(actual[key])}`)
+        deviations.push(
+          `${key}: predicted ${JSON.stringify(predicted[key])}, actual ${JSON.stringify(actual[key])}`
+        )
       }
     }
 
@@ -533,7 +525,7 @@ export function createPredictionEngine(pool: pg.Pool): PredictionEngine {
     let binCount = 0
 
     for (const [confidence, data] of Object.entries(bins)) {
-      const expectedAccuracy = parseFloat(confidence)
+      const expectedAccuracy = Number.parseFloat(confidence)
       const actualAccuracy = data.total > 0 ? data.accurate / data.total : 0
       totalError += Math.abs(expectedAccuracy - actualAccuracy)
       binCount++

@@ -12,21 +12,25 @@ export const CoreSelfSchema = z.object({
   identity_id: z.string().uuid(),
   name: z.string(),
   version: z.number().int().positive(),
-  values: z.array(z.object({
-    value_id: z.string().uuid(),
-    name: z.string(),
-    description: z.string(),
-    priority: z.number().min(0).max(1),
-    source: z.enum(["innate", "learned", "user_defined"]),
-    stability: z.number().min(0).max(1),
-  })),
-  commitments: z.array(z.object({
-    commitment_id: z.string().uuid(),
-    statement: z.string(),
-    category: z.enum(["ethical", "functional", "relational", "aspirational"]),
-    strength: z.number().min(0).max(1),
-    created_at: z.string().datetime(),
-  })),
+  values: z.array(
+    z.object({
+      value_id: z.string().uuid(),
+      name: z.string(),
+      description: z.string(),
+      priority: z.number().min(0).max(1),
+      source: z.enum(["innate", "learned", "user_defined"]),
+      stability: z.number().min(0).max(1),
+    })
+  ),
+  commitments: z.array(
+    z.object({
+      commitment_id: z.string().uuid(),
+      statement: z.string(),
+      category: z.enum(["ethical", "functional", "relational", "aspirational"]),
+      strength: z.number().min(0).max(1),
+      created_at: z.string().datetime(),
+    })
+  ),
   personality_traits: z.record(z.number().min(-1).max(1)),
   communication_style: z.object({
     formality: z.number().min(0).max(1),
@@ -122,13 +126,15 @@ export const RelationshipSchema = z.object({
   familiarity: z.number().min(0).max(1),
   interaction_count: z.number().int().nonnegative(),
   last_interaction: z.string().datetime(),
-  context_memory: z.array(z.object({
-    context_id: z.string().uuid(),
-    summary: z.string(),
-    key_points: z.array(z.string()),
-    sentiment: z.number().min(-1).max(1),
-    timestamp: z.string().datetime(),
-  })),
+  context_memory: z.array(
+    z.object({
+      context_id: z.string().uuid(),
+      summary: z.string(),
+      key_points: z.array(z.string()),
+      sentiment: z.number().min(-1).max(1),
+      timestamp: z.string().datetime(),
+    })
+  ),
   preferences: z.record(z.unknown()),
   created_at: z.string().datetime(),
 })
@@ -154,11 +160,13 @@ export const ImprovementProposalSchema = z.object({
   rationale: z.string(),
   expected_benefits: z.array(z.string()),
   potential_risks: z.array(z.string()),
-  implementation_plan: z.array(z.object({
-    step: z.number().int().positive(),
-    action: z.string(),
-    reversible: z.boolean(),
-  })),
+  implementation_plan: z.array(
+    z.object({
+      step: z.number().int().positive(),
+      action: z.string(),
+      reversible: z.boolean(),
+    })
+  ),
   safety_assessment: z.object({
     risk_level: z.enum(["low", "medium", "high", "critical"]),
     value_alignment: z.number().min(0).max(1),

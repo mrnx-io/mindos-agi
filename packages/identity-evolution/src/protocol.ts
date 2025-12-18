@@ -3,12 +3,7 @@
 // =============================================================================
 
 import type pg from "pg"
-import type {
-  CoreSelf,
-  EvolutionEvent,
-  ImprovementProposal,
-  ValueDriftEvent,
-} from "./types.js"
+import type { CoreSelf, EvolutionEvent, ImprovementProposal, ValueDriftEvent } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Evolution Protocol Interface
@@ -26,11 +21,16 @@ export interface IdentityEvolutionProtocol {
   getEvolutionHistory(identityId: string, limit?: number): Promise<EvolutionEvent[]>
 
   // Coherence
-  checkCoherence(identityId: string, proposedChange: Record<string, unknown>): Promise<CoherenceResult>
+  checkCoherence(
+    identityId: string,
+    proposedChange: Record<string, unknown>
+  ): Promise<CoherenceResult>
   resolveConflict(identityId: string, conflict: CoherenceConflict): Promise<ResolutionResult>
 
   // Self-Improvement
-  proposeImprovement(proposal: Omit<ImprovementProposal, "proposal_id" | "status" | "created_at">): Promise<ImprovementProposal>
+  proposeImprovement(
+    proposal: Omit<ImprovementProposal, "proposal_id" | "status" | "created_at">
+  ): Promise<ImprovementProposal>
   evaluateProposal(proposalId: string): Promise<SafetyAssessment>
   applyImprovement(proposalId: string, approval: Approval): Promise<ImprovementResult>
   rollbackImprovement(proposalId: string): Promise<boolean>
@@ -109,10 +109,7 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
   // -----------------------------------------------------------------------------
 
   async function getCoreSelf(identityId: string): Promise<CoreSelf | null> {
-    const result = await pool.query(
-      `SELECT * FROM identities WHERE identity_id = $1`,
-      [identityId]
-    )
+    const result = await pool.query("SELECT * FROM identities WHERE identity_id = $1", [identityId])
 
     if (result.rows.length === 0) return null
 
@@ -135,10 +132,7 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
     }
   }
 
-  async function updateCoreSelf(
-    identityId: string,
-    updates: Partial<CoreSelf>
-  ): Promise<CoreSelf> {
+  async function updateCoreSelf(identityId: string, updates: Partial<CoreSelf>): Promise<CoreSelf> {
     const current = await getCoreSelf(identityId)
     if (!current) {
       throw new Error(`Identity ${identityId} not found`)
@@ -149,7 +143,9 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
     if (!coherence.coherent) {
       const criticalConflicts = coherence.conflicts.filter((c) => c.severity === "critical")
       if (criticalConflicts.length > 0) {
-        throw new Error(`Cannot update: critical coherence conflicts - ${criticalConflicts.map((c) => c.description).join(", ")}`)
+        throw new Error(
+          `Cannot update: critical coherence conflicts - ${criticalConflicts.map((c) => c.description).join(", ")}`
+        )
       }
     }
 
@@ -211,12 +207,7 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
     await pool.query(
       `INSERT INTO identity_snapshots (snapshot_id, identity_id, core_self, created_at)
        VALUES ($1, $2, $3, $4)`,
-      [
-        snapshotId,
-        identityId,
-        JSON.stringify(coreSelf),
-        new Date().toISOString(),
-      ]
+      [snapshotId, identityId, JSON.stringify(coreSelf), new Date().toISOString()]
     )
 
     return snapshotId
@@ -228,10 +219,9 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
 
     if (!coreSelf) {
       // Load from database
-      const result = await pool.query(
-        `SELECT * FROM identity_snapshots WHERE snapshot_id = $1`,
-        [snapshotId]
-      )
+      const result = await pool.query("SELECT * FROM identity_snapshots WHERE snapshot_id = $1", [
+        snapshotId,
+      ])
 
       if (result.rows.length === 0) {
         throw new Error(`Snapshot ${snapshotId} not found`)
@@ -242,12 +232,8 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
 
     // Restore to identity
     await pool.query(
-      `UPDATE identities SET core_self = $1, updated_at = $2 WHERE identity_id = $3`,
-      [
-        JSON.stringify(coreSelf),
-        new Date().toISOString(),
-        coreSelf!.identity_id,
-      ]
+      "UPDATE identities SET core_self = $1, updated_at = $2 WHERE identity_id = $3",
+      [JSON.stringify(coreSelf), new Date().toISOString(), coreSelf?.identity_id]
     )
 
     return coreSelf!
@@ -287,10 +273,7 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
     return fullEvent
   }
 
-  async function getEvolutionHistory(
-    identityId: string,
-    limit = 100
-  ): Promise<EvolutionEvent[]> {
+  async function getEvolutionHistory(identityId: string, limit = 100): Promise<EvolutionEvent[]> {
     const result = await pool.query(
       `SELECT * FROM identity_evolution_log
        WHERE identity_id = $1
@@ -350,7 +333,10 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
     // Check commitment breaches
     if (proposedChange.commitments) {
       const removedCommitments = coreSelf.commitments.filter(
-        (c) => !(proposedChange.commitments as CoreSelf["commitments"]).find((nc) => nc.commitment_id === c.commitment_id)
+        (c) =>
+          !(proposedChange.commitments as CoreSelf["commitments"]).find(
+            (nc) => nc.commitment_id === c.commitment_id
+          )
       )
 
       for (const removed of removedCommitments) {
@@ -372,7 +358,9 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
       for (const [trait, value] of Object.entries(newTraits)) {
         const currentValue = coreSelf.personality_traits[trait]
         if (currentValue !== undefined && Math.abs(currentValue - value) > 0.5) {
-          warnings.push(`Large shift in personality trait "${trait}": ${currentValue.toFixed(2)} → ${value.toFixed(2)}`)
+          warnings.push(
+            `Large shift in personality trait "${trait}": ${currentValue.toFixed(2)} → ${value.toFixed(2)}`
+          )
         }
       }
     }
@@ -385,7 +373,7 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
   }
 
   async function resolveConflict(
-    identityId: string,
+    _identityId: string,
     conflict: CoherenceConflict
   ): Promise<ResolutionResult> {
     // Implement conflict resolution strategies
@@ -478,10 +466,9 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
   }
 
   async function evaluateProposal(proposalId: string): Promise<SafetyAssessment> {
-    const result = await pool.query(
-      `SELECT * FROM improvement_proposals WHERE proposal_id = $1`,
-      [proposalId]
-    )
+    const result = await pool.query("SELECT * FROM improvement_proposals WHERE proposal_id = $1", [
+      proposalId,
+    ])
 
     if (result.rows.length === 0) {
       throw new Error(`Proposal ${proposalId} not found`)
@@ -514,17 +501,18 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
     }
 
     // Calculate reversibility
-    const implementationPlan = proposal.implementation_plan as ImprovementProposal["implementation_plan"]
+    const implementationPlan =
+      proposal.implementation_plan as ImprovementProposal["implementation_plan"]
     const reversibleSteps = implementationPlan.filter((s) => s.reversible).length
-    const reversibilityScore = implementationPlan.length > 0
-      ? reversibleSteps / implementationPlan.length
-      : 0
+    const reversibilityScore =
+      implementationPlan.length > 0 ? reversibleSteps / implementationPlan.length : 0
 
     // Determine recommendation
     let recommendation: SafetyAssessment["recommendation"]
-    const avgRiskSeverity = riskFactors.length > 0
-      ? riskFactors.reduce((sum, r) => sum + r.severity, 0) / riskFactors.length
-      : 0
+    const avgRiskSeverity =
+      riskFactors.length > 0
+        ? riskFactors.reduce((sum, r) => sum + r.severity, 0) / riskFactors.length
+        : 0
 
     if (avgRiskSeverity > 0.7 || valueAlignment < 0.3) {
       recommendation = "reject"
@@ -550,10 +538,9 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
     proposalId: string,
     approval: Approval
   ): Promise<ImprovementResult> {
-    const result = await pool.query(
-      `SELECT * FROM improvement_proposals WHERE proposal_id = $1`,
-      [proposalId]
-    )
+    const result = await pool.query("SELECT * FROM improvement_proposals WHERE proposal_id = $1", [
+      proposalId,
+    ])
 
     if (result.rows.length === 0) {
       throw new Error(`Proposal ${proposalId} not found`)
@@ -570,13 +557,14 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
 
     // Execute implementation plan
     const changesApplied: string[] = []
-    const implementationPlan = proposal.implementation_plan as ImprovementProposal["implementation_plan"]
+    const implementationPlan =
+      proposal.implementation_plan as ImprovementProposal["implementation_plan"]
 
     for (const step of implementationPlan) {
       try {
         // Would execute actual changes here
         changesApplied.push(`Step ${step.step}: ${step.action}`)
-      } catch (err) {
+      } catch (_err) {
         // Rollback on failure
         if (currentState) {
           await updateCoreSelf(proposal.identity_id, currentState)
@@ -603,7 +591,7 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
       identity_id: proposal.identity_id,
       event_type: "self_improvement",
       description: `Applied improvement: ${proposal.title}`,
-      previous_state: currentState as unknown as Record<string, unknown> ?? {},
+      previous_state: (currentState as unknown as Record<string, unknown>) ?? {},
       new_state: { improvement_applied: proposal.title },
       trigger: {
         type: approval.approval_type === "user" ? "explicit_request" : "introspection",
@@ -621,16 +609,15 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
     return {
       success: true,
       changes_applied: changesApplied,
-      new_state: newState as unknown as Record<string, unknown> ?? {},
+      new_state: (newState as unknown as Record<string, unknown>) ?? {},
       rollback_id: rollbackId,
     }
   }
 
   async function rollbackImprovement(proposalId: string): Promise<boolean> {
-    const result = await pool.query(
-      `SELECT * FROM improvement_proposals WHERE proposal_id = $1`,
-      [proposalId]
-    )
+    const result = await pool.query("SELECT * FROM improvement_proposals WHERE proposal_id = $1", [
+      proposalId,
+    ])
 
     if (result.rows.length === 0) return false
 
@@ -643,12 +630,8 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
 
     // Restore state
     await pool.query(
-      `UPDATE identities SET core_self = $1, updated_at = $2 WHERE identity_id = $3`,
-      [
-        JSON.stringify(previousState),
-        new Date().toISOString(),
-        proposal.identity_id,
-      ]
+      "UPDATE identities SET core_self = $1, updated_at = $2 WHERE identity_id = $3",
+      [JSON.stringify(previousState), new Date().toISOString(), proposal.identity_id]
     )
 
     // Update proposal status
@@ -732,10 +715,7 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
     return driftEvents
   }
 
-  async function correctDrift(
-    driftId: string,
-    correction: DriftCorrection
-  ): Promise<boolean> {
+  async function correctDrift(_driftId: string, _correction: DriftCorrection): Promise<boolean> {
     // Would implement drift correction logic
     // For now, return success
     return true
@@ -745,7 +725,10 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
   // Helper Functions
   // -----------------------------------------------------------------------------
 
-  function areValuesContradictory(value1: CoreSelf["values"][0], value2: CoreSelf["values"][0]): boolean {
+  function areValuesContradictory(
+    value1: CoreSelf["values"][0],
+    value2: CoreSelf["values"][0]
+  ): boolean {
     // Simple contradiction detection
     const contradictoryPairs = [
       ["efficiency", "thoroughness"],
@@ -770,7 +753,7 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
 
     let sumSquaredDiffs = 0
     for (let i = 1; i < values.length; i++) {
-      sumSquaredDiffs += Math.pow(values[i] - values[i - 1], 2)
+      sumSquaredDiffs += (values[i] - values[i - 1]) ** 2
     }
 
     return Math.sqrt(sumSquaredDiffs / (values.length - 1))
@@ -780,10 +763,13 @@ export function createIdentityEvolutionProtocol(pool: pg.Pool): IdentityEvolutio
     const factors: string[] = []
 
     const triggers = history.map((e) => e.trigger.type)
-    const triggerCounts = triggers.reduce((acc, t) => {
-      acc[t] = (acc[t] ?? 0) + 1
-      return acc
-    }, {} as Record<string, number>)
+    const triggerCounts = triggers.reduce(
+      (acc, t) => {
+        acc[t] = (acc[t] ?? 0) + 1
+        return acc
+      },
+      {} as Record<string, number>
+    )
 
     for (const [trigger, count] of Object.entries(triggerCounts)) {
       if (count > history.length * 0.3) {

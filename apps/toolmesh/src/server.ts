@@ -83,7 +83,7 @@ app.get("/health", async () => {
 // Tool Discovery Endpoints
 // -----------------------------------------------------------------------------
 
-app.get("/tools", async (request, reply) => {
+app.get("/tools", async (request, _reply) => {
   const serverName = request.query as { server_name?: string }
   const tools = await listTools(serverName.server_name)
 
@@ -120,13 +120,13 @@ app.get("/tools/:name/status", async (request, reply) => {
         ...stats,
       },
     }
-  } catch (err) {
+  } catch (_err) {
     reply.code(404)
     return { success: false, error: "Tool not found" }
   }
 })
 
-app.post("/tools/search", async (request, reply) => {
+app.post("/tools/search", async (request, _reply) => {
   const body = ToolSearchRequestSchema.parse(request.body)
   const results = await searchToolsSemantic(body.query, {
     limit: body.limit,
@@ -141,7 +141,7 @@ app.post("/tools/search", async (request, reply) => {
   }
 })
 
-app.post("/tools/search/semantic", async (request, reply) => {
+app.post("/tools/search/semantic", async (request, _reply) => {
   const body = ToolSearchRequestSchema.parse(request.body)
   const results = await searchToolsSemantic(body.query, {
     limit: body.limit,
@@ -253,7 +253,7 @@ app.post("/tools/call", async (request, reply) => {
   }
 })
 
-app.get("/tools/calls/:idempotencyKey", async (request, reply) => {
+app.get("/tools/calls/:idempotencyKey", async (request, _reply) => {
   const { idempotencyKey } = request.params as { idempotencyKey: string }
   const result = await getRequest(idempotencyKey)
 
@@ -275,7 +275,7 @@ app.get("/tools/calls/:idempotencyKey", async (request, reply) => {
 // Registry Management Endpoints
 // -----------------------------------------------------------------------------
 
-app.post("/tools/refresh", async (request, reply) => {
+app.post("/tools/refresh", async (_request, _reply) => {
   await shutdownHub()
   await initializeHub()
 
@@ -306,6 +306,49 @@ app.get("/tools/stats", async () => {
 app.get("/servers/health", async () => {
   const health = await checkAllHealth()
   return { success: true, data: health }
+})
+
+// -----------------------------------------------------------------------------
+// Embeddings Endpoints
+// -----------------------------------------------------------------------------
+
+const EmbeddingRequestSchema = z.object({
+  text: z.string().min(1),
+})
+
+const BatchEmbeddingRequestSchema = z.object({
+  texts: z.array(z.string().min(1)).min(1).max(100),
+})
+
+app.post("/embeddings/generate", async (request, _reply) => {
+  const body = EmbeddingRequestSchema.parse(request.body)
+
+  const { generateEmbedding } = await import("./registry/embeddings.js")
+  const embedding = await generateEmbedding(body.text)
+
+  return {
+    success: true,
+    data: {
+      embedding,
+      dimensions: embedding.length,
+    },
+  }
+})
+
+app.post("/embeddings/generate/batch", async (request, _reply) => {
+  const body = BatchEmbeddingRequestSchema.parse(request.body)
+
+  const { generateEmbeddings } = await import("./registry/embeddings.js")
+  const embeddings = await generateEmbeddings(body.texts)
+
+  return {
+    success: true,
+    data: {
+      embeddings,
+      dimensions: embeddings[0]?.length ?? 0,
+      count: embeddings.length,
+    },
+  }
 })
 
 // -----------------------------------------------------------------------------

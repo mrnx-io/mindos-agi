@@ -3,42 +3,57 @@
 // =============================================================================
 
 import { z } from "zod"
-import { UUIDSchema, TimestampSchema, JSONSchema, PolicyProfileSchema } from "./schemas.js"
+import { PolicyProfileSchema } from "./policy.js"
+import { JSONSchema, TimestampSchema, UUIDSchema } from "./schemas.js"
 
 // -----------------------------------------------------------------------------
 // Core Self (Autobiographical)
 // -----------------------------------------------------------------------------
 
 export const CoreSelfSchema = z.object({
-  values: z.array(z.object({
-    name: z.string(),
-    importance: z.number().min(0).max(1),
-    description: z.string(),
-  })).default([]),
+  values: z
+    .array(
+      z.object({
+        name: z.string(),
+        importance: z.number().min(0).max(1),
+        description: z.string(),
+      })
+    )
+    .default([]),
 
-  goals: z.array(z.object({
-    name: z.string(),
-    priority: z.number().min(0).max(10),
-    description: z.string(),
-    deadline: TimestampSchema.optional(),
-    progress: z.number().min(0).max(1).optional(),
-  })).default([]),
+  goals: z
+    .array(
+      z.object({
+        name: z.string(),
+        priority: z.number().min(0).max(10),
+        description: z.string(),
+        deadline: TimestampSchema.optional(),
+        progress: z.number().min(0).max(1).optional(),
+      })
+    )
+    .default([]),
 
-  constraints: z.array(z.object({
-    name: z.string(),
-    type: z.enum(["hard", "soft"]),
-    description: z.string(),
-    reason: z.string().optional(),
-  })).default([]),
+  constraints: z
+    .array(
+      z.object({
+        name: z.string(),
+        type: z.enum(["hard", "soft"]),
+        description: z.string(),
+        reason: z.string().optional(),
+      })
+    )
+    .default([]),
 
   personality_traits: z.record(z.number().min(-1).max(1)).default({}),
 
-  trust_defaults: z.object({
-    new_tools: z.number().min(0).max(1).default(0.5),
-    external_data: z.number().min(0).max(1).default(0.7),
-    human_input: z.number().min(0).max(1).default(0.9),
-    swarm_agents: z.number().min(0).max(1).default(0.8),
-  }).default({}),
+  trust_defaults: z
+    .object({
+      new_tools: z.number().min(0).max(1).default(0.5),
+      external_data: z.number().min(0).max(1).default(0.7),
+      human_input: z.number().min(0).max(1).default(0.9),
+      swarm_agents: z.number().min(0).max(1).default(0.8),
+    })
+    .default({}),
 })
 export type CoreSelf = z.infer<typeof CoreSelfSchema>
 

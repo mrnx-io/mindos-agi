@@ -4,20 +4,12 @@
 
 import * as restate from "@restatedev/restate-sdk"
 import { env } from "./config.js"
-import { logger } from "./logger.js"
 import { checkDatabaseHealth, closeDatabasePool } from "./db.js"
-import { mindObject, createIdentity } from "./workflows/mind.js"
-import { taskObject } from "./workflows/task.js"
-import { checkToolMeshHealth } from "./tooling/toolmeshClient.js"
+import { logger } from "./logger.js"
 import { checkExecutorHealth } from "./tooling/executorClient.js"
-
-// -----------------------------------------------------------------------------
-// Restate Server Setup
-// -----------------------------------------------------------------------------
-
-const restateServer = restate.endpoint()
-  .bind(mindObject)
-  .bind(taskObject)
+import { checkToolMeshHealth } from "./tooling/toolmeshClient.js"
+import { createIdentity, mindObject } from "./workflows/mind.js"
+import { taskObject } from "./workflows/task.js"
 
 // -----------------------------------------------------------------------------
 // Health Check Endpoint
@@ -63,28 +55,32 @@ async function main() {
   }
   logger.info("Database connection verified")
 
-  // Start Restate server
-  const httpServer = restate.createServer(restateServer)
-  const server = httpServer.listen(env.PORT)
+  // Start Restate server using the new serve() API
+  const boundPort = await restate.serve({
+    port: env.PORT,
+    services: [mindObject, taskObject],
+  })
 
-  logger.info({ port: env.PORT }, "Mind Service started")
+  logger.info({ port: boundPort }, "Mind Service started")
 
   // Log configuration
-  logger.info({
-    modelPrimary: env.MODEL_PRIMARY,
-    modelFast: env.MODEL_FAST,
-    toolmeshUrl: env.TOOLMESH_URL,
-    executorUrl: env.EXECUTOR_URL,
-    metacognition: env.ENABLE_METACOGNITION,
-    worldModel: env.ENABLE_WORLD_MODEL,
-    swarm: env.ENABLE_SWARM,
-    grounding: env.ENABLE_GROUNDING,
-  }, "Configuration loaded")
+  logger.info(
+    {
+      modelPrimary: env.MODEL_PRIMARY,
+      modelFast: env.MODEL_FAST,
+      toolmeshUrl: env.TOOLMESH_URL,
+      executorUrl: env.EXECUTOR_URL,
+      metacognition: env.ENABLE_METACOGNITION,
+      worldModel: env.ENABLE_WORLD_MODEL,
+      swarm: env.ENABLE_SWARM,
+      grounding: env.ENABLE_GROUNDING,
+    },
+    "Configuration loaded"
+  )
 
   // Graceful shutdown
   const shutdown = async () => {
     logger.info("Shutting down...")
-    server.close()
     await closeDatabasePool()
     logger.info("Shutdown complete")
     process.exit(0)

@@ -3,20 +3,13 @@
 // =============================================================================
 
 import * as restate from "@restatedev/restate-sdk"
-import { query, queryOne, withTransaction } from "../db.js"
+import { query, queryOne } from "../db.js"
 import { createLogger } from "../logger.js"
 import { recordEvent } from "../memory.js"
-import { complete, completeJson } from "../router.js"
 import { buildSystemPrompt } from "../prompts.js"
-import type {
-  EventEnvelope,
-  GoalRequest,
-  Identity,
-  CoreSelf,
-  PolicyProfile,
-  Tool,
-} from "../types.js"
+import { completeJson } from "../router.js"
 import { listTools } from "../tooling/toolmeshClient.js"
+import type { CoreSelf, EventEnvelope, GoalRequest, Identity, PolicyProfile } from "../types.js"
 
 const log = createLogger("mind-workflow")
 
@@ -34,17 +27,18 @@ interface IdentityRow {
   updated_at: Date
 }
 
-interface TaskRow {
-  task_id: string
-  identity_id: string
-  goal: string
-  context: unknown
-  status: string
-  priority: number
-  risk_score: number | null
-  created_at: Date
-  started_at: Date | null
-  completed_at: Date | null
+// Type for the task object send client
+// Send clients return InvocationHandle and accept optional SendOpts
+interface TaskSendClient {
+  execute(
+    params: { identityId: string },
+    opts?: restate.SendOpts<{ identityId: string }>
+  ): restate.InvocationHandle
+  getStatus(opts?: restate.SendOpts<void>): restate.InvocationHandle
+  cancel(
+    params: { reason: string },
+    opts?: restate.SendOpts<{ reason: string }>
+  ): restate.InvocationHandle
 }
 
 // -----------------------------------------------------------------------------
@@ -63,7 +57,7 @@ export const mindObject = restate.object({
     ): Promise<{ processed: boolean; taskIds: string[] }> => {
       const identityId = ctx.key
 
-      log.info({ identityId, eventKind: event.kind }, "Ingesting event")
+      log.info({ identityId, eventType: event.type }, "Ingesting event")
 
       // Load identity
       const identity = await ctx.run("load-identity", () => loadIdentity(identityId))
@@ -75,13 +69,11 @@ export const mindObject = restate.object({
 
       // Record the event
       const eventId = await ctx.run("record-event", () =>
-        recordEvent(identityId, event.kind, event.payload)
+        recordEvent(identityId, event.type, event.payload)
       )
 
       // Analyze event to determine if tasks should be created
-      const analysis = await ctx.run("analyze-event", () =>
-        analyzeEvent(identity, event)
-      )
+      const analysis = await ctx.run("analyze-event", () => analyzeEvent(identity, event))
 
       const taskIds: string[] = []
 
@@ -92,7 +84,7 @@ export const mindObject = restate.object({
             goal: goal.description,
             context: {
               source_event_id: eventId,
-              source_kind: event.kind,
+              source_type: event.type,
               ...goal.context,
             },
             priority: goal.priority,
@@ -101,10 +93,9 @@ export const mindObject = restate.object({
 
         taskIds.push(taskId)
 
-        // Kick off task execution
-        ctx.objectSendClient({ name: "task" }, taskId).execute({
-          identityId,
-        })
+        // Kick off task execution asynchronously via Restate messaging
+        const taskClient = ctx.objectSendClient({ name: "task" }, taskId) as TaskSendClient
+        taskClient.execute({ identityId })
       }
 
       log.info({ identityId, eventId, taskCount: taskIds.length }, "Event processed")
@@ -134,7 +125,7 @@ export const mindObject = restate.object({
       const taskId = await ctx.run("create-task", () =>
         createTask(identityId, {
           goal: request.goal,
-          context: request.context ?? {},
+          context: request.metadata ?? {},
           priority: request.priority ?? 5,
         })
       )
@@ -147,10 +138,9 @@ export const mindObject = restate.object({
         })
       )
 
-      // Start task execution
-      ctx.objectSendClient({ name: "task" }, taskId).execute({
-        identityId,
-      })
+      // Start task execution asynchronously via Restate messaging
+      const taskClient = ctx.objectSendClient({ name: "task" }, taskId) as TaskSendClient
+      taskClient.execute({ identityId })
 
       return { taskId }
     },
@@ -181,9 +171,7 @@ export const mindObject = restate.object({
       await ctx.run("update-core-self", () => updateCoreSelf(identityId, updates))
 
       // Record the update
-      await ctx.run("record-update", () =>
-        recordEvent(identityId, "core_self_updated", updates)
-      )
+      await ctx.run("record-update", () => recordEvent(identityId, "core_self_updated", updates))
 
       return { success: true }
     },
@@ -204,10 +192,7 @@ interface EventAnalysis {
   reasoning: string
 }
 
-async function analyzeEvent(
-  identity: Identity,
-  event: EventEnvelope
-): Promise<EventAnalysis> {
+async function analyzeEvent(identity: Identity, event: EventEnvelope): Promise<EventAnalysis> {
   // Get available tools for context
   const tools = await listTools()
 
@@ -220,9 +205,9 @@ async function analyzeEvent(
         role: "user",
         content: `An event has occurred. Analyze it and determine if any tasks should be created.
 
-Event Type: ${event.kind}
+Event Type: ${event.type}
 Event Payload: ${JSON.stringify(event.payload, null, 2)}
-Timestamp: ${event.timestamp}
+Timestamp: ${event.occurred_at}
 
 Consider:
 1. Does this event require action based on my values and goals?
@@ -253,10 +238,9 @@ Respond with JSON:
 // -----------------------------------------------------------------------------
 
 async function loadIdentity(identityId: string): Promise<Identity | null> {
-  const row = await queryOne<IdentityRow>(
-    "SELECT * FROM identities WHERE identity_id = $1",
-    [identityId]
-  )
+  const row = await queryOne<IdentityRow>("SELECT * FROM identities WHERE identity_id = $1", [
+    identityId,
+  ])
 
   if (!row) return null
 
@@ -265,7 +249,7 @@ async function loadIdentity(identityId: string): Promise<Identity | null> {
     display_name: row.display_name,
     core_self: row.core_self,
     policy_profile: row.policy_profile,
-    metadata: row.metadata,
+    metadata: row.metadata as Record<string, unknown>,
     created_at: row.created_at.toISOString(),
     updated_at: row.updated_at.toISOString(),
   }
@@ -286,7 +270,11 @@ async function createTask(
     [identityId, params.goal, JSON.stringify(params.context), params.priority]
   )
 
-  return result.rows[0].task_id
+  const row = result.rows[0]
+  if (!row) {
+    throw new Error("Failed to create task - no row returned")
+  }
+  return row.task_id
 }
 
 async function countActiveTasks(identityId: string): Promise<number> {
@@ -296,13 +284,10 @@ async function countActiveTasks(identityId: string): Promise<number> {
     [identityId]
   )
 
-  return parseInt(result?.count ?? "0", 10)
+  return Number.parseInt(result?.count ?? "0", 10)
 }
 
-async function updateCoreSelf(
-  identityId: string,
-  updates: Partial<CoreSelf>
-): Promise<void> {
+async function updateCoreSelf(identityId: string, updates: Partial<CoreSelf>): Promise<void> {
   await query(
     `UPDATE identities
      SET core_self = core_self || $2::jsonb,
@@ -335,12 +320,35 @@ export async function createIdentity(params: {
   }
 
   const defaultPolicy: PolicyProfile = {
+    mode: "human_gated",
     trust_level: "medium",
     auto_approve_threshold: 0.3,
     approval_threshold: 0.7,
     block_threshold: 0.9,
+    risk_threshold: 0.35,
+    max_iterations: 20,
     allowed_tools: [],
     blocked_tools: [],
+    allowed_tool_globs: ["*"],
+    denied_tool_globs: [],
+    hard_stop_keywords: [
+      "wire",
+      "transfer",
+      "bank",
+      "payment",
+      "billing",
+      "invoice pay",
+      "password",
+      "credential",
+      "api key",
+      "token",
+      "delete",
+      "drop table",
+      "terminate",
+      "disable",
+      "revoke",
+    ],
+    warning_keywords: ["send", "post", "publish", "modify", "update", "create"],
   }
 
   const result = await query<{ identity_id: string }>(
@@ -355,6 +363,10 @@ export async function createIdentity(params: {
     ]
   )
 
-  log.info({ identityId: result.rows[0].identity_id }, "Identity created")
-  return result.rows[0].identity_id
+  const row = result.rows[0]
+  if (!row) {
+    throw new Error("Failed to create identity - no row returned")
+  }
+  log.info({ identityId: row.identity_id }, "Identity created")
+  return row.identity_id
 }

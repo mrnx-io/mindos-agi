@@ -3,7 +3,7 @@
 // =============================================================================
 
 import { z } from "zod"
-import { UUIDSchema, TimestampSchema, JSONSchema } from "./schemas.js"
+import { JSONSchema, TimestampSchema, UUIDSchema } from "./schemas.js"
 
 // -----------------------------------------------------------------------------
 // Swarm Instance (Agent)
@@ -44,11 +44,13 @@ export const HeartbeatRequestSchema = z.object({
   instance_id: UUIDSchema,
   status: SwarmStatusSchema,
   current_task_id: UUIDSchema.nullable().optional(),
-  metrics: z.object({
-    cpu_usage: z.number().min(0).max(1).optional(),
-    memory_usage: z.number().min(0).max(1).optional(),
-    queue_depth: z.number().int().min(0).optional(),
-  }).optional(),
+  metrics: z
+    .object({
+      cpu_usage: z.number().min(0).max(1).optional(),
+      memory_usage: z.number().min(0).max(1).optional(),
+      queue_depth: z.number().int().min(0).optional(),
+    })
+    .optional(),
 })
 export type HeartbeatRequest = z.infer<typeof HeartbeatRequestSchema>
 
@@ -56,12 +58,7 @@ export type HeartbeatRequest = z.infer<typeof HeartbeatRequestSchema>
 // Consensus
 // -----------------------------------------------------------------------------
 
-export const ConsensusStatusSchema = z.enum([
-  "voting",
-  "resolved",
-  "deadlocked",
-  "timeout",
-])
+export const ConsensusStatusSchema = z.enum(["voting", "resolved", "deadlocked", "timeout"])
 export type ConsensusStatus = z.infer<typeof ConsensusStatusSchema>
 
 export const ConsensusProposalSchema = z.object({
@@ -91,7 +88,10 @@ export const ConsensusSchema = z.object({
   votes: z.record(z.array(ConsensusVoteSchema)), // keyed by instance_id
   status: ConsensusStatusSchema,
   winning_proposal_idx: z.number().int().nullable().optional(),
-  resolution_method: z.enum(["majority", "weighted", "unanimous", "tiebreaker"]).nullable().optional(),
+  resolution_method: z
+    .enum(["majority", "weighted", "unanimous", "tiebreaker"])
+    .nullable()
+    .optional(),
   deadline_at: TimestampSchema.nullable().optional(),
   created_at: TimestampSchema,
   resolved_at: TimestampSchema.nullable().optional(),
@@ -106,10 +106,14 @@ export const StartConsensusRequestSchema = z.object({
   identity_id: UUIDSchema,
   topic: z.string(),
   context: JSONSchema,
-  initial_proposals: z.array(z.object({
-    content: JSONSchema,
-    rationale: z.string(),
-  })).optional(),
+  initial_proposals: z
+    .array(
+      z.object({
+        content: JSONSchema,
+        rationale: z.string(),
+      })
+    )
+    .optional(),
   deadline_seconds: z.number().int().min(10).max(3600).optional(),
   resolution_method: z.enum(["majority", "weighted", "unanimous"]).optional(),
 })

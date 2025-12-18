@@ -2,11 +2,7 @@
 // Causal Graph Analysis
 // =============================================================================
 
-import type {
-  CausalGraph,
-  CausalNode,
-  CausalEdge,
-} from "./types.js"
+import type { CausalEdge, CausalGraph, CausalNode } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Causal Graph Builder
@@ -14,7 +10,9 @@ import type {
 
 export interface CausalGraphBuilder {
   addNode(node: Omit<CausalNode, "node_id">): string
-  addEdge(edge: Omit<CausalEdge, "source_id" | "target_id"> & { source: string; target: string }): void
+  addEdge(
+    edge: Omit<CausalEdge, "source_id" | "target_id"> & { source: string; target: string }
+  ): void
   build(): CausalGraph
   findRootCauses(nodeId: string): CausalNode[]
   findEffects(nodeId: string): CausalNode[]
@@ -132,9 +130,7 @@ export function createCausalGraphBuilder(): CausalGraphBuilder {
       let pathStrength = 1
 
       for (let i = 0; i < path.length - 1; i++) {
-        const edge = edges.find(
-          (e) => e.source_id === path[i] && e.target_id === path[i + 1]
-        )
+        const edge = edges.find((e) => e.source_id === path[i] && e.target_id === path[i + 1])
         if (edge) {
           pathStrength *= Math.abs(edge.causal_strength)
         }
@@ -147,11 +143,7 @@ export function createCausalGraphBuilder(): CausalGraphBuilder {
     return Math.min(totalStrength, 1)
   }
 
-  function findAllPaths(
-    fromId: string,
-    toId: string,
-    visited = new Set<string>()
-  ): string[][] {
+  function findAllPaths(fromId: string, toId: string, visited = new Set<string>()): string[][] {
     if (fromId === toId) return [[toId]]
     if (visited.has(fromId)) return []
 
@@ -263,7 +255,7 @@ export function inferCausalEffects(
 
     for (const edge of outgoing) {
       const effectMagnitude = currentMagnitude * edge.causal_strength
-      const confidence = Math.pow(0.9, depth) // Confidence decreases with depth
+      const confidence = 0.9 ** depth // Confidence decreases with depth
 
       effects.push({
         node_id: edge.target_id,
@@ -346,9 +338,10 @@ export function answerCounterfactual(
 
   if (effectOnQuery) {
     // Query node is causally downstream of intervention
-    counterfactualValue = typeof factualValue === "number"
-      ? factualValue + effectOnQuery.expected_change
-      : query.intervention.new_value
+    counterfactualValue =
+      typeof factualValue === "number"
+        ? factualValue + effectOnQuery.expected_change
+        : query.intervention.new_value
 
     explanation = `Intervening on ${interventionNode.label} would propagate through the causal graph to affect ${queryNode.label} with strength ${effectOnQuery.expected_change.toFixed(2)} (confidence: ${(effectOnQuery.confidence * 100).toFixed(0)}%)`
   } else {

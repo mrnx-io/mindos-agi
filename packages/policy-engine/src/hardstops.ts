@@ -211,10 +211,11 @@ export function createHardStopEngine(pool: pg.Pool): HardStopEngine {
           return false
         }
 
-      case "keyword":
+      case "keyword": {
         const keywords = pattern.pattern.toLowerCase().split(",")
         const lowerContent = content.toLowerCase()
-        return keywords.some((kw) => lowerContent.includes(kw.trim()))
+        return keywords.some((kw: string) => lowerContent.includes(kw.trim()))
+      }
 
       case "semantic":
         // Placeholder for semantic matching (would use embeddings)
@@ -256,18 +257,15 @@ export function createHardStopEngine(pool: pg.Pool): HardStopEngine {
   }
 
   async function removePattern(patternId: string): Promise<void> {
-    await pool.query(
-      `DELETE FROM hardstop_patterns WHERE pattern_id = $1`,
-      [patternId]
-    )
+    await pool.query("DELETE FROM hardstop_patterns WHERE pattern_id = $1", [patternId])
   }
 
   async function getPatterns(category?: RiskCategory): Promise<HardStopPattern[]> {
-    let query = `SELECT * FROM hardstop_patterns`
+    let query = "SELECT * FROM hardstop_patterns"
     const params: unknown[] = []
 
     if (category) {
-      query += ` WHERE categories @> $1`
+      query += " WHERE categories @> $1"
       params.push(JSON.stringify([category]))
     }
 
@@ -286,17 +284,15 @@ export function createHardStopEngine(pool: pg.Pool): HardStopEngine {
   }
 
   async function enablePattern(patternId: string): Promise<void> {
-    await pool.query(
-      `UPDATE hardstop_patterns SET enabled = true WHERE pattern_id = $1`,
-      [patternId]
-    )
+    await pool.query("UPDATE hardstop_patterns SET enabled = true WHERE pattern_id = $1", [
+      patternId,
+    ])
   }
 
   async function disablePattern(patternId: string): Promise<void> {
-    await pool.query(
-      `UPDATE hardstop_patterns SET enabled = false WHERE pattern_id = $1`,
-      [patternId]
-    )
+    await pool.query("UPDATE hardstop_patterns SET enabled = false WHERE pattern_id = $1", [
+      patternId,
+    ])
   }
 
   return {
@@ -314,8 +310,8 @@ export function createHardStopEngine(pool: pg.Pool): HardStopEngine {
 // -----------------------------------------------------------------------------
 
 async function initializeDefaultPatterns(pool: pg.Pool): Promise<void> {
-  const result = await pool.query(`SELECT COUNT(*) FROM hardstop_patterns`)
-  const count = parseInt(result.rows[0].count, 10)
+  const result = await pool.query("SELECT COUNT(*) FROM hardstop_patterns")
+  const count = Number.parseInt(result.rows[0].count, 10)
 
   if (count === 0) {
     for (const pattern of DEFAULT_PATTERNS) {
@@ -344,7 +340,7 @@ function hashInput(input: HardStopInput): string {
   let hash = 0
   for (let i = 0; i < content.length; i++) {
     const char = content.charCodeAt(i)
-    hash = ((hash << 5) - hash) + char
+    hash = (hash << 5) - hash + char
     hash = hash & hash
   }
   return Math.abs(hash).toString(16).padStart(8, "0")

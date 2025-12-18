@@ -3,7 +3,7 @@
 // =============================================================================
 
 import { z } from "zod"
-import { UUIDSchema, TimestampSchema, JSONSchema } from "./schemas.js"
+import { JSONSchema, TimestampSchema, UUIDSchema } from "./schemas.js"
 
 // -----------------------------------------------------------------------------
 // Event Source Types
@@ -120,3 +120,18 @@ export const EventClassificationSchema = z.object({
   confidence: z.number().min(0).max(1),
 })
 export type EventClassification = z.infer<typeof EventClassificationSchema>
+
+// -----------------------------------------------------------------------------
+// Event Record (stored in database)
+// -----------------------------------------------------------------------------
+
+export const EventSchema = z.object({
+  event_id: UUIDSchema,
+  identity_id: UUIDSchema,
+  task_id: UUIDSchema.nullable().optional(),
+  kind: z.string(),
+  payload: z.unknown(),
+  occurred_at: TimestampSchema,
+  created_at: TimestampSchema,
+})
+export type Event = z.infer<typeof EventSchema>

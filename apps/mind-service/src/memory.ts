@@ -2,9 +2,9 @@
 // MindOS - Memory Systems
 // =============================================================================
 
-import { query, queryOne, queryAll } from "./db.js"
+import { query, queryAll, queryOne } from "./db.js"
 import { createLogger } from "./logger.js"
-import type { Event, SemanticMemory, MemoryQuery, MemorySearchResult, Skill, KGEdge } from "./types.js"
+import type { Event, KGEdge, MemorySearchResult, SemanticMemory, Skill } from "./types.js"
 
 const log = createLogger("memory")
 
@@ -35,7 +35,11 @@ export async function recordEvent(
     [identityId, taskId ?? null, kind, JSON.stringify(payload)]
   )
 
-  const eventId = result.rows[0].event_id
+  const row = result.rows[0]
+  if (!row) {
+    throw new Error("Failed to insert event record")
+  }
+  const eventId = row.event_id
   log.debug({ eventId, kind }, "Event recorded")
   return eventId
 }
@@ -136,7 +140,11 @@ export async function storeSemanticMemory(
     [identityId, content, embeddingStr, metadata ? JSON.stringify(metadata) : null, sourceEventId]
   )
 
-  const memoryId = result.rows[0].memory_id
+  const row = result.rows[0]
+  if (!row) {
+    throw new Error("Failed to insert semantic memory record")
+  }
+  const memoryId = row.memory_id
   log.debug({ memoryId }, "Semantic memory stored")
   return memoryId
 }
@@ -272,7 +280,11 @@ export async function storeSkill(
     ]
   )
 
-  return result.rows[0].skill_id
+  const row = result.rows[0]
+  if (!row) {
+    throw new Error("Failed to insert/update skill record")
+  }
+  return row.skill_id
 }
 
 export async function findMatchingSkills(
@@ -298,10 +310,7 @@ export async function findMatchingSkills(
   return rows.map(rowToSkill)
 }
 
-export async function updateSkillStats(
-  skillId: string,
-  success: boolean
-): Promise<void> {
+export async function updateSkillStats(skillId: string, success: boolean): Promise<void> {
   // Update execution count and recalculate success rate
   await query(
     `UPDATE skills
@@ -328,6 +337,7 @@ function rowToSkill(row: SkillRow): Skill {
     version: row.version,
     created_at: row.created_at.toISOString(),
     updated_at: row.updated_at.toISOString(),
+    deprecated: false, // Default value - not stored in DB yet
   }
 }
 
@@ -386,7 +396,11 @@ export async function storeKGEdge(
     ]
   )
 
-  return result.rows[0].edge_id
+  const row = result.rows[0]
+  if (!row) {
+    throw new Error("Failed to insert KG edge record")
+  }
+  return row.edge_id
 }
 
 export async function queryKG(
@@ -415,7 +429,9 @@ export async function queryKG(
   }
 
   if (asOf) {
-    conditions.push(`valid_from <= $${paramIndex} AND (valid_to IS NULL OR valid_to > $${paramIndex})`)
+    conditions.push(
+      `valid_from <= $${paramIndex} AND (valid_to IS NULL OR valid_to > $${paramIndex})`
+    )
     params.push(asOf)
     paramIndex++
   } else {

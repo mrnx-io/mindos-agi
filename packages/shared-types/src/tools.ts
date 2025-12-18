@@ -3,7 +3,7 @@
 // =============================================================================
 
 import { z } from "zod"
-import { UUIDSchema, JSONSchema } from "./schemas.js"
+import { JSONSchema, UUIDSchema } from "./schemas.js"
 
 // -----------------------------------------------------------------------------
 // Tool Mode
@@ -26,6 +26,11 @@ export const ToolSchema = z.object({
   annotations: JSONSchema.nullable().optional(),
   schema_hash: z.string(),
 
+  // Alias fields for backwards compatibility
+  name: z.string().optional(), // Alias for tool_name
+  parameters: JSONSchema.optional(), // Alias for input_schema
+  risk_level: z.enum(["low", "medium", "high"]).optional(), // Risk classification
+
   // Hints
   read_only_hint: z.boolean().optional(),
   destructive_hint: z.boolean().optional(),
@@ -40,6 +45,9 @@ export const ToolSchema = z.object({
 
   // Health
   health_status: z.enum(["healthy", "degraded", "unhealthy", "unknown"]).optional(),
+
+  // Performance estimates
+  estimated_duration_ms: z.number().int().min(0).optional(),
 })
 export type Tool = z.infer<typeof ToolSchema>
 
@@ -57,12 +65,14 @@ export type ToolSearchRequest = z.infer<typeof ToolSearchRequestSchema>
 
 export const ToolSearchResultSchema = z.object({
   query: z.string(),
-  tools: z.array(z.object({
-    name: z.string(),
-    description: z.string(),
-    inputSchema: JSONSchema.optional(),
-    score: z.number().optional(),
-  })),
+  tools: z.array(
+    z.object({
+      name: z.string(),
+      description: z.string(),
+      inputSchema: JSONSchema.optional(),
+      score: z.number().optional(),
+    })
+  ),
 })
 export type ToolSearchResult = z.infer<typeof ToolSearchResultSchema>
 
@@ -93,25 +103,56 @@ export const ToolCallResultSchema = z.object({
 export type ToolCallResult = z.infer<typeof ToolCallResultSchema>
 
 // -----------------------------------------------------------------------------
-// Tool Program (LLM-generated code)
+// Tool Program Step (for step-based programs)
+// -----------------------------------------------------------------------------
+
+export const ToolProgramStepSchema = z.object({
+  step_id: z.string(),
+  sequence: z.number().int().min(0),
+  description: z.string(),
+  tool: z.string(),
+  parameters: z.record(z.unknown()),
+  condition: z.string().optional(),
+  on_error: z.enum(["abort", "skip", "retry"]).default("abort"),
+  max_retries: z.number().int().min(0).default(0),
+  output_as: z.string().optional(),
+})
+export type ToolProgramStep = z.infer<typeof ToolProgramStepSchema>
+
+// -----------------------------------------------------------------------------
+// Tool Program (supports both code-based and step-based)
 // -----------------------------------------------------------------------------
 
 export const ToolProgramSchema = z.object({
+  // Common fields
   objective: z.string(),
   input: JSONSchema,
+
+  // Code-based program (LLM-generated code)
   code: z.string(),
   compiler_notes: z.string().optional(),
   verifier_issues: z.array(z.string()).optional(),
+
+  // Step-based program
+  program_id: z.string().optional(),
+  name: z.string().optional(),
+  description: z.string().optional(),
+  steps: z.array(ToolProgramStepSchema).optional(),
+  requires_approval: z.boolean().optional(),
+  max_parallel: z.number().int().min(1).optional(),
+  created_at: z.string().optional(),
 })
 export type ToolProgram = z.infer<typeof ToolProgramSchema>
 
 export const ToolProgramResultSchema = z.object({
   ok: z.boolean(),
   objective: z.string(),
-  toolCandidates: z.array(z.object({
-    name: z.string(),
-    description: z.string(),
-  })),
+  toolCandidates: z.array(
+    z.object({
+      name: z.string(),
+      description: z.string(),
+    })
+  ),
   code: z.string(),
   compilerNotes: z.string(),
   verifierIssues: z.array(z.string()),
@@ -131,11 +172,13 @@ export const PreflightResultSchema = z.object({
   plan: z.string(),
   parameters: JSONSchema,
   concerns: z.array(z.string()),
-  checks: z.array(z.object({
-    check: z.string(),
-    passed: z.boolean(),
-    details: z.string().optional(),
-  })),
+  checks: z.array(
+    z.object({
+      check: z.string(),
+      passed: z.boolean(),
+      details: z.string().optional(),
+    })
+  ),
 })
 export type PreflightResult = z.infer<typeof PreflightResultSchema>
 
@@ -177,3 +220,82 @@ export const McpServerStatusSchema = z.object({
   toolCount: z.number().int().min(0).optional(),
 })
 export type McpServerStatus = z.infer<typeof McpServerStatusSchema>
+
+// -----------------------------------------------------------------------------
+// xAI Agent Tools
+// -----------------------------------------------------------------------------
+
+export const XaiAgentToolTypeSchema = z.enum([
+  "web_search",
+  "x_search",
+  "code_execution",
+  "collections_search",
+  "mcp",
+])
+export type XaiAgentToolType = z.infer<typeof XaiAgentToolTypeSchema>
+
+export const XaiAgentToolSchema = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("web_search") }),
+  z.object({ type: z.literal("x_search") }),
+  z.object({ type: z.literal("code_execution") }),
+  z.object({ type: z.literal("collections_search") }),
+  z.object({
+    type: z.literal("mcp"),
+    server_label: z.string(),
+    server_url: z.string().url(),
+    allowed_tools: z.array(z.string()).optional(),
+  }),
+])
+export type XaiAgentTool = z.infer<typeof XaiAgentToolSchema>
+
+export const ToolProviderSchema = z.enum(["xai", "mindos", "both"])
+export type ToolProvider = z.infer<typeof ToolProviderSchema>
+
+export const ToolRoutingDecisionSchema = z.object({
+  provider: ToolProviderSchema,
+  reason: z.string(),
+  xaiTool: XaiAgentToolTypeSchema.optional(),
+  mindosTool: z.string().optional(),
+})
+export type ToolRoutingDecision = z.infer<typeof ToolRoutingDecisionSchema>
+
+export const HybridToolResultSchema = z.object({
+  provider: ToolProviderSchema,
+  xaiContent: z.string().nullable().optional(),
+  mindosOutput: JSONSchema.optional(),
+  evidenceId: z.string().optional(),
+  crossVerified: z.boolean().optional(),
+  confidence: z.number().min(0).max(1).optional(),
+  latencyMs: z.number().int().min(0).optional(),
+})
+export type HybridToolResult = z.infer<typeof HybridToolResultSchema>
+
+// -----------------------------------------------------------------------------
+// On-Demand Tool Discovery
+// -----------------------------------------------------------------------------
+
+export const ToolRequestBlockSchema = z.object({
+  capability: z.string(),
+  reason: z.string(),
+  priority: z.enum(["high", "medium", "low"]).optional(),
+})
+export type ToolRequestBlock = z.infer<typeof ToolRequestBlockSchema>
+
+export const ToolDiscoveryOptionsSchema = z.object({
+  initialTopK: z.number().int().min(1).max(50).optional(),
+  expansionTopK: z.number().int().min(1).max(20).optional(),
+  minSimilarity: z.number().min(0).max(1).optional(),
+  enableProactive: z.boolean().optional(),
+  cacheEnabled: z.boolean().optional(),
+})
+export type ToolDiscoveryOptions = z.infer<typeof ToolDiscoveryOptionsSchema>
+
+export const ToolDiscoveryModeSchema = z.enum(["initial", "proactive", "expansion", "fallback"])
+export type ToolDiscoveryMode = z.infer<typeof ToolDiscoveryModeSchema>
+
+export const ToolDiscoveryStatsSchema = z.object({
+  totalDiscovered: z.number().int().min(0),
+  estimatedTokensSaved: z.number().int().min(0),
+  primaryMode: ToolDiscoveryModeSchema,
+})
+export type ToolDiscoveryStats = z.infer<typeof ToolDiscoveryStatsSchema>

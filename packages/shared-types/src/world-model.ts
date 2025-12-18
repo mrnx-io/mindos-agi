@@ -3,17 +3,17 @@
 // =============================================================================
 
 import { z } from "zod"
-import { UUIDSchema, TimestampSchema, JSONSchema, ActionSchema } from "./schemas.js"
+import { ActionSchema, JSONSchema, TimestampSchema, UUIDSchema } from "./schemas.js"
 
 // -----------------------------------------------------------------------------
 // World State
 // -----------------------------------------------------------------------------
 
 export const WorldStateKindSchema = z.enum([
-  "snapshot",      // Current state capture
-  "prediction",    // Predicted future state
+  "snapshot", // Current state capture
+  "prediction", // Predicted future state
   "counterfactual", // "What if" scenario
-  "checkpoint",    // Saved rollback point
+  "checkpoint", // Saved rollback point
 ])
 export type WorldStateKind = z.infer<typeof WorldStateKindSchema>
 
@@ -92,11 +92,13 @@ export const SimulationOutcomeSchema = z.object({
   resulting_state: WorldStateSchema,
   probability: z.number().min(0).max(1),
   utility: z.number(), // Estimated value (can be negative)
-  risks: z.array(z.object({
-    risk: z.string(),
-    probability: z.number().min(0).max(1),
-    severity: z.number().min(0).max(1),
-  })),
+  risks: z.array(
+    z.object({
+      risk: z.string(),
+      probability: z.number().min(0).max(1),
+      severity: z.number().min(0).max(1),
+    })
+  ),
   side_effects: z.array(z.string()),
   reversibility: z.enum(["instant", "reversible", "partially_reversible", "irreversible"]),
 })
@@ -124,11 +126,13 @@ export const PredictionSchema = z.object({
   conditions: z.array(z.string()),
   probability: z.number().min(0).max(1),
   confidence: z.number().min(0).max(1),
-  based_on: z.array(z.object({
-    type: z.enum(["evidence", "simulation", "pattern", "rule"]),
-    reference: z.string(),
-    weight: z.number().min(0).max(1),
-  })),
+  based_on: z.array(
+    z.object({
+      type: z.enum(["evidence", "simulation", "pattern", "rule"]),
+      reference: z.string(),
+      weight: z.number().min(0).max(1),
+    })
+  ),
   verification_status: z.enum([
     "pending",
     "verified_correct",
@@ -148,12 +152,14 @@ export type Prediction = z.infer<typeof PredictionSchema>
 export const StateDiffSchema = z.object({
   before_state_id: UUIDSchema,
   after_state_id: UUIDSchema,
-  changes: z.array(z.object({
-    path: z.string(), // JSON path
-    before: JSONSchema.nullable(),
-    after: JSONSchema.nullable(),
-    change_type: z.enum(["added", "removed", "modified"]),
-  })),
+  changes: z.array(
+    z.object({
+      path: z.string(), // JSON path
+      before: JSONSchema.nullable(),
+      after: JSONSchema.nullable(),
+      change_type: z.enum(["added", "removed", "modified"]),
+    })
+  ),
   summary: z.string(),
 })
 export type StateDiff = z.infer<typeof StateDiffSchema>

@@ -76,7 +76,13 @@ export type HardStopResult = z.infer<typeof HardStopResultSchema>
 // Approval Types
 // -----------------------------------------------------------------------------
 
-export const ApprovalStatusSchema = z.enum(["pending", "approved", "rejected", "expired", "auto_approved"])
+export const ApprovalStatusSchema = z.enum([
+  "pending",
+  "approved",
+  "rejected",
+  "expired",
+  "auto_approved",
+])
 
 export type ApprovalStatus = z.infer<typeof ApprovalStatusSchema>
 

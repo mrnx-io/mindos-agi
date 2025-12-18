@@ -21,6 +21,7 @@ const env = {
   OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? "",
   WIKIPEDIA_API_URL: process.env.WIKIPEDIA_API_URL ?? "https://en.wikipedia.org/api/rest_v1",
   BRAVE_API_KEY: process.env.BRAVE_API_KEY ?? "",
+  GROUNDING_MODEL: process.env.GROUNDING_MODEL ?? "gpt-5.2-mini",
   LOG_LEVEL: process.env.LOG_LEVEL ?? "info",
 }
 
@@ -171,7 +172,7 @@ async function analyzeWithLLM(
     .join("\n\n")
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: env.GROUNDING_MODEL,
     messages: [
       {
         role: "system",
@@ -279,9 +280,9 @@ async function verifyClaim(req: VerificationRequest): Promise<VerificationResult
 // -----------------------------------------------------------------------------
 
 async function crossVerifyToolOutput(
-  toolName: string,
-  output: unknown,
-  expectedBehavior: string
+  _toolName: string,
+  _output: unknown,
+  _expectedBehavior: string
 ): Promise<{
   consistent: boolean
   discrepancies: string[]
@@ -315,7 +316,7 @@ app.get("/health", async () => ({
 }))
 
 // Verify claim
-app.post("/verify", async (request, reply) => {
+app.post("/verify", async (request, _reply) => {
   const body = VerifyClaimSchema.parse(request.body)
 
   logger.info({ claim: body.claim }, "Verification request received")
@@ -352,7 +353,7 @@ app.get("/verifications/:id", async (request, reply) => {
 })
 
 // Cross-verify tool output
-app.post("/cross-verify", async (request, reply) => {
+app.post("/cross-verify", async (request, _reply) => {
   const body = z
     .object({
       tool_name: z.string(),

@@ -2,15 +2,15 @@
 // MindOS - Policy Engine
 // =============================================================================
 
-import { query, queryOne } from "./db.js"
 import { env } from "./config.js"
+import { query, queryOne } from "./db.js"
 import { createLogger } from "./logger.js"
 import type {
   Action,
   PolicyDecision,
   PolicyProfile,
-  RiskAssessment,
   PolicyVerdict,
+  RiskAssessment,
   RiskLevel,
 } from "./types.js"
 
@@ -85,10 +85,7 @@ const RISK_WEIGHTS: Record<string, number> = {
 // Policy Evaluation
 // -----------------------------------------------------------------------------
 
-export async function evaluatePolicy(
-  action: Action,
-  identityId: string
-): Promise<PolicyDecision> {
+export async function evaluatePolicy(action: Action, identityId: string): Promise<PolicyDecision> {
   const startTime = Date.now()
 
   // Load policy profile for this identity
@@ -100,7 +97,7 @@ export async function evaluatePolicy(
     log.warn({ action, reason: hardStopResult.reason }, "Action blocked by hard stop")
     return {
       verdict: "block",
-      reason: hardStopResult.reason!,
+      reason: hardStopResult.reason ?? "Hard stop triggered",
       risk_level: "critical",
       risk_score: 1.0,
       requires_approval: false,
@@ -116,8 +113,7 @@ export async function evaluatePolicy(
   const verdict = determineVerdict(riskAssessment.score, profile)
 
   // Generate mitigations if needed
-  const mitigations =
-    verdict !== "allow" ? generateMitigations(action, riskAssessment) : []
+  const mitigations = verdict !== "allow" ? generateMitigations(action, riskAssessment) : []
 
   const decision: PolicyDecision = {
     verdict,
@@ -202,9 +198,7 @@ function assessRisk(action: Action, profile: PolicyProfile): RiskAssessment {
   factors.push({ factor: "reversibility", weight: 0.15, score: reversibilityRisk })
 
   // Historical success rate (if available)
-  const historicalRisk = profile.historical_success_rate
-    ? 1 - profile.historical_success_rate
-    : 0.5
+  const historicalRisk = profile.historical_success_rate ? 1 - profile.historical_success_rate : 0.5
   factors.push({ factor: "historical", weight: 0.1, score: historicalRisk })
 
   // Calculate weighted score
@@ -252,16 +246,16 @@ function assessDataSensitivity(action: Action): number {
   const content = JSON.stringify(action).toLowerCase()
 
   if (content.includes("password") || content.includes("secret") || content.includes("token")) {
-    return RISK_WEIGHTS["data:credentials"]
+    return RISK_WEIGHTS["data:credentials"] ?? 0.9
   }
   if (content.includes("email") || content.includes("phone") || content.includes("ssn")) {
-    return RISK_WEIGHTS["data:pii"]
+    return RISK_WEIGHTS["data:pii"] ?? 0.7
   }
   if (content.includes("internal") || content.includes("private")) {
-    return RISK_WEIGHTS["data:internal"]
+    return RISK_WEIGHTS["data:internal"] ?? 0.2
   }
 
-  return RISK_WEIGHTS["data:public"]
+  return RISK_WEIGHTS["data:public"] ?? 0.0
 }
 
 function assessScope(action: Action): number {
@@ -270,38 +264,48 @@ function assessScope(action: Action): number {
     const tool = action.tool?.toLowerCase() ?? ""
 
     if (tool.includes("external") || tool.includes("api") || tool.includes("http")) {
-      return RISK_WEIGHTS["scope:external"]
+      return RISK_WEIGHTS["scope:external"] ?? 0.8
     }
     if (tool.includes("system") || tool.includes("os")) {
-      return RISK_WEIGHTS["scope:system"]
+      return RISK_WEIGHTS["scope:system"] ?? 0.6
     }
     if (tool.includes("project") || tool.includes("repo")) {
-      return RISK_WEIGHTS["scope:project"]
+      return RISK_WEIGHTS["scope:project"] ?? 0.3
     }
   }
 
-  return RISK_WEIGHTS["scope:local"]
+  return RISK_WEIGHTS["scope:local"] ?? 0.1
+}
+
+// Reversibility risk patterns (highest to lowest risk)
+const TOOL_REVERSIBILITY_PATTERNS = [
+  { keywords: ["delete", "drop", "truncate"], riskKey: "reversible:impossible", defaultValue: 0.8 },
+  { keywords: ["update", "modify"], riskKey: "reversible:difficult", defaultValue: 0.4 },
+  { keywords: ["write", "create"], riskKey: "reversible:easy", defaultValue: 0.1 },
+  { keywords: ["read", "get"], riskKey: "reversible:instant", defaultValue: 0.0 },
+] as const
+
+function findMatchingReversibilityPattern(tool: string) {
+  return TOOL_REVERSIBILITY_PATTERNS.find((pattern) =>
+    pattern.keywords.some((keyword) => tool.includes(keyword))
+  )
 }
 
 function assessReversibility(action: Action): number {
-  if (action.kind === "tool_call") {
-    const tool = action.tool?.toLowerCase() ?? ""
+  const defaultRisk = RISK_WEIGHTS["reversible:easy"] ?? 0.1
 
-    if (tool.includes("delete") || tool.includes("drop") || tool.includes("truncate")) {
-      return RISK_WEIGHTS["reversible:impossible"]
-    }
-    if (tool.includes("update") || tool.includes("modify")) {
-      return RISK_WEIGHTS["reversible:difficult"]
-    }
-    if (tool.includes("write") || tool.includes("create")) {
-      return RISK_WEIGHTS["reversible:easy"]
-    }
-    if (tool.includes("read") || tool.includes("get")) {
-      return RISK_WEIGHTS["reversible:instant"]
-    }
+  if (action.kind !== "tool_call") {
+    return defaultRisk
   }
 
-  return RISK_WEIGHTS["reversible:easy"]
+  const tool = action.tool?.toLowerCase() ?? ""
+  const pattern = findMatchingReversibilityPattern(tool)
+
+  if (pattern) {
+    return RISK_WEIGHTS[pattern.riskKey] ?? pattern.defaultValue
+  }
+
+  return defaultRisk
 }
 
 function applyProfileModifiers(score: number, profile: PolicyProfile): number {
@@ -359,10 +363,7 @@ function determineVerdict(score: number, profile: PolicyProfile): PolicyVerdict 
 // Mitigations
 // -----------------------------------------------------------------------------
 
-function generateMitigations(
-  action: Action,
-  assessment: RiskAssessment
-): string[] {
+function generateMitigations(action: Action, assessment: RiskAssessment): string[] {
   const mitigations: string[] = []
 
   if (assessment.score >= 0.7) {
@@ -405,6 +406,14 @@ async function loadPolicyProfile(identityId: string): Promise<PolicyProfile> {
       block_threshold: env.RISK_THRESHOLD_BLOCK,
       allowed_tools: [],
       blocked_tools: [],
+      // Legacy fields with defaults
+      mode: "human_gated",
+      risk_threshold: env.RISK_THRESHOLD_AUTO,
+      max_iterations: 20,
+      allowed_tool_globs: ["*"],
+      denied_tool_globs: [],
+      hard_stop_keywords: [],
+      warning_keywords: [],
     }
   }
 
@@ -428,8 +437,12 @@ export async function createApprovalRequest(
     [taskId, stepId, JSON.stringify(action), decision.risk_score]
   )
 
-  log.info({ approvalId: result.rows[0].approval_id, taskId, stepId }, "Approval request created")
-  return result.rows[0].approval_id
+  const row = result.rows[0]
+  if (!row) {
+    throw new Error("Failed to create approval request")
+  }
+  log.info({ approvalId: row.approval_id, taskId, stepId }, "Approval request created")
+  return row.approval_id
 }
 
 export async function checkApprovalStatus(
@@ -444,9 +457,15 @@ export async function checkApprovalStatus(
     throw new Error(`Approval not found: ${approvalId}`)
   }
 
+  // With exactOptionalPropertyTypes, only include approved_by when it has a value
+  if (row.approved_by) {
+    return {
+      status: row.status,
+      approved_by: row.approved_by,
+    }
+  }
   return {
     status: row.status,
-    approved_by: row.approved_by ?? undefined,
   }
 }
 

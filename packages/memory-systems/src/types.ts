@@ -76,7 +76,14 @@ export type Procedure = z.infer<typeof ProcedureSchema>
 export const LifeEventSchema = z.object({
   event_id: z.string().uuid(),
   identity_id: z.string().uuid(),
-  event_type: z.enum(["milestone", "turning_point", "lesson_learned", "relationship_change", "capability_gain", "value_shift"]),
+  event_type: z.enum([
+    "milestone",
+    "turning_point",
+    "lesson_learned",
+    "relationship_change",
+    "capability_gain",
+    "value_shift",
+  ]),
   title: z.string(),
   narrative: z.string(),
   significance: z.number().min(0).max(1),

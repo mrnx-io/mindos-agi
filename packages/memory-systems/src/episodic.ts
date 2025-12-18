@@ -88,7 +88,7 @@ export function createEpisodicMemory(pool: pg.Pool): EpisodicMemory {
   }
 
   async function search(identityId: string, query: MemoryQuery): Promise<Episode[]> {
-    let sql = `SELECT * FROM events WHERE identity_id = $1`
+    let sql = "SELECT * FROM events WHERE identity_id = $1"
     const params: unknown[] = [identityId]
     let paramIndex = 2
 
@@ -117,7 +117,7 @@ export function createEpisodicMemory(pool: pg.Pool): EpisodicMemory {
     return result.rows.map(rowToEpisode)
   }
 
-  async function getRecent(identityId: string, limit: number = 10): Promise<Episode[]> {
+  async function getRecent(identityId: string, limit = 10): Promise<Episode[]> {
     const result = await pool.query(
       `SELECT * FROM events
        WHERE identity_id = $1
@@ -172,10 +172,9 @@ export function createEpisodicMemory(pool: pg.Pool): EpisodicMemory {
         memoriesCreated++
 
         // Archive episodes
-        await pool.query(
-          `UPDATE events SET archived = true WHERE event_id = ANY($1)`,
-          [episodes.map((e) => e.event_id)]
-        )
+        await pool.query("UPDATE events SET archived = true WHERE event_id = ANY($1)", [
+          episodes.map((e) => e.event_id),
+        ])
         episodesArchived += episodes.length
       }
     }
@@ -188,17 +187,14 @@ export function createEpisodicMemory(pool: pg.Pool): EpisodicMemory {
   }
 
   async function forget(episodeId: string): Promise<void> {
-    await pool.query(
-      `DELETE FROM events WHERE event_id = $1`,
-      [episodeId]
-    )
+    await pool.query("DELETE FROM events WHERE event_id = $1", [episodeId])
   }
 
   async function updateImportance(episodeId: string, importance: number): Promise<void> {
-    await pool.query(
-      `UPDATE events SET importance = $1 WHERE event_id = $2`,
-      [Math.max(0, Math.min(1, importance)), episodeId]
-    )
+    await pool.query("UPDATE events SET importance = $1 WHERE event_id = $2", [
+      Math.max(0, Math.min(1, importance)),
+      episodeId,
+    ])
   }
 
   return {
@@ -223,7 +219,7 @@ function rowToEpisode(row: Record<string, unknown>): Episode {
     episode_id: row.event_id as string,
     identity_id: row.identity_id as string,
     event_type: row.event_type as string,
-    content: payload?.content as Record<string, unknown> ?? {},
+    content: (payload?.content as Record<string, unknown>) ?? {},
     context: payload?.context as Record<string, unknown> | undefined,
     timestamp: row.timestamp as string,
     importance: (row.importance as number) ?? 0.5,

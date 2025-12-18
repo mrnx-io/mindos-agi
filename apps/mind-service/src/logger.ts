@@ -5,23 +5,30 @@
 import pino from "pino"
 import { env } from "./config.js"
 
-export const logger = pino({
+const loggerOptions = {
   level: env.LOG_LEVEL,
-  transport:
-    process.env.NODE_ENV !== "production"
-      ? {
+  base: {
+    service: "mind-service",
+  },
+}
+
+// Add pretty printing in development only
+// Using spread to avoid exactOptionalPropertyTypes issues with undefined
+export const logger = pino(
+  process.env.NODE_ENV !== "production"
+    ? {
+        ...loggerOptions,
+        transport: {
           target: "pino-pretty",
           options: {
             colorize: true,
             translateTime: "SYS:standard",
             ignore: "pid,hostname",
           },
-        }
-      : undefined,
-  base: {
-    service: "mind-service",
-  },
-})
+        },
+      }
+    : loggerOptions
+)
 
 // Create child loggers for different modules
 export function createLogger(module: string) {

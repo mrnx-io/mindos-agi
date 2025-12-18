@@ -3,12 +3,7 @@
 // =============================================================================
 
 import type pg from "pg"
-import type {
-  WorldState,
-  SimulationConfig,
-  SimulationResult,
-  Entity,
-} from "./types.js"
+import type { Entity, SimulationConfig, SimulationResult, WorldState } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Simulator Engine
@@ -74,7 +69,7 @@ export function createWorldModelSimulator(pool: pg.Pool): WorldModelSimulator {
   async function captureState(identityId: string): Promise<WorldState> {
     // Fetch entities from knowledge graph
     const entitiesResult = await pool.query(
-      `SELECT * FROM knowledge_graph_entities WHERE identity_id = $1`,
+      "SELECT * FROM knowledge_graph_entities WHERE identity_id = $1",
       [identityId]
     )
 
@@ -97,9 +92,10 @@ export function createWorldModelSimulator(pool: pg.Pool): WorldModelSimulator {
     const activeGoals = goalsResult.rows.map((r) => r.task_id)
 
     // Calculate uncertainty
-    const avgConfidence = entities.length > 0
-      ? entities.reduce((sum, e) => sum + e.confidence, 0) / entities.length
-      : 0.5
+    const avgConfidence =
+      entities.length > 0
+        ? entities.reduce((sum, e) => sum + e.confidence, 0) / entities.length
+        : 0.5
 
     const uncertaintyPerEntity: Record<string, number> = {}
     for (const entity of entities) {
@@ -175,9 +171,10 @@ export function createWorldModelSimulator(pool: pg.Pool): WorldModelSimulator {
       sideEffects.push(...effects)
 
       // Move to most likely state for next action
-      currentState = branches.reduce((best, branch) =>
-        branch.probability > best.probability ? branch : best
-      , branches[0]).state
+      currentState = branches.reduce(
+        (best, branch) => (branch.probability > best.probability ? branch : best),
+        branches[0]
+      ).state
 
       pathHistory.push(currentState.state_id)
     }
@@ -213,7 +210,7 @@ export function createWorldModelSimulator(pool: pg.Pool): WorldModelSimulator {
   function applyAction(
     action: ActionInput,
     state: WorldState,
-    config: SimulationConfig
+    _config: SimulationConfig
   ): {
     newState: WorldState
     effects: SimulationResult["side_effects"]
@@ -229,9 +226,9 @@ export function createWorldModelSimulator(pool: pg.Pool): WorldModelSimulator {
       case "create_entity": {
         const entity: Entity = {
           entity_id: crypto.randomUUID(),
-          type: action.parameters.type as string ?? "unknown",
-          name: action.parameters.name as string ?? "Unnamed",
-          properties: action.parameters.properties as Record<string, unknown> ?? {},
+          type: (action.parameters.type as string) ?? "unknown",
+          name: (action.parameters.name as string) ?? "Unnamed",
+          properties: (action.parameters.properties as Record<string, unknown>) ?? {},
           relationships: [],
           last_observed: newState.timestamp,
           confidence: 0.9,
@@ -257,9 +254,7 @@ export function createWorldModelSimulator(pool: pg.Pool): WorldModelSimulator {
 
         // Remove relationships to deleted entity
         for (const entity of newState.entities) {
-          entity.relationships = entity.relationships.filter(
-            (r) => r.target_id !== targetId
-          )
+          entity.relationships = entity.relationships.filter((r) => r.target_id !== targetId)
         }
 
         effects.push({
@@ -337,7 +332,7 @@ export function createWorldModelSimulator(pool: pg.Pool): WorldModelSimulator {
 
   function generateBranches(
     state: WorldState,
-    action: ActionInput,
+    _action: ActionInput,
     config: SimulationConfig
   ): Array<{ state: WorldState; probability: number }> {
     const branches: Array<{ state: WorldState; probability: number }> = []
@@ -400,9 +395,11 @@ export function createWorldModelSimulator(pool: pg.Pool): WorldModelSimulator {
       critical: 1.0,
     }
 
-    const effectRisk = sideEffects.length > 0
-      ? sideEffects.reduce((sum, e) => sum + (severityWeights[e.severity] ?? 0), 0) / sideEffects.length
-      : 0
+    const effectRisk =
+      sideEffects.length > 0
+        ? sideEffects.reduce((sum, e) => sum + (severityWeights[e.severity] ?? 0), 0) /
+          sideEffects.length
+        : 0
 
     const overallRisk = Math.min((failureProbability + effectRisk) / 2, 1)
 
@@ -414,7 +411,8 @@ export function createWorldModelSimulator(pool: pg.Pool): WorldModelSimulator {
     return {
       overall_risk: overallRisk,
       failure_probability: failureProbability,
-      worst_case_outcome: sortedByUncertainty[sortedByUncertainty.length - 1]?.state.state_id ?? "unknown",
+      worst_case_outcome:
+        sortedByUncertainty[sortedByUncertainty.length - 1]?.state.state_id ?? "unknown",
       best_case_outcome: sortedByUncertainty[0]?.state.state_id ?? "unknown",
     }
   }
@@ -497,10 +495,9 @@ export function createWorldModelSimulator(pool: pg.Pool): WorldModelSimulator {
     }
 
     // Load from database
-    const result = await pool.query(
-      `SELECT * FROM world_model_states WHERE state_id = $1`,
-      [stateId]
-    )
+    const result = await pool.query("SELECT * FROM world_model_states WHERE state_id = $1", [
+      stateId,
+    ])
 
     if (result.rows.length === 0) {
       throw new Error(`State ${stateId} not found`)

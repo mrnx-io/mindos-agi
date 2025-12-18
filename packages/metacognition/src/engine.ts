@@ -4,13 +4,13 @@
 
 import type pg from "pg"
 import type {
-  SelfObservation,
-  ConfidenceInterval,
-  Hypothesis,
-  IntrospectionTrigger,
-  IntrospectionResult,
   Belief,
   BeliefUpdate,
+  ConfidenceInterval,
+  Hypothesis,
+  IntrospectionResult,
+  IntrospectionTrigger,
+  SelfObservation,
 } from "./types.js"
 
 // -----------------------------------------------------------------------------
@@ -37,7 +37,10 @@ export interface MetacognitiveEngine {
   resolveConflict(conflictId: string, resolution: ConflictResolution): Promise<Belief[]>
 
   // Introspection
-  triggerIntrospection(trigger: IntrospectionTrigger, identityId: string): Promise<IntrospectionResult>
+  triggerIntrospection(
+    trigger: IntrospectionTrigger,
+    identityId: string
+  ): Promise<IntrospectionResult>
   scheduleIntrospection(identityId: string, intervalMs: number): void
 }
 
@@ -144,10 +147,7 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
     return observation
   }
 
-  async function getRecentObservations(
-    identityId: string,
-    limit = 50
-  ): Promise<SelfObservation[]> {
+  async function getRecentObservations(identityId: string, limit = 50): Promise<SelfObservation[]> {
     const result = await pool.query(
       `SELECT * FROM metacognitive_observations
        WHERE identity_id = $1
@@ -177,16 +177,18 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
       [identityId]
     )
 
-    const successRate = recentTasks.rows.length > 0
-      ? recentTasks.rows.filter((t) => t.status === "completed").length / recentTasks.rows.length
-      : 0.5
+    const successRate =
+      recentTasks.rows.length > 0
+        ? recentTasks.rows.filter((t) => t.status === "completed").length / recentTasks.rows.length
+        : 0.5
 
     // Calculate cognitive load
     const activeTasks = recentTasks.rows.filter((t) => t.status === "in_progress").length
     const cognitiveLoad = Math.min(activeTasks / 5, 1)
 
     // Analyze action patterns
-    const actionDiversity = new Set(context.recent_actions).size / Math.max(context.recent_actions.length, 1)
+    const actionDiversity =
+      new Set(context.recent_actions).size / Math.max(context.recent_actions.length, 1)
 
     return {
       success_rate: successRate,
@@ -208,9 +210,10 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
 
     if (failureRecoveries.rows.length === 0) return 0.5
 
-    const avgRecoveryTime = failureRecoveries.rows.reduce((sum, row) => {
-      return sum + (new Date(row.resolved_at).getTime() - new Date(row.created_at).getTime())
-    }, 0) / failureRecoveries.rows.length
+    const avgRecoveryTime =
+      failureRecoveries.rows.reduce((sum, row) => {
+        return sum + (new Date(row.resolved_at).getTime() - new Date(row.created_at).getTime())
+      }, 0) / failureRecoveries.rows.length
 
     // Normalize: faster recovery = higher adaptation rate
     const maxRecoveryTime = 3600000 // 1 hour
@@ -227,9 +230,10 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
   ): Promise<ConfidenceInterval> {
     // Calculate point estimate from evidence
     const reliabilities = evidence.map((e) => e.reliability)
-    const avgReliability = reliabilities.length > 0
-      ? reliabilities.reduce((a, b) => a + b, 0) / reliabilities.length
-      : 0.5
+    const avgReliability =
+      reliabilities.length > 0
+        ? reliabilities.reduce((a, b) => a + b, 0) / reliabilities.length
+        : 0.5
 
     // Calculate uncertainty based on evidence diversity
     const evidenceTypes = new Set(evidence.map((e) => e.type))
@@ -292,7 +296,7 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
     let underconfidenceSum = 0
 
     for (const [binStr, data] of Object.entries(bins)) {
-      const expectedAccuracy = parseInt(binStr) / 10 + 0.05
+      const expectedAccuracy = Number.parseInt(binStr) / 10 + 0.05
       const actualAccuracy = data.count > 0 ? data.accurate / data.count : 0
       const error = actualAccuracy - expectedAccuracy
 
@@ -407,14 +411,10 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
     return hypotheses
   }
 
-  async function testHypothesis(
-    hypothesisId: string,
-    testResult: TestResult
-  ): Promise<Hypothesis> {
-    const result = await pool.query(
-      `SELECT * FROM hypotheses WHERE hypothesis_id = $1`,
-      [hypothesisId]
-    )
+  async function testHypothesis(hypothesisId: string, testResult: TestResult): Promise<Hypothesis> {
+    const result = await pool.query("SELECT * FROM hypotheses WHERE hypothesis_id = $1", [
+      hypothesisId,
+    ])
 
     if (result.rows.length === 0) {
       throw new Error(`Hypothesis ${hypothesisId} not found`)
@@ -438,16 +438,18 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
     const priorProb = hypothesis.prior_probability
     const likelihoodConfirmed = 0.9
     const likelihoodRejected = 0.1
-    const likelihoodInconclusive = 0.5
+    const _likelihoodInconclusive = 0.5
 
     let posteriorProb: number
     switch (testResult.outcome) {
       case "confirmed":
-        posteriorProb = (priorProb * likelihoodConfirmed) /
+        posteriorProb =
+          (priorProb * likelihoodConfirmed) /
           (priorProb * likelihoodConfirmed + (1 - priorProb) * (1 - likelihoodConfirmed))
         break
       case "rejected":
-        posteriorProb = (priorProb * likelihoodRejected) /
+        posteriorProb =
+          (priorProb * likelihoodRejected) /
           (priorProb * likelihoodRejected + (1 - priorProb) * (1 - likelihoodRejected))
         break
       default:
@@ -572,10 +574,7 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
   }
 
   async function detectBeliefConflicts(identityId: string): Promise<BeliefConflict[]> {
-    const beliefs = await pool.query(
-      `SELECT * FROM beliefs WHERE identity_id = $1`,
-      [identityId]
-    )
+    const beliefs = await pool.query("SELECT * FROM beliefs WHERE identity_id = $1", [identityId])
 
     const conflicts: BeliefConflict[] = []
 
@@ -604,9 +603,190 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
     conflictId: string,
     resolution: ConflictResolution
   ): Promise<Belief[]> {
-    // This would fetch the conflict and apply resolution
-    // For now, return empty array as placeholder
-    return []
+    // Fetch the conflict
+    const conflictResult = await db.query<{
+      conflict_id: string
+      belief_ids: string[]
+      conflict_type: string
+      severity: number
+      detected_at: string
+    }>("SELECT * FROM belief_conflicts WHERE conflict_id = $1 AND resolved_at IS NULL", [
+      conflictId,
+    ])
+
+    if (conflictResult.rows.length === 0) {
+      log.warn({ conflictId }, "Conflict not found or already resolved")
+      return []
+    }
+
+    const conflict = conflictResult.rows[0]
+    const beliefIds = conflict.belief_ids
+
+    // Fetch the conflicting beliefs
+    const beliefsResult = await db.query<{
+      belief_id: string
+      identity_id: string
+      subject: string
+      proposition: string
+      confidence: number
+      evidence_ids: string[]
+      last_updated: string
+      created_at: string
+    }>("SELECT * FROM beliefs WHERE belief_id = ANY($1::uuid[])", [beliefIds])
+
+    const beliefs = beliefsResult.rows
+    if (beliefs.length < 2) {
+      log.warn(
+        { conflictId, beliefCount: beliefs.length },
+        "Insufficient beliefs for conflict resolution"
+      )
+      return []
+    }
+
+    let resolvedBeliefs: typeof beliefs = []
+
+    switch (resolution.resolution_type) {
+      case "accept_newer": {
+        // Keep the most recently updated belief
+        const sorted = [...beliefs].sort(
+          (a, b) => new Date(b.last_updated).getTime() - new Date(a.last_updated).getTime()
+        )
+        resolvedBeliefs = [sorted[0]]
+
+        // Invalidate older beliefs
+        for (let i = 1; i < sorted.length; i++) {
+          await db.query(
+            `UPDATE beliefs SET confidence = 0, invalidated_at = NOW(), invalidation_reason = $1
+             WHERE belief_id = $2`,
+            [`Superseded by newer belief: ${resolution.reasoning}`, sorted[i].belief_id]
+          )
+        }
+        break
+      }
+
+      case "accept_stronger": {
+        // Keep the belief with highest confidence
+        const sorted = [...beliefs].sort((a, b) => b.confidence - a.confidence)
+        resolvedBeliefs = [sorted[0]]
+
+        // Reduce confidence of weaker beliefs
+        for (let i = 1; i < sorted.length; i++) {
+          const newConfidence = sorted[i].confidence * 0.3 // Significantly reduce
+          await db.query(
+            `UPDATE beliefs SET confidence = $1, last_updated = NOW()
+             WHERE belief_id = $2`,
+            [newConfidence, sorted[i].belief_id]
+          )
+        }
+        break
+      }
+
+      case "merge": {
+        // Create a merged belief with combined evidence
+        const allEvidenceIds = beliefs.flatMap((b) => b.evidence_ids)
+        const avgConfidence = beliefs.reduce((sum, b) => sum + b.confidence, 0) / beliefs.length
+
+        // Create merged proposition
+        const mergedProposition = `[Merged from ${beliefs.length} beliefs]: ${beliefs[0].proposition}`
+
+        const insertResult = await db.query<{ belief_id: string }>(
+          `INSERT INTO beliefs (belief_id, identity_id, subject, proposition, confidence, evidence_ids, created_at, last_updated)
+           VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
+           RETURNING belief_id`,
+          [
+            crypto.randomUUID(),
+            beliefs[0].identity_id,
+            beliefs[0].subject,
+            mergedProposition,
+            avgConfidence,
+            allEvidenceIds,
+          ]
+        )
+
+        // Invalidate original beliefs
+        for (const belief of beliefs) {
+          await db.query(
+            `UPDATE beliefs SET confidence = 0, invalidated_at = NOW(), invalidation_reason = $1
+             WHERE belief_id = $2`,
+            [`Merged into: ${insertResult.rows[0].belief_id}`, belief.belief_id]
+          )
+        }
+
+        // Fetch the newly created belief
+        const newBeliefResult = await db.query<(typeof beliefs)[0]>(
+          "SELECT * FROM beliefs WHERE belief_id = $1",
+          [insertResult.rows[0].belief_id]
+        )
+        resolvedBeliefs = newBeliefResult.rows
+        break
+      }
+
+      case "invalidate_all": {
+        // Mark all conflicting beliefs as invalid
+        for (const belief of beliefs) {
+          await db.query(
+            `UPDATE beliefs SET confidence = 0, invalidated_at = NOW(), invalidation_reason = $1
+             WHERE belief_id = $2`,
+            [`Invalidated due to unresolvable conflict: ${resolution.reasoning}`, belief.belief_id]
+          )
+        }
+        resolvedBeliefs = []
+        break
+      }
+
+      case "custom": {
+        // Apply custom resolution from the resolution.custom_resolution object
+        if (resolution.custom_resolution?.accept_belief_ids) {
+          const acceptIds = resolution.custom_resolution.accept_belief_ids as string[]
+          resolvedBeliefs = beliefs.filter((b) => acceptIds.includes(b.belief_id))
+
+          // Adjust confidence of non-accepted beliefs
+          const rejectIds = beliefs
+            .filter((b) => !acceptIds.includes(b.belief_id))
+            .map((b) => b.belief_id)
+
+          if (rejectIds.length > 0) {
+            await db.query(
+              `UPDATE beliefs SET confidence = confidence * 0.5, last_updated = NOW()
+               WHERE belief_id = ANY($1::uuid[])`,
+              [rejectIds]
+            )
+          }
+        }
+        break
+      }
+    }
+
+    // Mark conflict as resolved
+    await db.query(
+      `UPDATE belief_conflicts SET resolved_at = NOW(), resolution_type = $1, resolution_reasoning = $2
+       WHERE conflict_id = $3`,
+      [resolution.resolution_type, resolution.reasoning, conflictId]
+    )
+
+    // Record the resolution in calibration history for learning
+    await db.query(
+      `INSERT INTO belief_conflict_resolutions (resolution_id, conflict_id, resolution_type, reasoning, resolved_belief_ids, created_at)
+       VALUES ($1, $2, $3, $4, $5, NOW())`,
+      [
+        crypto.randomUUID(),
+        conflictId,
+        resolution.resolution_type,
+        resolution.reasoning,
+        resolvedBeliefs.map((b) => b.belief_id),
+      ]
+    )
+
+    log.info(
+      {
+        conflictId,
+        resolutionType: resolution.resolution_type,
+        resolvedCount: resolvedBeliefs.length,
+      },
+      "Belief conflict resolved"
+    )
+
+    return resolvedBeliefs as Belief[]
   }
 
   // -----------------------------------------------------------------------------
@@ -631,8 +811,8 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
       const failureEvent: FailureEvent = {
         failure_id: trigger.context.failure_id as string,
         identity_id: identityId,
-        failure_type: trigger.context.failure_type as string ?? "unknown",
-        description: trigger.context.description as string ?? "",
+        failure_type: (trigger.context.failure_type as string) ?? "unknown",
+        description: (trigger.context.description as string) ?? "",
         context: trigger.context,
         timestamp: new Date().toISOString(),
       }
@@ -731,7 +911,7 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
     return "Decompose task into simpler steps"
   }
 
-  function generateTestPredictions(failure: FailureEvent, hypothesisType: string): string[] {
+  function generateTestPredictions(_failure: FailureEvent, hypothesisType: string): string[] {
     const predictions: string[] = []
 
     if (hypothesisType === "root_cause") {
@@ -797,18 +977,17 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
     return observations
   }
 
-  function analyzeForInsights(
-    observations: SelfObservation[]
-  ): IntrospectionResult["insights"] {
+  function analyzeForInsights(observations: SelfObservation[]): IntrospectionResult["insights"] {
     const insights: IntrospectionResult["insights"] = []
 
     // Analyze performance trends
     const performanceObs = observations.filter((o) => o.observation_type === "performance_metric")
     if (performanceObs.length > 0) {
-      const avgPerformance = performanceObs.reduce((sum, o) => {
-        const perf = (o.content as Record<string, number>).performance ?? 0.5
-        return sum + perf
-      }, 0) / performanceObs.length
+      const avgPerformance =
+        performanceObs.reduce((sum, o) => {
+          const perf = (o.content as Record<string, number>).performance ?? 0.5
+          return sum + perf
+        }, 0) / performanceObs.length
 
       if (avgPerformance < 0.5) {
         insights.push({
@@ -834,10 +1013,13 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
     // Look for patterns
     const actionPatterns = observations
       .flatMap((o) => o.context.recent_actions)
-      .reduce((acc, action) => {
-        acc[action] = (acc[action] ?? 0) + 1
-        return acc
-      }, {} as Record<string, number>)
+      .reduce(
+        (acc, action) => {
+          acc[action] = (acc[action] ?? 0) + 1
+          return acc
+        },
+        {} as Record<string, number>
+      )
 
     const frequentActions = Object.entries(actionPatterns)
       .filter(([, count]) => count > 3)
@@ -859,7 +1041,7 @@ export function createMetacognitiveEngine(pool: pg.Pool): MetacognitiveEngine {
 
   async function processIntrospectionBeliefUpdates(
     observations: SelfObservation[],
-    identityId: string
+    _identityId: string
   ): Promise<IntrospectionResult["belief_updates"]> {
     // Convert observations to evidence and update beliefs
     const evidence: Evidence[] = observations.map((o) => ({

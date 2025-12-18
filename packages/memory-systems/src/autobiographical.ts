@@ -3,7 +3,7 @@
 // =============================================================================
 
 import type pg from "pg"
-import type { LifeEvent, IdentityNarrative } from "./types.js"
+import type { IdentityNarrative, LifeEvent } from "./types.js"
 
 // -----------------------------------------------------------------------------
 // Autobiographical Memory Interface
@@ -84,10 +84,7 @@ export function createAutobiographicalMemory(pool: pg.Pool): AutobiographicalMem
   }
 
   async function getLifeEvent(eventId: string): Promise<LifeEvent | null> {
-    const result = await pool.query(
-      `SELECT * FROM life_events WHERE event_id = $1`,
-      [eventId]
-    )
+    const result = await pool.query("SELECT * FROM life_events WHERE event_id = $1", [eventId])
 
     if (result.rows.length === 0) return null
 
@@ -105,9 +102,7 @@ export function createAutobiographicalMemory(pool: pg.Pool): AutobiographicalMem
     return result.rows.map(rowToLifeEvent)
   }
 
-  async function getCurrentNarrative(
-    identityId: string
-  ): Promise<IdentityNarrative | null> {
+  async function getCurrentNarrative(identityId: string): Promise<IdentityNarrative | null> {
     const result = await pool.query(
       `SELECT * FROM identity_narratives
        WHERE identity_id = $1
@@ -130,10 +125,9 @@ export function createAutobiographicalMemory(pool: pg.Pool): AutobiographicalMem
     const lifeHistory = await getLifeHistory(identityId)
 
     // Get identity info
-    const identityResult = await pool.query(
-      `SELECT * FROM identities WHERE identity_id = $1`,
-      [identityId]
-    )
+    const identityResult = await pool.query("SELECT * FROM identities WHERE identity_id = $1", [
+      identityId,
+    ])
 
     const identity = identityResult.rows[0]
 
@@ -200,7 +194,6 @@ export function createAutobiographicalMemory(pool: pg.Pool): AutobiographicalMem
     const keyEvents = events.filter((e) => e.significance >= 0.6)
 
     // Extract themes
-    const themes: string[] = []
     const themeCounts = new Map<string, number>()
 
     for (const event of events) {
@@ -221,9 +214,7 @@ export function createAutobiographicalMemory(pool: pg.Pool): AutobiographicalMem
       .map((e) => e.title)
 
     // Identify challenges
-    const challenges = events
-      .filter((e) => e.event_type === "turning_point")
-      .map((e) => e.title)
+    const challenges = events.filter((e) => e.event_type === "turning_point").map((e) => e.title)
 
     // Calculate sentiment
     const sentiments = events.map((e) => {
@@ -243,9 +234,10 @@ export function createAutobiographicalMemory(pool: pg.Pool): AutobiographicalMem
       }
     })
 
-    const overallSentiment = sentiments.length > 0
-      ? sentiments.reduce((a, b) => a + b, 0) / sentiments.length
-      : 0.5
+    const overallSentiment =
+      sentiments.length > 0
+        ? (sentiments as number[]).reduce((a, b) => a + b, 0) / sentiments.length
+        : 0.5
 
     return {
       period_start: start,
@@ -339,9 +331,10 @@ function extractEventThemes(event: LifeEvent): string[] {
   themes.push(event.event_type.replace("_", " "))
 
   // Extract keywords from narrative
-  const keywords = event.narrative.toLowerCase()
+  const keywords = event.narrative
+    .toLowerCase()
     .split(/\s+/)
-    .filter((w) => w.length > 5)
+    .filter((w: string) => w.length > 5)
 
   const keywordCounts = new Map<string, number>()
   for (const keyword of keywords) {
@@ -424,9 +417,7 @@ function extractGoals(
   }
 
   // Infer from recent milestone events
-  const recentMilestones = events
-    .filter((e) => e.event_type === "milestone")
-    .slice(-5)
+  const recentMilestones = events.filter((e) => e.event_type === "milestone").slice(-5)
 
   for (const milestone of recentMilestones) {
     if (milestone.impact_on_identity?.next_goal) {

@@ -90,7 +90,7 @@ export function createProceduralMemory(pool: pg.Pool): ProceduralMemory {
 
   async function recall(procedureId: string): Promise<Procedure | null> {
     const result = await pool.query(
-      `SELECT * FROM procedures WHERE procedure_id = $1 AND deprecated = false`,
+      "SELECT * FROM procedures WHERE procedure_id = $1 AND deprecated = false",
       [procedureId]
     )
 
@@ -99,10 +99,7 @@ export function createProceduralMemory(pool: pg.Pool): ProceduralMemory {
     return rowToProcedure(result.rows[0])
   }
 
-  async function findByTrigger(
-    identityId: string,
-    context: string
-  ): Promise<Procedure[]> {
+  async function findByTrigger(identityId: string, context: string): Promise<Procedure[]> {
     // Get all procedures for identity
     const result = await pool.query(
       `SELECT * FROM procedures
@@ -116,9 +113,7 @@ export function createProceduralMemory(pool: pg.Pool): ProceduralMemory {
     // Filter by trigger conditions
     const matching = result.rows.filter((row) => {
       const triggers = row.trigger_conditions as string[]
-      return triggers.some((trigger) =>
-        contextLower.includes(trigger.toLowerCase())
-      )
+      return triggers.some((trigger) => contextLower.includes(trigger.toLowerCase()))
     })
 
     return matching.map(rowToProcedure)
@@ -169,24 +164,21 @@ export function createProceduralMemory(pool: pg.Pool): ProceduralMemory {
       completed_at: completedAt,
       success,
       steps_completed: stepsCompleted,
-      error,
+      ...(error !== undefined && { error }),
       outputs,
     }
   }
 
-  async function recordOutcome(
-    procedureId: string,
-    success: boolean
-  ): Promise<void> {
+  async function recordOutcome(procedureId: string, success: boolean): Promise<void> {
     // Get current stats
     const result = await pool.query(
-      `SELECT success_rate, execution_count FROM procedures WHERE procedure_id = $1`,
+      "SELECT success_rate, execution_count FROM procedures WHERE procedure_id = $1",
       [procedureId]
     )
 
     if (result.rows.length === 0) return
 
-    const { success_rate, execution_count } = result.rows[0]
+    const { success_rate, execution_count: _execution_count } = result.rows[0]
 
     // Exponential moving average for success rate
     const alpha = 0.1
@@ -201,10 +193,7 @@ export function createProceduralMemory(pool: pg.Pool): ProceduralMemory {
     )
   }
 
-  async function refine(
-    procedureId: string,
-    refinement: ProcedureRefinement
-  ): Promise<Procedure> {
+  async function refine(procedureId: string, refinement: ProcedureRefinement): Promise<Procedure> {
     const existing = await recall(procedureId)
     if (!existing) {
       throw new Error(`Procedure ${procedureId} not found`)
@@ -228,7 +217,7 @@ export function createProceduralMemory(pool: pg.Pool): ProceduralMemory {
 
     if (refinement.removed_triggers) {
       updated.trigger_conditions = existing.trigger_conditions.filter(
-        (t) => !refinement.removed_triggers!.includes(t)
+        (t: string) => !refinement.removed_triggers?.includes(t)
       )
     }
 
@@ -251,15 +240,12 @@ export function createProceduralMemory(pool: pg.Pool): ProceduralMemory {
 
   async function deprecate(procedureId: string): Promise<void> {
     await pool.query(
-      `UPDATE procedures SET deprecated = true, updated_at = $1 WHERE procedure_id = $2`,
+      "UPDATE procedures SET deprecated = true, updated_at = $1 WHERE procedure_id = $2",
       [new Date().toISOString(), procedureId]
     )
   }
 
-  async function getBySuccessRate(
-    identityId: string,
-    minRate: number
-  ): Promise<Procedure[]> {
+  async function getBySuccessRate(identityId: string, minRate: number): Promise<Procedure[]> {
     const result = await pool.query(
       `SELECT * FROM procedures
        WHERE identity_id = $1 AND deprecated = false AND success_rate >= $2

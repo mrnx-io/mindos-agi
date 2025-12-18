@@ -1,0 +1,58 @@
+# =============================================================================
+# MindOS - Docker Ignore
+# =============================================================================
+
+# Dependencies
+node_modules/
+.bun/
+
+# Build outputs (will be built in container)
+dist/
+*.tsbuildinfo
+
+# Development
+.env
+.env.local
+.env.*.local
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Testing
+coverage/
+.nyc_output/
+
+# Git
+.git/
+.gitignore
+
+# Documentation (not needed in production image)
+*.md
+!README.md
+docs/
+
+# CI/CD
+.github/
+
+# Infrastructure configs (for reference only)
+infra/
+docker-compose*.yml
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# OS files
+Thumbs.db

@@ -3,23 +3,24 @@
 // =============================================================================
 
 import { createLogger } from "../logger.js"
-import type { ToolProgram, ToolProgramStep, Action, PolicyDecision } from "../types.js"
 import { evaluatePolicy } from "../policy.js"
-import { callTool, type ToolCallResult } from "./toolmeshClient.js"
+import type { Action, PolicyDecision, ToolProgramStep } from "../types.js"
 import {
+  type ExecutionPermissions,
   executeCode,
-  preflightCode,
+  getPrivilegedPermissions,
   getReadOnlyPermissions,
   getWriteSafePermissions,
-  getPrivilegedPermissions,
-  type ExecutionPermissions,
+  preflightCode,
 } from "./executorClient.js"
 import {
-  resolveParameters,
-  evaluateCondition,
-  stepToAction,
   type ProgramContext,
+  type StepBasedToolProgram,
+  evaluateCondition,
+  resolveParameters,
+  stepToAction,
 } from "./toolProgram.js"
+import { callTool } from "./toolmeshClient.js"
 
 const log = createLogger("two-phase")
 
@@ -63,7 +64,7 @@ export interface ExecutionOptions {
 // -----------------------------------------------------------------------------
 
 export async function executeTwoPhase(
-  program: ToolProgram,
+  program: StepBasedToolProgram,
   options: ExecutionOptions
 ): Promise<{ preflight: PhaseResult; execute?: PhaseResult }> {
   const context: ProgramContext = {
@@ -106,7 +107,7 @@ export async function executeTwoPhase(
 // -----------------------------------------------------------------------------
 
 async function executePhase(
-  program: ToolProgram,
+  program: StepBasedToolProgram,
   context: ProgramContext,
   phase: ExecutionPhase,
   options: ExecutionOptions
@@ -120,49 +121,87 @@ async function executePhase(
     }
 
     const step = program.steps[i]
+    if (!step) continue // noUncheckedIndexedAccess guard
     context.currentStep = i
 
-    // Check condition
-    if (step.condition && !evaluateCondition(step.condition, context)) {
-      stepResults.push({
-        stepId: step.step_id,
-        description: step.description,
-        phase,
-        success: true,
-        skipped: true,
-        skipReason: "Condition not met",
-        duration: 0,
-      })
+    // Check if step should be skipped due to condition
+    const skipResult = checkStepCondition(step, context, phase)
+    if (skipResult) {
+      stepResults.push(skipResult)
       continue
     }
 
-    // Execute step
+    // Execute step and handle result
     const result = await executeStep(step, context, phase, options)
     stepResults.push(result)
+    handleStepResult(result, step, context)
+  }
 
-    // Handle failure
-    if (!result.success) {
-      if (step.on_error === "abort") {
-        context.aborted = true
-        context.abortReason = result.error
-      }
-      // "skip" continues to next step
-      // "retry" is handled within executeStep
-    }
+  return buildPhaseResult(phase, stepResults, context, Date.now() - startTime)
+}
 
-    // Store output
-    if (result.success && step.output_as && result.output !== undefined) {
-      context.outputs.set(step.output_as, result.output)
-    }
+function checkStepCondition(
+  step: ToolProgramStep,
+  context: ProgramContext,
+  phase: ExecutionPhase
+): StepResult | null {
+  if (!step.condition) {
+    return null
+  }
+
+  if (evaluateCondition(step.condition, context)) {
+    return null
   }
 
   return {
+    stepId: step.step_id,
+    description: step.description,
+    phase,
+    success: true,
+    skipped: true,
+    skipReason: "Condition not met",
+    duration: 0,
+  }
+}
+
+function handleStepResult(
+  result: StepResult,
+  step: ToolProgramStep,
+  context: ProgramContext
+): void {
+  // Handle failure
+  if (!result.success && step.on_error === "abort") {
+    context.aborted = true
+    if (result.error) {
+      context.abortReason = result.error
+    }
+    return
+  }
+
+  // Store output on success
+  if (result.success && step.output_as && result.output !== undefined) {
+    context.outputs.set(step.output_as, result.output)
+  }
+}
+
+function buildPhaseResult(
+  phase: ExecutionPhase,
+  stepResults: StepResult[],
+  context: ProgramContext,
+  totalDuration: number
+): PhaseResult {
+  const result: PhaseResult = {
     phase,
     success: !context.aborted && stepResults.every((r) => r.success || r.skipped),
     stepResults,
-    totalDuration: Date.now() - startTime,
-    error: context.abortReason,
+    totalDuration,
   }
+
+  if (context.abortReason) {
+    result.error = context.abortReason
+  }
+
+  return result
 }
 
 // -----------------------------------------------------------------------------
@@ -186,99 +225,59 @@ async function executeStep(
   // Policy check
   const policyDecision = await evaluatePolicy(action, options.identityId)
 
-  if (policyDecision.verdict === "block") {
-    return {
-      stepId: step.step_id,
-      description: step.description,
-      phase,
-      success: false,
-      error: `Blocked by policy: ${policyDecision.reason}`,
-      duration: Date.now() - startTime,
-      policyDecision,
-    }
-  }
-
-  if (policyDecision.verdict === "escalate") {
-    // Check if we have pre-approved risk level
-    if (options.approvedRisk === undefined || policyDecision.risk_score > options.approvedRisk) {
-      return {
-        stepId: step.step_id,
-        description: step.description,
-        phase,
-        success: false,
-        error: `Requires approval: ${policyDecision.reason}`,
-        duration: Date.now() - startTime,
-        policyDecision,
-      }
-    }
+  // Check if policy blocks execution
+  const policyError = checkPolicyApproval(policyDecision, options.approvedRisk)
+  if (policyError) {
+    return createStepResult(step, phase, false, startTime, policyDecision, policyError)
   }
 
   // Determine permissions based on phase
   const permissions = getPermissionsForPhase(phase, step.tool)
 
   // Execute with retries
+  const output = await executeStepWithRetries(step, resolvedParams, phase, permissions, options)
+
+  if (output.error) {
+    return createStepResult(step, phase, false, startTime, policyDecision, output.error)
+  }
+
+  return createStepResult(step, phase, true, startTime, policyDecision, undefined, output.value)
+}
+
+function checkPolicyApproval(
+  policyDecision: PolicyDecision,
+  approvedRisk: number | undefined
+): string | null {
+  if (policyDecision.verdict === "block") {
+    return `Blocked by policy: ${policyDecision.reason}`
+  }
+
+  if (policyDecision.verdict === "escalate") {
+    const needsApproval = approvedRisk === undefined || policyDecision.risk_score > approvedRisk
+    if (needsApproval) {
+      return `Requires approval: ${policyDecision.reason}`
+    }
+  }
+
+  return null
+}
+
+async function executeStepWithRetries(
+  step: ToolProgramStep,
+  resolvedParams: Record<string, unknown>,
+  phase: ExecutionPhase,
+  permissions: ExecutionPermissions,
+  options: ExecutionOptions
+): Promise<{ value?: unknown; error?: string }> {
   let lastError: string | undefined
-  let output: unknown
 
   for (let attempt = 0; attempt <= step.max_retries; attempt++) {
     try {
-      if (isCodeExecutionTool(step.tool)) {
-        // Execute via Deno sandbox
-        const code = resolvedParams.code as string
-        const language = (resolvedParams.language as "typescript" | "javascript") ?? "typescript"
+      const output = isCodeExecutionTool(step.tool)
+        ? await executeCodeStep(resolvedParams, phase, permissions)
+        : await executeToolMeshStep(step, resolvedParams, phase, options, attempt)
 
-        if (phase === "preflight") {
-          // Dry run - just validate
-          const preflight = await preflightCode(code, language)
-          if (!preflight.valid) {
-            throw new Error(`Code validation failed: ${preflight.errors.join(", ")}`)
-          }
-          output = { validated: true, warnings: preflight.warnings }
-        } else {
-          // Actual execution
-          const result = await executeCode({
-            code,
-            language,
-            context: resolvedParams.context as Record<string, unknown>,
-            permissions,
-            timeout_ms: 30000,
-          })
-
-          if (!result.success) {
-            throw new Error(result.error || "Execution failed")
-          }
-          output = result.output
-        }
-      } else {
-        // Execute via ToolMesh
-        const result = await callTool({
-          tool_name: step.tool,
-          parameters: {
-            ...resolvedParams,
-            __phase: phase,
-            __read_only: phase === "preflight",
-          },
-          idempotency_key: `${options.taskId}-${step.step_id}-${phase}-${attempt}`,
-          identity_id: options.identityId,
-          timeout_ms: 30000,
-        })
-
-        if (!result.success) {
-          throw new Error(result.error || "Tool call failed")
-        }
-        output = result.output
-      }
-
-      // Success
-      return {
-        stepId: step.step_id,
-        description: step.description,
-        phase,
-        success: true,
-        output,
-        duration: Date.now() - startTime,
-        policyDecision,
-      }
+      return { value: output }
     } catch (err) {
       lastError = err instanceof Error ? err.message : String(err)
       log.warn(
@@ -288,30 +287,110 @@ async function executeStep(
 
       // Wait before retry with exponential backoff
       if (attempt < step.max_retries) {
-        await new Promise((resolve) => setTimeout(resolve, Math.pow(2, attempt) * 100))
+        await new Promise((resolve) => setTimeout(resolve, 2 ** attempt * 100))
       }
     }
   }
 
-  return {
+  // Build result object conditionally to satisfy exactOptionalPropertyTypes
+  if (lastError !== undefined) {
+    return { error: lastError }
+  }
+  return { error: "Unknown error occurred" }
+}
+
+async function executeCodeStep(
+  resolvedParams: Record<string, unknown>,
+  phase: ExecutionPhase,
+  permissions: ExecutionPermissions
+): Promise<unknown> {
+  const code = resolvedParams.code as string
+  const language = (resolvedParams.language as "typescript" | "javascript") ?? "typescript"
+
+  if (phase === "preflight") {
+    const preflight = await preflightCode(code, language)
+    if (!preflight.valid) {
+      throw new Error(`Code validation failed: ${preflight.errors.join(", ")}`)
+    }
+    return { validated: true, warnings: preflight.warnings }
+  }
+
+  const result = await executeCode({
+    code,
+    language,
+    context: resolvedParams.context as Record<string, unknown>,
+    permissions,
+    timeout_ms: 30000,
+  })
+
+  if (!result.success) {
+    throw new Error(result.error || "Execution failed")
+  }
+
+  return result.output
+}
+
+async function executeToolMeshStep(
+  step: ToolProgramStep,
+  resolvedParams: Record<string, unknown>,
+  phase: ExecutionPhase,
+  options: ExecutionOptions,
+  attempt: number
+): Promise<unknown> {
+  const result = await callTool({
+    toolName: step.tool,
+    arguments: {
+      ...resolvedParams,
+      __phase: phase,
+      __read_only: phase === "preflight",
+    },
+    idempotencyKey: `${options.taskId}-${step.step_id}-${phase}-${attempt}`,
+  })
+
+  if (!result.ok) {
+    throw new Error(result.error || "Tool call failed")
+  }
+
+  return result.structured
+}
+
+function createStepResult(
+  step: ToolProgramStep,
+  phase: ExecutionPhase,
+  success: boolean,
+  startTime: number,
+  policyDecision?: PolicyDecision,
+  error?: string,
+  output?: unknown
+): StepResult {
+  const result: StepResult = {
     stepId: step.step_id,
     description: step.description,
     phase,
-    success: false,
-    error: lastError,
+    success,
     duration: Date.now() - startTime,
-    policyDecision,
   }
+
+  if (policyDecision) {
+    result.policyDecision = policyDecision
+  }
+
+  if (error) {
+    result.error = error
+  }
+
+  if (output !== undefined) {
+    result.output = output
+  }
+
+  return result
 }
 
 // -----------------------------------------------------------------------------
 // Permission Helpers
 // -----------------------------------------------------------------------------
 
-function getPermissionsForPhase(
-  phase: ExecutionPhase,
-  tool: string
-): ExecutionPermissions {
+function getPermissionsForPhase(phase: ExecutionPhase, tool: string): ExecutionPermissions {
   if (phase === "preflight") {
     return getReadOnlyPermissions()
   }
@@ -346,7 +425,7 @@ export interface RollbackPlan {
 }
 
 export function generateRollbackPlan(
-  program: ToolProgram,
+  program: StepBasedToolProgram,
   executedSteps: StepResult[]
 ): RollbackPlan {
   const rollbackSteps: RollbackPlan["steps"] = []
@@ -354,7 +433,7 @@ export function generateRollbackPlan(
   // Process in reverse order
   for (let i = executedSteps.length - 1; i >= 0; i--) {
     const result = executedSteps[i]
-    if (!result.success || result.skipped) {
+    if (!result || !result.success || result.skipped) {
       continue
     }
 
@@ -373,10 +452,7 @@ export function generateRollbackPlan(
   return { steps: rollbackSteps }
 }
 
-function generateStepRollback(
-  step: ToolProgramStep,
-  output: unknown
-): Action | null {
+function generateStepRollback(step: ToolProgramStep, output: unknown): Action | null {
   const tool = step.tool.toLowerCase()
 
   // Generate inverse actions where possible
@@ -388,8 +464,11 @@ function generateStepRollback(
       return {
         kind: "tool_call",
         tool: deleteTool,
-        parameters: { id },
-        reason: `Rollback: delete created resource`,
+        args: { id },
+        expected: "Rollback: delete created resource",
+        risk: 0.5,
+        uncertainty: 0.5,
+        name: "Rollback action",
       }
     }
   }
@@ -418,7 +497,7 @@ export interface Checkpoint {
 }
 
 export function createCheckpoint(
-  program: ToolProgram,
+  program: StepBasedToolProgram,
   context: ProgramContext
 ): Checkpoint {
   return {

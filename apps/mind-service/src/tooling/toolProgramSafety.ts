@@ -3,7 +3,8 @@
 // =============================================================================
 
 import { createLogger } from "../logger.js"
-import type { ToolProgram, ToolProgramStep } from "../types.js"
+import type { ToolProgramStep } from "../types.js"
+import type { StepBasedToolProgram } from "./toolProgram.js"
 
 const log = createLogger("tool-program-safety")
 
@@ -23,7 +24,7 @@ interface SafetyRule {
   id: string
   name: string
   severity: "error" | "warning"
-  check: (program: ToolProgram, step?: ToolProgramStep) => string | null
+  check: (program: StepBasedToolProgram, step?: ToolProgramStep) => string | null
 }
 
 // -----------------------------------------------------------------------------
@@ -59,12 +60,10 @@ const PROGRAM_RULES: SafetyRule[] = [
     severity: "error",
     check: (program) => {
       const outputNames = program.steps
-        .filter((s) => s.output_as)
-        .map((s) => s.output_as!)
+        .map((s) => s.output_as)
+        .filter((name): name is string => name !== undefined)
 
-      const duplicates = outputNames.filter(
-        (name, index) => outputNames.indexOf(name) !== index
-      )
+      const duplicates = outputNames.filter((name, index) => outputNames.indexOf(name) !== index)
 
       if (duplicates.length > 0) {
         return `Duplicate output names: ${duplicates.join(", ")}`
@@ -149,13 +148,7 @@ const STEP_RULES: SafetyRule[] = [
       const paramsStr = JSON.stringify(step.parameters)
 
       // Check for shell injection patterns
-      const injectionPatterns = [
-        /;\s*rm\s/i,
-        /\|\s*sh\b/i,
-        /`[^`]+`/,
-        /\$\([^)]+\)/,
-        /\beval\b/i,
-      ]
+      const injectionPatterns = [/;\s*rm\s/i, /\|\s*sh\b/i, /`[^`]+`/, /\$\([^)]+\)/, /\beval\b/i]
 
       for (const pattern of injectionPatterns) {
         if (pattern.test(paramsStr)) {
@@ -203,7 +196,7 @@ const STEP_RULES: SafetyRule[] = [
 interface RiskFactor {
   name: string
   weight: number
-  check: (program: ToolProgram) => number // Returns 0-1
+  check: (program: StepBasedToolProgram) => number // Returns 0-1
 }
 
 const RISK_FACTORS: RiskFactor[] = [
@@ -264,7 +257,7 @@ const RISK_FACTORS: RiskFactor[] = [
   },
 ]
 
-function calculateRiskScore(program: ToolProgram): number {
+function calculateRiskScore(program: StepBasedToolProgram): number {
   let totalWeight = 0
   let weightedScore = 0
 
@@ -281,40 +274,49 @@ function calculateRiskScore(program: ToolProgram): number {
 // Main Validation
 // -----------------------------------------------------------------------------
 
-export function validateToolProgram(program: ToolProgram): ValidationResult {
-  const errors: string[] = []
-  const warnings: string[] = []
+function categorizeRuleResult(
+  result: string | null,
+  severity: "error" | "warning",
+  errors: string[],
+  warnings: string[]
+): void {
+  if (!result) return
 
-  // Run program-level rules
+  if (severity === "error") {
+    errors.push(result)
+  } else {
+    warnings.push(result)
+  }
+}
+
+function applyProgramRules(
+  program: StepBasedToolProgram,
+  errors: string[],
+  warnings: string[]
+): void {
   for (const rule of PROGRAM_RULES) {
     const result = rule.check(program)
-    if (result) {
-      if (rule.severity === "error") {
-        errors.push(result)
-      } else {
-        warnings.push(result)
-      }
-    }
+    categorizeRuleResult(result, rule.severity, errors, warnings)
   }
+}
 
-  // Run step-level rules
+function applyStepRules(program: StepBasedToolProgram, errors: string[], warnings: string[]): void {
   for (const step of program.steps) {
     for (const rule of STEP_RULES) {
       const result = rule.check(program, step)
-      if (result) {
-        if (rule.severity === "error") {
-          errors.push(result)
-        } else {
-          warnings.push(result)
-        }
-      }
+      categorizeRuleResult(result, rule.severity, errors, warnings)
     }
   }
+}
 
-  // Calculate risk score
+export function validateToolProgram(program: StepBasedToolProgram): ValidationResult {
+  const errors: string[] = []
+  const warnings: string[] = []
+
+  applyProgramRules(program, errors, warnings)
+  applyStepRules(program, errors, warnings)
+
   const riskScore = calculateRiskScore(program)
-
-  // Determine if approval is required
   const requiresApproval = riskScore > 0.5 || program.requires_approval
 
   log.info(
@@ -342,7 +344,7 @@ export function validateToolProgram(program: ToolProgram): ValidationResult {
 // Static Analysis Helpers
 // -----------------------------------------------------------------------------
 
-export function analyzeDataFlow(program: ToolProgram): {
+export function analyzeDataFlow(program: StepBasedToolProgram): {
   inputs: Set<string>
   outputs: Set<string>
   dependencies: Map<string, string[]>
@@ -365,8 +367,10 @@ export function analyzeDataFlow(program: ToolProgram): {
       const deps: string[] = []
       for (const ref of refs) {
         const name = ref.slice(10, -2).split(".")[0]
-        deps.push(name)
-        inputs.add(name)
+        if (name) {
+          deps.push(name)
+          inputs.add(name)
+        }
       }
       dependencies.set(step.step_id, deps)
     }
@@ -375,12 +379,13 @@ export function analyzeDataFlow(program: ToolProgram): {
   return { inputs, outputs, dependencies }
 }
 
-export function detectUnreachableSteps(program: ToolProgram): string[] {
+export function detectUnreachableSteps(program: StepBasedToolProgram): string[] {
   const unreachable: string[] = []
 
   for (let i = 1; i < program.steps.length; i++) {
     const step = program.steps[i]
     const prevStep = program.steps[i - 1]
+    if (!step || !prevStep) continue // noUncheckedIndexedAccess guard
 
     // If previous step always aborts on error and has no error handling
     if (prevStep.on_error === "abort") {
@@ -398,9 +403,7 @@ export function detectUnreachableSteps(program: ToolProgram): string[] {
 // Sanitization
 // -----------------------------------------------------------------------------
 
-export function sanitizeParameters(
-  parameters: Record<string, unknown>
-): Record<string, unknown> {
+export function sanitizeParameters(parameters: Record<string, unknown>): Record<string, unknown> {
   const sanitized: Record<string, unknown> = {}
 
   for (const [key, value] of Object.entries(parameters)) {

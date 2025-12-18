@@ -3,10 +3,25 @@
 // =============================================================================
 
 import { createLogger } from "../logger.js"
-import type { ToolProgram, ToolProgramStep, Tool, Action } from "../types.js"
-import { validateToolProgram, type ValidationResult } from "./toolProgramSafety.js"
+import type { Action, Tool, ToolProgram, ToolProgramStep } from "../types.js"
+import { validateToolProgram } from "./toolProgramSafety.js"
 
 const log = createLogger("tool-program")
+
+// -----------------------------------------------------------------------------
+// Step-Based Tool Program (with required fields)
+// -----------------------------------------------------------------------------
+
+/** A ToolProgram that has step-based execution (not code-based) */
+export interface StepBasedToolProgram extends ToolProgram {
+  program_id: string
+  name: string
+  description: string
+  steps: ToolProgramStep[]
+  requires_approval: boolean
+  max_parallel: number
+  created_at: string
+}
 
 // -----------------------------------------------------------------------------
 // Types
@@ -14,7 +29,7 @@ const log = createLogger("tool-program")
 
 export interface CompilationResult {
   success: boolean
-  program?: ToolProgram
+  program?: StepBasedToolProgram
   errors: string[]
   warnings: string[]
 }
@@ -30,6 +45,96 @@ export interface ProgramContext {
 // -----------------------------------------------------------------------------
 // Program Compilation
 // -----------------------------------------------------------------------------
+
+/** Validates a single step and returns any errors or warnings */
+function validateStep(
+  step: {
+    description: string
+    tool: string
+    condition?: string
+    maxRetries?: number
+  },
+  stepIndex: number
+): { errors: string[]; warnings: string[] } {
+  const errors: string[] = []
+  const warnings: string[] = []
+  const stepNum = stepIndex + 1
+
+  if (!step.description) {
+    errors.push(`Step ${stepNum}: Missing description`)
+  }
+
+  if (!step.tool) {
+    errors.push(`Step ${stepNum}: Missing tool`)
+  }
+
+  if (step.condition) {
+    const conditionError = validateConditionSyntax(step.condition, stepNum)
+    if (conditionError) {
+      errors.push(conditionError)
+    }
+  }
+
+  if (step.maxRetries && step.maxRetries > 5) {
+    warnings.push(`Step ${stepNum}: High retry count (${step.maxRetries}), consider reducing`)
+  }
+
+  return { errors, warnings }
+}
+
+/** Validates condition syntax and returns error message if invalid */
+function validateConditionSyntax(condition: string, stepNum: number): string | null {
+  try {
+    new Function("ctx", `return ${condition}`)
+    return null
+  } catch {
+    return `Step ${stepNum}: Invalid condition expression: ${condition}`
+  }
+}
+
+/** Builds a StepBasedToolProgram from validated steps */
+function buildProgram(
+  steps: Array<{
+    description: string
+    tool: string
+    parameters: Record<string, unknown>
+    condition?: string
+    onError?: "abort" | "skip" | "retry"
+    maxRetries?: number
+    outputAs?: string
+  }>,
+  options: {
+    name: string
+    description: string
+    requiresApproval?: boolean
+    maxParallel?: number
+  }
+): StepBasedToolProgram {
+  return {
+    // Required base fields
+    objective: options.description,
+    input: {},
+    code: "", // Step-based programs don't use code
+    // Step-based program fields
+    program_id: crypto.randomUUID(),
+    name: options.name,
+    description: options.description,
+    steps: steps.map((step, index) => ({
+      step_id: crypto.randomUUID(),
+      sequence: index,
+      description: step.description,
+      tool: step.tool,
+      parameters: step.parameters,
+      condition: step.condition,
+      on_error: step.onError ?? "abort",
+      max_retries: step.maxRetries ?? 0,
+      output_as: step.outputAs,
+    })),
+    requires_approval: options.requiresApproval ?? false,
+    max_parallel: options.maxParallel ?? 1,
+    created_at: new Date().toISOString(),
+  }
+}
 
 export function compileToolProgram(
   steps: Array<{
@@ -51,56 +156,23 @@ export function compileToolProgram(
   const errors: string[] = []
   const warnings: string[] = []
 
-  // Validate step structure
+  // Validate all steps
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i]
+    if (!step) continue // Should never happen, but satisfies noUncheckedIndexedAccess
 
-    if (!step.description) {
-      errors.push(`Step ${i + 1}: Missing description`)
-    }
-
-    if (!step.tool) {
-      errors.push(`Step ${i + 1}: Missing tool`)
-    }
-
-    if (step.condition) {
-      try {
-        // Basic syntax check for condition expression
-        new Function("ctx", `return ${step.condition}`)
-      } catch {
-        errors.push(`Step ${i + 1}: Invalid condition expression: ${step.condition}`)
-      }
-    }
-
-    if (step.maxRetries && step.maxRetries > 5) {
-      warnings.push(`Step ${i + 1}: High retry count (${step.maxRetries}), consider reducing`)
-    }
+    const validation = validateStep(step, i)
+    errors.push(...validation.errors)
+    warnings.push(...validation.warnings)
   }
 
+  // Early return if validation failed
   if (errors.length > 0) {
     return { success: false, errors, warnings }
   }
 
   // Build program
-  const program: ToolProgram = {
-    program_id: crypto.randomUUID(),
-    name: options.name,
-    description: options.description,
-    steps: steps.map((step, index) => ({
-      step_id: crypto.randomUUID(),
-      sequence: index,
-      description: step.description,
-      tool: step.tool,
-      parameters: step.parameters,
-      condition: step.condition,
-      on_error: step.onError ?? "abort",
-      max_retries: step.maxRetries ?? 0,
-      output_as: step.outputAs,
-    })),
-    requires_approval: options.requiresApproval ?? false,
-    max_parallel: options.maxParallel ?? 1,
-    created_at: new Date().toISOString(),
-  }
+  const program = buildProgram(steps, options)
 
   // Safety validation
   const validation = validateToolProgram(program)
@@ -125,7 +197,7 @@ export function compileToolProgram(
 // -----------------------------------------------------------------------------
 
 export function planExecution(
-  program: ToolProgram,
+  program: StepBasedToolProgram,
   availableTools: Tool[]
 ): {
   executable: boolean
@@ -134,7 +206,8 @@ export function planExecution(
   estimatedDuration: number
 } {
   const missingTools: string[] = []
-  const toolMap = new Map(availableTools.map((t) => [t.name, t]))
+  // Use tool_name as the key, falling back to name for compatibility
+  const toolMap = new Map(availableTools.map((t) => [t.name ?? t.tool_name, t]))
 
   // Check tool availability
   for (const step of program.steps) {
@@ -166,45 +239,72 @@ export function planExecution(
   }
 }
 
-function computeExecutionOrder(program: ToolProgram): number[][] {
-  // For now, simple sequential execution
-  // Could be enhanced with dependency analysis for parallelization
+/** Computes sequential execution order (one step at a time) */
+function computeSequentialOrder(stepCount: number): number[][] {
   const order: number[][] = []
-
-  if (program.max_parallel === 1) {
-    // Sequential
-    for (let i = 0; i < program.steps.length; i++) {
-      order.push([i])
-    }
-  } else {
-    // Group steps that can run in parallel
-    // This is a simplified version - real implementation would analyze dependencies
-    let batch: number[] = []
-    for (let i = 0; i < program.steps.length; i++) {
-      const step = program.steps[i]
-
-      // Steps with conditions must be sequential
-      if (step.condition || batch.length >= program.max_parallel) {
-        if (batch.length > 0) {
-          order.push(batch)
-          batch = []
-        }
-      }
-
-      batch.push(i)
-    }
-
-    if (batch.length > 0) {
-      order.push(batch)
-    }
+  for (let i = 0; i < stepCount; i++) {
+    order.push([i])
   }
-
   return order
 }
 
+/** Checks if a step should start a new batch */
+function shouldStartNewBatch(
+  step: ToolProgramStep | undefined,
+  batchSize: number,
+  maxParallel: number
+): boolean {
+  if (!step) return false
+  // Steps with conditions must be sequential
+  if (step.condition) return true
+  // Batch is full
+  if (batchSize >= maxParallel) return true
+  return false
+}
+
+/** Adds a batch to the order if it's not empty */
+function flushBatch(order: number[][], batch: number[]): number[] {
+  if (batch.length > 0) {
+    order.push(batch)
+  }
+  return []
+}
+
+/** Computes parallel execution order (batches of steps) */
+function computeParallelOrder(program: StepBasedToolProgram): number[][] {
+  const order: number[][] = []
+  let batch: number[] = []
+
+  for (let i = 0; i < program.steps.length; i++) {
+    const step = program.steps[i]
+    if (!step) continue // Should never happen, but satisfies noUncheckedIndexedAccess
+
+    if (shouldStartNewBatch(step, batch.length, program.max_parallel)) {
+      batch = flushBatch(order, batch)
+    }
+
+    batch.push(i)
+  }
+
+  flushBatch(order, batch)
+  return order
+}
+
+function computeExecutionOrder(program: StepBasedToolProgram): number[][] {
+  // For now, simple sequential execution
+  // Could be enhanced with dependency analysis for parallelization
+  if (program.max_parallel === 1) {
+    return computeSequentialOrder(program.steps.length)
+  }
+
+  // Group steps that can run in parallel
+  // This is a simplified version - real implementation would analyze dependencies
+  return computeParallelOrder(program)
+}
+
 function estimateExecutionDuration(
-  program: ToolProgram,
-  toolMap: Map<string, Tool>
+  program: StepBasedToolProgram,
+  toolMap: Map<string | undefined, Tool>
 ): number {
   let totalMs = 0
 
@@ -268,10 +368,15 @@ function evaluateExpression(expr: string, context: ProgramContext): unknown {
   // Handle outputs.stepName.property
   if (expr.startsWith("outputs.")) {
     const path = expr.slice(8).split(".")
-    let value: unknown = context.outputs.get(path[0])
+    const firstPathSegment = path[0]
+    if (!firstPathSegment) return undefined
+
+    let value: unknown = context.outputs.get(firstPathSegment)
 
     for (let i = 1; i < path.length && value != null; i++) {
-      value = (value as Record<string, unknown>)[path[i]]
+      const segment = path[i]
+      if (!segment) break
+      value = (value as Record<string, unknown>)[segment]
     }
 
     return value
@@ -295,10 +400,7 @@ function evaluateExpression(expr: string, context: ProgramContext): unknown {
 // Condition Evaluation
 // -----------------------------------------------------------------------------
 
-export function evaluateCondition(
-  condition: string,
-  context: ProgramContext
-): boolean {
+export function evaluateCondition(condition: string, context: ProgramContext): boolean {
   try {
     // Create a safe evaluation context
     const ctx = {
@@ -336,7 +438,10 @@ export function stepToAction(step: ToolProgramStep): Action {
   return {
     kind: "tool_call",
     tool: step.tool,
-    parameters: step.parameters,
-    reason: step.description,
+    args: step.parameters,
+    expected: step.description,
+    risk: 0.5,
+    uncertainty: 0.5,
+    name: step.description,
   }
 }

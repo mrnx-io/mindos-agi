@@ -3,7 +3,7 @@
 // =============================================================================
 
 import { z } from "zod"
-import { UUIDSchema, TimestampSchema, JSONSchema } from "./schemas.js"
+import { JSONSchema, TimestampSchema, UUIDSchema } from "./schemas.js"
 
 // -----------------------------------------------------------------------------
 // Evidence Kind
@@ -110,10 +110,12 @@ export type GroundingRequest = z.infer<typeof GroundingRequestSchema>
 
 export const MerkleProofSchema = z.object({
   leaf_hash: z.string(),
-  proof: z.array(z.object({
-    hash: z.string(),
-    position: z.enum(["left", "right"]),
-  })),
+  proof: z.array(
+    z.object({
+      hash: z.string(),
+      position: z.enum(["left", "right"]),
+    })
+  ),
   root: z.string(),
 })
 export type MerkleProof = z.infer<typeof MerkleProofSchema>

@@ -2,8 +2,8 @@
 // Merkle Tree Implementation for Evidence Verification
 // =============================================================================
 
+import { sha256 } from "./hasher.js"
 import type { MerkleNode, MerkleProof } from "./types.js"
-import { sha256, combineHashes } from "./hasher.js"
 
 // -----------------------------------------------------------------------------
 // Merkle Tree Construction
@@ -29,7 +29,10 @@ export function buildMerkleTree(hashes: string[]): MerkleNode[][] {
 
   // If odd number of leaves, duplicate the last one
   if (leaves.length % 2 === 1) {
-    leaves.push({ ...leaves[leaves.length - 1] })
+    const lastLeaf = leaves[leaves.length - 1]
+    if (lastLeaf) {
+      leaves.push({ ...lastLeaf })
+    }
   }
 
   const levels: MerkleNode[][] = [leaves]
@@ -42,7 +45,8 @@ export function buildMerkleTree(hashes: string[]): MerkleNode[][] {
 
     for (let i = 0; i < currentLevel.length; i += 2) {
       const left = currentLevel[i]
-      const right = currentLevel[i + 1] ?? currentLevel[i]
+      if (!left) continue
+      const right = currentLevel[i + 1] ?? left
 
       const combinedHash = sha256(left.hash + right.hash)
 
@@ -71,6 +75,9 @@ export function getMerkleRoot(tree: MerkleNode[][]): string {
   }
 
   const topLevel = tree[tree.length - 1]
+  if (!topLevel || !topLevel[0]) {
+    throw new Error("Invalid Merkle tree structure")
+  }
   return topLevel[0].hash
 }
 
@@ -86,6 +93,7 @@ export function generateMerkleProof(tree: MerkleNode[][], leafHash: string): Mer
   if (tree.length === 0) return null
 
   const leaves = tree[0]
+  if (!leaves) return null
   let leafIndex = leaves.findIndex((node) => node.hash === leafHash)
 
   if (leafIndex === -1) return null
@@ -94,12 +102,14 @@ export function generateMerkleProof(tree: MerkleNode[][], leafHash: string): Mer
 
   for (let level = 0; level < tree.length - 1; level++) {
     const currentLevel = tree[level]
+    if (!currentLevel) continue
     const isRightNode = leafIndex % 2 === 1
     const siblingIndex = isRightNode ? leafIndex - 1 : leafIndex + 1
 
-    if (siblingIndex < currentLevel.length) {
+    const siblingNode = currentLevel[siblingIndex]
+    if (siblingIndex < currentLevel.length && siblingNode) {
       path.push({
-        hash: currentLevel[siblingIndex].hash,
+        hash: siblingNode.hash,
         position: isRightNode ? "left" : "right",
       })
     }
@@ -159,7 +169,9 @@ export function findNode(tree: MerkleNode[][], hash: string): MerkleNode | null 
  */
 export function getLeafHashes(tree: MerkleNode[][]): string[] {
   if (tree.length === 0) return []
-  return tree[0].map((node) => node.hash)
+  const leaves = tree[0]
+  if (!leaves) return []
+  return leaves.map((node) => node.hash)
 }
 
 /**
@@ -176,6 +188,7 @@ export function validateTreeStructure(tree: MerkleNode[][]): boolean {
   for (let level = 1; level < tree.length; level++) {
     const currentLevel = tree[level]
     const previousLevel = tree[level - 1]
+    if (!currentLevel || !previousLevel) continue
 
     for (const node of currentLevel) {
       if (node.left === null || node.right === null) continue

@@ -3,7 +3,7 @@
 // =============================================================================
 
 import { z } from "zod"
-import { UUIDSchema, JSONSchema, TaskSchema, TaskStepSchema, ActionSchema } from "./schemas.js"
+import { JSONSchema, TaskSchema, TaskStepSchema, UUIDSchema } from "./schemas.js"
 
 // -----------------------------------------------------------------------------
 // Task Execution Context
@@ -14,26 +14,36 @@ export const ExecutionContextSchema = z.object({
   identity_id: UUIDSchema,
   iteration: z.number().int().min(0),
   max_iterations: z.number().int().min(1),
-  recent_events: z.array(z.object({
-    type: z.string(),
-    source: z.string(),
-    occurred_at: z.string(),
-    payload: JSONSchema,
-  })),
-  semantic_memories: z.array(z.object({
-    text: z.string(),
-    score: z.number(),
-    kind: z.string(),
-  })),
-  progress: z.array(TaskStepSchema.pick({
-    step_idx: true,
-    kind: true,
-    name: true,
-    output: true,
-    error: true,
-  })),
+  recent_events: z.array(
+    z.object({
+      type: z.string(),
+      source: z.string(),
+      occurred_at: z.string(),
+      payload: JSONSchema,
+    })
+  ),
+  semantic_memories: z.array(
+    z.object({
+      text: z.string(),
+      score: z.number(),
+      kind: z.string(),
+    })
+  ),
+  progress: z.array(
+    TaskStepSchema.pick({
+      step_idx: true,
+      kind: true,
+      name: true,
+      output: true,
+      error: true,
+    })
+  ),
   world_state: JSONSchema.optional(),
   metacognitive_context: JSONSchema.optional(),
+  // Extended context fields for prompts
+  background: z.string().optional(),
+  constraints: z.array(z.string()).optional(),
+  resources: z.array(z.string()).optional(),
 })
 export type ExecutionContext = z.infer<typeof ExecutionContextSchema>
 
@@ -87,16 +97,20 @@ export const TaskReflectionSchema = z.object({
   what_worked: z.array(z.string()),
   what_failed: z.array(z.string()),
   lessons_learned: z.array(z.string()),
-  suggested_improvements: z.array(z.object({
-    target: z.string(),
-    suggestion: z.string(),
-    confidence: z.number().min(0).max(1),
-  })),
-  skills_to_update: z.array(z.object({
-    skill_name: z.string(),
-    update_type: z.enum(["create", "update", "deprecate"]),
-    content: z.string().optional(),
-  })),
+  suggested_improvements: z.array(
+    z.object({
+      target: z.string(),
+      suggestion: z.string(),
+      confidence: z.number().min(0).max(1),
+    })
+  ),
+  skills_to_update: z.array(
+    z.object({
+      skill_name: z.string(),
+      update_type: z.enum(["create", "update", "deprecate"]),
+      content: z.string().optional(),
+    })
+  ),
 })
 export type TaskReflection = z.infer<typeof TaskReflectionSchema>
 
