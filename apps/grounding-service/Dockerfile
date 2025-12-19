@@ -48,13 +48,12 @@ WORKDIR /app
 RUN addgroup -g 1001 mindos && \
     adduser -u 1001 -G mindos -s /bin/sh -D mindos
 
-# Copy built artifacts
-COPY --from=builder /app/apps/grounding-service/dist ./dist
-COPY --from=builder /app/apps/grounding-service/package.json ./
-COPY --from=builder /app/apps/grounding-service/node_modules ./node_modules
-COPY --from=builder /app/node_modules/.bun ./node_modules/.bun
-COPY --from=builder /app/packages/shared-types/dist ./node_modules/@mindos/shared-types/dist
-COPY --from=builder /app/packages/shared-types/package.json ./node_modules/@mindos/shared-types/
+# Copy built artifacts (preserve workspace layout for Bun node_modules symlinks)
+COPY --from=builder /app/apps/grounding-service/dist /app/apps/grounding-service/dist
+COPY --from=builder /app/apps/grounding-service/package.json /app/apps/grounding-service/
+COPY --from=builder /app/apps/grounding-service/node_modules /app/apps/grounding-service/node_modules
+COPY --from=builder /app/node_modules/.bun /app/node_modules/.bun
+COPY --from=builder /app/packages/shared-types /app/packages/shared-types
 
 # Set ownership
 RUN chown -R mindos:mindos /app
@@ -73,4 +72,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:9200/health || exit 1
 
 # Start the service
+WORKDIR /app/apps/grounding-service
 CMD ["node", "dist/server.js"]
