@@ -57,8 +57,8 @@ COPY --from=builder /app/apps/toolmesh/node_modules /app/apps/toolmesh/node_modu
 COPY --from=builder /app/node_modules/.bun /app/node_modules/.bun
 COPY --from=builder /app/packages/shared-types /app/packages/shared-types
 
-# Set ownership
-RUN chown -R mindos:mindos /app
+# Create workspace directory for filesystem MCP server
+RUN mkdir -p /workspace && chown -R mindos:mindos /app /workspace
 
 USER mindos
 
