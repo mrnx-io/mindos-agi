@@ -90,12 +90,12 @@ Or use GitHub Actions by setting these repository secrets:
 
 ## Step 5: Register with Restate Cloud
 
-After deploying mind-service, register it with Restate:
+After deploying mind-service, register it with Restate (HTTP/1.1 mode):
 ```bash
 curl -X POST \
   -H "Authorization: Bearer $RESTATE_CLOUD_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"uri": "https://mindos-agi-mind-service.fly.dev"}' \
+  -d '{"uri": "https://mindos-agi-mind-service.fly.dev", "use_http_11": true}' \
   https://[env].env.us.restate.cloud:9070/deployments
 ```
 

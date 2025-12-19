@@ -2,7 +2,9 @@
 // MindOS - Mind Service Entry Point
 // =============================================================================
 
-import * as restate from "@restatedev/restate-sdk"
+import { createEndpointHandler } from "@restatedev/restate-sdk/fetch"
+import http from "node:http"
+import { Readable } from "node:stream"
 import { env } from "./config.js"
 import { checkDatabaseHealth, closeDatabasePool } from "./db.js"
 import { logger } from "./logger.js"
@@ -56,13 +58,57 @@ async function main() {
   }
   logger.info("Database connection verified")
 
-  // Start Restate server using the new serve() API
-  const boundPort = await restate.serve({
-    port: env.PORT,
+  // Start Restate server over HTTP/1.1 (request-response mode)
+  const handler = createEndpointHandler({
     services: [mindObject, taskObject, identityService],
   })
 
-  logger.info({ port: boundPort }, "Mind Service started")
+  const server = http.createServer(async (req, res) => {
+    try {
+      const url = new URL(req.url ?? "/", `http://${req.headers.host ?? "localhost"}`)
+      const method = req.method ?? "GET"
+      const headers = new Headers()
+
+      for (const [key, value] of Object.entries(req.headers)) {
+        if (typeof value === "string") {
+          headers.set(key, value)
+        } else if (Array.isArray(value)) {
+          for (const item of value) headers.append(key, item)
+        }
+      }
+
+      const init: RequestInit & { duplex?: "half"; body?: unknown } = { method, headers }
+      if (method !== "GET" && method !== "HEAD") {
+        init.body = req
+        init.duplex = "half"
+      }
+
+      const request = new Request(url, init)
+      const response = await handler(request)
+
+      res.statusCode = response.status
+      response.headers.forEach((value, key) => {
+        res.setHeader(key, value)
+      })
+
+      if (response.body) {
+        Readable.fromWeb(response.body as ReadableStream).pipe(res)
+      } else {
+        res.end()
+      }
+    } catch (err) {
+      logger.error({ err }, "Failed to handle request")
+      res.statusCode = 500
+      res.end()
+    }
+  })
+
+  await new Promise<void>((resolve, reject) => {
+    server.listen(env.PORT, () => resolve())
+    server.on("error", reject)
+  })
+
+  logger.info({ port: env.PORT }, "Mind Service started")
 
   // Log configuration
   logger.info(
