@@ -52,6 +52,7 @@ RUN addgroup -g 1001 mindos && \
 COPY --from=builder /app/apps/toolmesh/dist /app/apps/toolmesh/dist
 COPY --from=builder /app/apps/toolmesh/package.json /app/apps/toolmesh/
 COPY --from=builder /app/apps/toolmesh/mcp.servers.json /app/apps/toolmesh/mcp.servers.json
+COPY --from=builder /app/apps/toolmesh/mcp.servers.json /app/mcp.servers.json
 COPY --from=builder /app/apps/toolmesh/node_modules /app/apps/toolmesh/node_modules
 COPY --from=builder /app/node_modules/.bun /app/node_modules/.bun
 COPY --from=builder /app/packages/shared-types /app/packages/shared-types
@@ -64,6 +65,7 @@ USER mindos
 # Environment
 ENV NODE_ENV=production
 ENV PORT=9000
+ENV MCP_SERVERS_PATH=/app/mcp.servers.json
 
 # Expose toolmesh port
 EXPOSE 9000
