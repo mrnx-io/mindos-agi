@@ -30,7 +30,7 @@ RUN bun install --frozen-lockfile
 # Copy source code
 COPY packages/ ./packages/
 COPY apps/toolmesh/ ./apps/toolmesh/
-COPY tsconfig.json ./
+COPY tsconfig.base.json ./
 
 # Build shared-types first, then the service
 RUN cd packages/shared-types && bun run build
