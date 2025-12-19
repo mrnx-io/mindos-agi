@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS semantic_memories (
 
   -- Content
   text TEXT NOT NULL,
-  embedding vector(1536) NOT NULL,
+  embedding vector(3072) NOT NULL,
 
   -- Metadata
   meta JSONB NOT NULL DEFAULT '{}'::jsonb,

@@ -16,8 +16,8 @@ const EnvSchema = z.object({
 
   // Embeddings
   OPENAI_API_KEY: z.string().optional(),
-  EMBEDDING_MODEL: z.string().default("text-embedding-3-small"),
-  EMBEDDING_DIMENSIONS: z.coerce.number().default(1536),
+  EMBEDDING_MODEL: z.string().default("text-embedding-3-large"),
+  EMBEDDING_DIMENSIONS: z.coerce.number().default(3072),
 
   // Server
   PORT: z.coerce.number().default(3001),
