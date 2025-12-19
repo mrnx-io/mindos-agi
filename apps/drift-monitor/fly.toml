@@ -3,7 +3,7 @@ primary_region = "sjc"
 
 [build]
   dockerfile = "apps/drift-monitor/Dockerfile"
-  context = "."
+  context = "../.."
 
 [http_service]
   internal_port = 9300

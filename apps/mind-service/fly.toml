@@ -3,7 +3,7 @@ primary_region = "sjc"
 
 [build]
   dockerfile = "apps/mind-service/Dockerfile"
-  context = "."
+  context = "../.."
 
 [http_service]
   internal_port = 8080
