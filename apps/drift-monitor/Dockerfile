@@ -26,6 +26,7 @@ COPY packages/observability/package.json ./packages/observability/
 
 # Install dependencies
 RUN bun install --frozen-lockfile
+RUN bun install --frozen-lockfile --cwd apps/drift-monitor
 
 # Copy source code
 COPY packages/ ./packages/
