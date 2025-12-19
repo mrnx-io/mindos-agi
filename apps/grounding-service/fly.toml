@@ -2,7 +2,7 @@ app = "mindos-agi-grounding-service"
 primary_region = "sjc"
 
 [build]
-  dockerfile = "apps/grounding-service/Dockerfile"
+  dockerfile = "Dockerfile"
   context = "../.."
 
 [http_service]

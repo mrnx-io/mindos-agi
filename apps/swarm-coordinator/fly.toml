@@ -2,7 +2,7 @@ app = "mindos-agi-swarm-coordinator"
 primary_region = "sjc"
 
 [build]
-  dockerfile = "apps/swarm-coordinator/Dockerfile"
+  dockerfile = "Dockerfile"
   context = "../.."
 
 [http_service]

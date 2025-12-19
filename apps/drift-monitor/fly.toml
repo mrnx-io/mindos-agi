@@ -2,7 +2,7 @@ app = "mindos-agi-drift-monitor"
 primary_region = "sjc"
 
 [build]
-  dockerfile = "apps/drift-monitor/Dockerfile"
+  dockerfile = "Dockerfile"
   context = "../.."
 
 [http_service]

@@ -2,7 +2,7 @@ app = "mindos-agi-toolmesh"
 primary_region = "sjc"
 
 [build]
-  dockerfile = "apps/toolmesh/Dockerfile"
+  dockerfile = "Dockerfile"
   context = "../.."
 
 [http_service]

@@ -2,7 +2,7 @@ app = "mindos-agi-mind-service"
 primary_region = "sjc"
 
 [build]
-  dockerfile = "apps/mind-service/Dockerfile"
+  dockerfile = "Dockerfile"
   context = "../.."
 
 [http_service]
