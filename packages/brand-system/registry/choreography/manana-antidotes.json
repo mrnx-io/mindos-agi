@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Seven Mañana Antidotes (canonical IDs) for the Universal Brand System",
+  "source_section": "SECTION_CHOREO_THESEVENMANANAANTIDOTES",
+  "antidotes": [
+    {
+      "id": "ANTI_LIMITED_AVAILABILITY",
+      "name": "Limited Availability",
+      "mechanism": "Only X spots/units",
+      "application": "When genuinely limited",
+      "alignment": "Must be true"
+    },
+    {
+      "id": "ANTI_PREMIUM_BONUSES",
+      "name": "Premium Bonuses",
+      "mechanism": "Bonuses expire at deadline",
+      "application": "Cohort-based offers",
+      "alignment": "Must actually remove"
+    },
+    {
+      "id": "ANTI_HARD_DEADLINES",
+      "name": "Hard Deadlines",
+      "mechanism": "Price rises, enrollment closes",
+      "application": "Time-bound offers",
+      "alignment": "Must be real"
+    },
+    {
+      "id": "ANTI_MULTIPLE_OFFERS",
+      "name": "Multiple Offers",
+      "mechanism": "Same value, different angles",
+      "application": "When first offer doesn't resonate",
+      "alignment": "Don't manipulate"
+    },
+    {
+      "id": "ANTI_DISCOUNTS_PENALTIES",
+      "name": "Discounts / Penalties",
+      "mechanism": "Early bird vs. late fee",
+      "application": "Reward early action",
+      "alignment": "Fair, not pressure"
+    },
+    {
+      "id": "ANTI_SWEEPSTAKES",
+      "name": "Sweepstakes",
+      "mechanism": "Enter now to qualify",
+      "application": "Low-friction entry points",
+      "alignment": "Genuine prize"
+    },
+    {
+      "id": "ANTI_EXTREME_EASE",
+      "name": "Extreme Ease",
+      "mechanism": "1-click, instant access",
+      "application": "Most Aware, ready to buy",
+      "alignment": "Reduce friction only when earned"
+    }
+  ]
+}

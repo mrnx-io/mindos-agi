@@ -1,0 +1,140 @@
+{
+  "tradeoff_ladder": {
+    "lf8_conflict_resolution": {
+      "primary_vs_secondary": "When pain relief conflicts with comfort or status, pain relief wins.",
+      "biological_override_rule": "Lower-rank LF8 drivers override higher ones when safety or pain is at stake.",
+      "example_conflicts": [
+        "Premium aesthetics vs clear relief messaging",
+        "Fast checkout vs a necessary sizing step",
+        "Soft cushioning appeal vs structural support" 
+      ]
+    },
+    "ranked_principles": [
+      {
+        "rank": 1,
+        "principle": "Pain relief is non-negotiable.",
+        "source": "covenant",
+        "permits": ["Direct pain language", "Proof before polish"],
+        "forbids": ["Style-first decisions that reduce relief"],
+        "failure_signature": "Users report comfort without relief.",
+        "unlosable_frame": "Relief is the brand, not the aesthetic."
+      },
+      {
+        "rank": 2,
+        "principle": "Earned entry before persuasion.",
+        "source": "manifesto",
+        "permits": ["Diagnostic quiz", "Mechanism explanation"],
+        "forbids": ["Unsubstantiated claims", "Forced urgency"],
+        "failure_signature": "High bounce and distrust.",
+        "unlosable_frame": "Trust is the first conversion."
+      },
+      {
+        "rank": 3,
+        "principle": "Sacred friction beats frictionless hype.",
+        "source": "manifesto",
+        "permits": ["Sizing and fit steps", "Break-in protocol"],
+        "forbids": ["Skip steps for conversion"],
+        "failure_signature": "Returns spike due to misuse.",
+        "unlosable_frame": "Effort protects long-term belief."
+      },
+      {
+        "rank": 4,
+        "principle": "Visual restraint increases perceived quality.",
+        "source": "sumi_breath",
+        "permits": ["Quiet layouts", "Sparse accents"],
+        "forbids": ["Overdecorated pages"],
+        "failure_signature": "Brand feels cheap or noisy.",
+        "unlosable_frame": "Silence signals premium."
+      },
+      {
+        "rank": 5,
+        "principle": "Speed serves safety and trust.",
+        "source": "covenant",
+        "permits": ["Lean pages", "Fast checkout"],
+        "forbids": ["Heavy media that delays load"],
+        "failure_signature": "Drop-offs at first interaction.",
+        "unlosable_frame": "Fast is respectful."
+      }
+    ],
+    "collision_log": [
+      {
+        "name": "Quiz vs fast purchase",
+        "conflict": "Quick checkout reduces steps, quiz increases steps.",
+        "principle_a": { "rank": 2, "principle": "Earned entry before persuasion" },
+        "principle_b": { "rank": 5, "principle": "Speed serves safety and trust" },
+        "resolution": "Keep a short diagnostic quiz but allow skip after explaining value.",
+        "cost_accepted": "Slightly higher friction for better fit and lower returns.",
+        "unlosable_frame": "Fit accuracy is part of the promise.",
+        "precedent_established": "Diagnostic step remains unless LTV dips below target."
+      },
+      {
+        "name": "Minimal design vs proof density",
+        "conflict": "More proof adds clutter; restraint reduces evidence.",
+        "principle_a": { "rank": 4, "principle": "Visual restraint increases perceived quality" },
+        "principle_b": { "rank": 1, "principle": "Pain relief is non-negotiable" },
+        "resolution": "Use fewer proof elements but make each one stronger and clearer.",
+        "cost_accepted": "Lower total proof count for higher clarity.",
+        "unlosable_frame": "Quality proof beats quantity proof.",
+        "precedent_established": "Proof appears in fewer, higher-impact modules."
+      },
+      {
+        "name": "Soft comfort language vs structural support truth",
+        "conflict": "Comfort language sells; structural truth is less emotional.",
+        "principle_a": { "rank": 1, "principle": "Pain relief is non-negotiable" },
+        "principle_b": { "rank": 2, "principle": "Earned entry before persuasion" },
+        "resolution": "Lead with relief promise and explain structure as the reason.",
+        "cost_accepted": "More education before the offer.",
+        "unlosable_frame": "Truth before ease.",
+        "precedent_established": "Mechanism explanation always precedes price."
+      }
+    ],
+    "override_clause": {
+      "condition": "If user safety or clinical accuracy is at risk.",
+      "when_applies": [
+        "Claims exceed evidence",
+        "Fit guidance is missing",
+        "Support risks harm"
+      ],
+      "authority": "Founder's clinical standard",
+      "return_criteria": "Resume normal hierarchy once safety and accuracy are restored."
+    },
+    "unlosable_frames": [
+      {
+        "sacrifice": "Lower conversion from added fit step",
+        "gain": "Lower returns and higher trust"
+      },
+      {
+        "sacrifice": "Less dramatic visuals",
+        "gain": "Premium credibility and calm"
+      }
+    ],
+    "derivation_log": {
+      "axiom": "Attention is sacred. Every demand on consciousness must be earned.",
+      "laws": [
+        "Earned Entry",
+        "Pregnant Void",
+        "Living Materials",
+        "Sacred Friction",
+        "The Threshold"
+      ],
+      "source_sections": [
+        "SECTION_TRADEOFF_THEBIOLOGICALHIERARCHY",
+        "SECTION_TRADEOFF_THERANKEDPRINCIPLES_5_9",
+        "SECTION_TRADEOFF_THECOLLISIONLOG_3_5_EXAMPLES",
+        "SECTION_MANIFESTO_THEFIVELAWS"
+      ],
+      "chain": [
+        {
+          "decision": "Rank pain relief above aesthetic restraint.",
+          "derived_from": ["SECTION_TRADEOFF_THEBIOLOGICALHIERARCHY"],
+          "rationale": "LF8 hierarchy requires relief to override secondary drivers."
+        },
+        {
+          "decision": "Codify collisions for fit friction and proof density.",
+          "derived_from": ["SECTION_TRADEOFF_THECOLLISIONLOG_3_5_EXAMPLES"],
+          "rationale": "Repeatable conflicts need deterministic resolution."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Covenant output schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["covenant"],
+  "properties": {
+    "covenant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "starving_crowd",
+        "grand_slam_offer",
+        "value_ladder",
+        "attractive_character",
+        "competitive_position",
+        "traffic_architecture",
+        "funnel_architecture",
+        "unit_economics",
+        "derivation_log"
+      ],
+      "properties": {
+        "starving_crowd": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "pain_statement",
+            "who_they_are",
+            "what_they_suffer",
+            "when_pain_peaks",
+            "failed_alternatives",
+            "why_still_searching",
+            "lf8_configuration",
+            "awareness_level",
+            "watering_holes",
+            "wallet_evidence",
+            "exclusion_boundary"
+          ],
+          "properties": {
+            "pain_statement": { "type": "string", "minLength": 1 },
+            "who_they_are": { "type": "string", "minLength": 1 },
+            "what_they_suffer": { "type": "string", "minLength": 1 },
+            "when_pain_peaks": { "type": "string", "minLength": 1 },
+            "failed_alternatives": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 },
+            "why_still_searching": { "type": "string", "minLength": 1 },
+            "lf8_configuration": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["primary", "secondary", "hierarchy_rationale"],
+              "properties": {
+                "primary": { "$ref": "./_defs.json#/definitions/lf8_id" },
+                "secondary": { "$ref": "./_defs.json#/definitions/lf8_id" },
+                "tertiary": {
+                  "anyOf": [
+                    { "$ref": "./_defs.json#/definitions/lf8_id" },
+                    { "type": "null" }
+                  ]
+                },
+                "hierarchy_rationale": { "type": "string", "minLength": 1 }
+              }
+            },
+            "awareness_level": { "$ref": "./_defs.json#/definitions/awareness_id" },
+            "watering_holes": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 },
+            "wallet_evidence": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 },
+            "exclusion_boundary": { "type": "string", "minLength": 1 }
+          }
+        },
+        "grand_slam_offer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value_equation", "core_promise", "vehicle", "proof_stack", "bonuses", "psychological_enhancers"],
+          "properties": {
+            "value_equation": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["dream_outcome", "perceived_likelihood", "time_delay", "effort_sacrifice", "factor_ids"],
+              "properties": {
+                "dream_outcome": { "type": "string", "minLength": 1 },
+                "perceived_likelihood": { "type": "string", "minLength": 1 },
+                "time_delay": { "type": "string", "minLength": 1 },
+                "effort_sacrifice": { "type": "string", "minLength": 1 },
+                "factor_ids": {
+                  "type": "array",
+                  "minItems": 4,
+                  "maxItems": 4,
+                  "items": { "$ref": "./_defs.json#/definitions/value_equation_factor_id" }
+                }
+              }
+            },
+            "core_promise": { "type": "string", "minLength": 1 },
+            "vehicle": { "type": "string", "minLength": 1 },
+            "proof_stack": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["mechanism", "results", "risk_reversal"],
+              "properties": {
+                "mechanism": { "type": "string", "minLength": 1 },
+                "results": { "type": "string", "minLength": 1 },
+                "risk_reversal": { "type": "string", "minLength": 1 }
+              }
+            },
+            "bonuses": { "$ref": "./_defs.json#/definitions/string_list" },
+            "psychological_enhancers": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["bonuses", "guarantee", "naming"],
+              "properties": {
+                "scarcity": { "$ref": "./_defs.json#/definitions/enhancer_application" },
+                "urgency": { "$ref": "./_defs.json#/definitions/enhancer_application" },
+                "bonuses": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "$ref": "./_defs.json#/definitions/enhancer_application" }
+                },
+                "guarantee": { "$ref": "./_defs.json#/definitions/enhancer_application" },
+                "naming": { "$ref": "./_defs.json#/definitions/enhancer_application" }
+              }
+            }
+          }
+        },
+        "value_ladder": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rung_id", "offer", "price", "purpose"],
+            "properties": {
+              "rung_id": { "$ref": "./_defs.json#/definitions/value_ladder_id" },
+              "rung_label": { "type": "string", "minLength": 1 },
+              "offer": { "type": "string", "minLength": 1 },
+              "price": { "type": "string", "minLength": 1 },
+              "purpose": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "attractive_character": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["archetype", "backstory_elements", "parables", "character_flaws"],
+          "properties": {
+            "archetype": { "$ref": "./_defs.json#/definitions/brand_archetype_id" },
+            "backstory_elements": { "$ref": "./_defs.json#/definitions/string_list" },
+            "parables": { "$ref": "./_defs.json#/definitions/string_list" },
+            "character_flaws": { "$ref": "./_defs.json#/definitions/string_list" }
+          }
+        },
+        "competitive_position": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["alternatives", "weakness_of_alternatives", "winning_dimension", "positioning_statement"],
+          "properties": {
+            "alternatives": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["direct", "indirect", "do_nothing"],
+              "properties": {
+                "direct": { "$ref": "./_defs.json#/definitions/string_list" },
+                "indirect": { "$ref": "./_defs.json#/definitions/string_list" },
+                "do_nothing": { "type": "string", "minLength": 1 }
+              }
+            },
+            "weakness_of_alternatives": { "type": "string", "minLength": 1 },
+            "winning_dimension": { "type": "string", "minLength": 1 },
+            "positioning_statement": { "type": "string", "minLength": 1 }
+          }
+        },
+        "traffic_architecture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["temperature_strategy", "primary_channels", "content_strategy"],
+          "properties": {
+            "temperature_strategy": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["hot", "warm", "cold"],
+              "properties": {
+                "hot": { "type": "object" },
+                "warm": { "type": "object" },
+                "cold": { "type": "object" }
+              }
+            },
+            "primary_channels": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 },
+            "content_strategy": { "type": "string", "minLength": 1 }
+          }
+        },
+        "funnel_architecture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["phases", "entry_points", "conversion_events"],
+          "properties": {
+            "phases": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["name", "purpose"],
+                "properties": {
+                  "name": { "type": "string", "minLength": 1 },
+                  "purpose": { "type": "string", "minLength": 1 }
+                }
+              }
+            },
+            "entry_points": { "$ref": "./_defs.json#/definitions/string_list" },
+            "conversion_events": { "$ref": "./_defs.json#/definitions/string_list" }
+          }
+        },
+        "unit_economics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["customer_acquisition_cost", "lifetime_value", "ltv_cac_ratio", "payback_period", "contribution_margin"],
+          "properties": {
+            "customer_acquisition_cost": { "type": "number" },
+            "lifetime_value": { "type": "number" },
+            "ltv_cac_ratio": { "type": "number" },
+            "payback_period": { "type": "string", "minLength": 1 },
+            "contribution_margin": { "type": "number" }
+          }
+        },
+        "derivation_log": { "$ref": "./_defs.json#/definitions/derivation_log" }
+      }
+    }
+  }
+}

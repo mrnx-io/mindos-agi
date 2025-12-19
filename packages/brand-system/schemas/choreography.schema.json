@@ -1,0 +1,218 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Experience Choreography output schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "experience_choreography"
+  ],
+  "properties": {
+    "experience_choreography": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "golden_thread",
+        "awareness_transitions",
+        "moments_of_truth",
+        "enhancer_protocol",
+        "manana_antidotes",
+        "failure_signatures",
+        "recovery_rituals",
+        "hierarchy_of_moments",
+        "anti_patterns",
+        "derivation_log"
+      ],
+      "properties": {
+        "golden_thread": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "core_emotion",
+            "validation"
+          ],
+          "properties": {
+            "core_emotion": {
+              "type": "string",
+              "minLength": 1
+            },
+            "validation": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "awareness_transitions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from",
+              "to",
+              "mechanism",
+              "moment_type"
+            ],
+            "properties": {
+              "from": {
+                "$ref": "./_defs.json#/definitions/awareness_id"
+              },
+              "to": {
+                "$ref": "./_defs.json#/definitions/awareness_id"
+              },
+              "mechanism": {
+                "type": "string",
+                "minLength": 1
+              },
+              "moment_type": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "moments_of_truth": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "moment",
+              "intent",
+              "behavioral_standard"
+            ],
+            "properties": {
+              "moment": {
+                "type": "string",
+                "minLength": 1
+              },
+              "intent": {
+                "type": "string",
+                "minLength": 1
+              },
+              "behavioral_standard": {
+                "type": "string",
+                "minLength": 1
+              },
+              "awareness_transition": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "properties": {
+                  "from": {
+                    "$ref": "./_defs.json#/definitions/awareness_id"
+                  },
+                  "to": {
+                    "$ref": "./_defs.json#/definitions/awareness_id"
+                  }
+                }
+              },
+              "failure_signature": {
+                "type": "string"
+              },
+              "recovery_ritual": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "enhancer_protocol": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "enhancers"
+          ],
+          "properties": {
+            "enhancers": {
+              "type": "array",
+              "minItems": 5,
+              "maxItems": 5,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "application"
+                ],
+                "properties": {
+                  "id": {
+                    "$ref": "./_defs.json#/definitions/enhancer_id"
+                  },
+                  "application": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "evidence": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "manana_antidotes": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "application"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "./_defs.json#/definitions/manana_antidote_id"
+              },
+              "application": {
+                "type": "string",
+                "minLength": 1
+              },
+              "philosophy_alignment": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "failure_signatures": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "recovery_rituals": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "hierarchy_of_moments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "anti_patterns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "derivation_log": {
+          "$ref": "./_defs.json#/definitions/derivation_log"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "sumi_breath": {
+    "five_substances": [
+      {
+        "name": "Ma",
+        "visual_function": "Creates intervals and breathing room between elements.",
+        "psychological_function": "Signals safety and reduces cognitive load."
+      },
+      {
+        "name": "Sumi",
+        "visual_function": "Anchors hierarchy with decisive contrast.",
+        "psychological_function": "Builds certainty and focus."
+      },
+      {
+        "name": "Grain",
+        "visual_function": "Adds texture to signal material honesty.",
+        "psychological_function": "Builds trust through realism."
+      },
+      {
+        "name": "Kakemono",
+        "visual_function": "Guides vertical flow and narrative descent.",
+        "psychological_function": "Encourages progression without resistance."
+      },
+      {
+        "name": "Yugen",
+        "visual_function": "Uses restraint to leave space for meaning.",
+        "psychological_function": "Creates curiosity and emotional resonance."
+      }
+    ],
+    "craft_rituals": [
+      {
+        "name": "Earned Entry",
+        "principle": "Only elements that repay attention are allowed in.",
+        "token_requirement": "One primary element per view with clear hierarchy."
+      },
+      {
+        "name": "Pregnant Void",
+        "principle": "Space is active and carries meaning.",
+        "token_requirement": "Minimum section spacing of ma_rest."
+      },
+      {
+        "name": "Living Materials",
+        "principle": "Texture and tone must feel honest and grounded.",
+        "token_requirement": "Use grain overlays and warm neutrals only."
+      },
+      {
+        "name": "Sacred Friction",
+        "principle": "Allow meaningful effort, remove chaos.",
+        "token_requirement": "One decisive CTA per view with a pause before action."
+      },
+      {
+        "name": "The Threshold",
+        "principle": "Crossings must be felt and honored.",
+        "token_requirement": "Use bowDelay before any transition."
+      }
+    ],
+    "tokens": {
+      "spacing": {
+        "ma_breath": "8px",
+        "ma_rest": "24px",
+        "ma_void": "64px"
+      },
+      "color": {
+        "washi": "#F7F2E8",
+        "sumi": "#12110F",
+        "stone": "#C9C2B6",
+        "persimmon": "#D45A2A"
+      },
+      "typography": {
+        "display": "System Sans Display",
+        "body": "System Sans Text",
+        "mono": "System Mono"
+      },
+      "motion": {
+        "bowDelay": 80,
+        "whisper": 160,
+        "breath": 240,
+        "room": 360,
+        "easing": {
+          "enter": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "exit": "cubic-bezier(0.7, 0, 0.84, 0)"
+        }
+      }
+    },
+    "verbal_rhythm_mapping": [
+      {
+        "token": "Bow",
+        "copy_pattern": "Pre-CTA micro-pause line break",
+        "purpose": "Respect the decision threshold before action."
+      },
+      {
+        "token": "Whisper",
+        "copy_pattern": "Micro-affirmation sentence",
+        "purpose": "Acknowledge the reader and keep attention steady."
+      },
+      {
+        "token": "Breath",
+        "copy_pattern": "Consequence sentence",
+        "purpose": "Let the implication land before the ask."
+      },
+      {
+        "token": "Room",
+        "copy_pattern": "Short whitespace block before the ask",
+        "purpose": "Create a clean threshold into action."
+      }
+    ],
+    "visual_slippery_slide": {
+      "principle": "Every view must pull the eye to the next through hierarchy and spacing.",
+      "curiosity_mechanisms": [
+        "Single focal headline",
+        "Progressive disclosure of proof",
+        "Whitespace that implies continuation"
+      ]
+    },
+    "rule_of_one_visual": {
+      "statement": "One dominant object and one dominant action per view."
+    },
+    "derivation_log": {
+      "axiom": "Attention is sacred. Every demand on consciousness must be earned.",
+      "laws": [
+        "Earned Entry",
+        "Pregnant Void",
+        "Living Materials",
+        "Sacred Friction",
+        "The Threshold"
+      ],
+      "source_sections": [
+        "SECTION_SUMI_BREATH_THENEUROAESTHETICAXIOM",
+        "SECTION_SUMI_BREATH_THEFIVELAWSBECOMEFIVECRAFTRITUALS",
+        "SECTION_SUMI_BREATH_MOTIONASBREATH",
+        "SECTION_MANIFESTO_THEAXIOM"
+      ],
+      "chain": [
+        {
+          "decision": "Define five substances as the visual building blocks.",
+          "derived_from": ["SECTION_SUMI_BREATH_THEPREMISE"],
+          "rationale": "Substances map philosophy to observable visual behavior."
+        },
+        {
+          "decision": "Set motion tokens to bow/whisper/breath/room timing.",
+          "derived_from": ["SECTION_SUMI_BREATH_MOTIONASBREATH"],
+          "rationale": "Timing honors the threshold of conscious perception."
+        }
+      ]
+    }
+  }
+}

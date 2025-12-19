@@ -1,0 +1,253 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Shared schema definitions for the Universal Brand System",
+  "definitions": {
+    "lf8_id": {
+      "type": "string",
+      "enum": [
+        "LF8_SURVIVAL",
+        "LF8_PAIN_FREEDOM",
+        "LF8_PROTECTION",
+        "LF8_COMPANIONSHIP",
+        "LF8_COMFORT",
+        "LF8_NOURISHMENT",
+        "LF8_SUPERIORITY",
+        "LF8_APPROVAL"
+      ]
+    },
+    "awareness_id": {
+      "type": "string",
+      "enum": [
+        "AWARE_MOST",
+        "AWARE_PRODUCT",
+        "AWARE_SOLUTION",
+        "AWARE_PROBLEM",
+        "AWARE_UNAWARE"
+      ]
+    },
+    "lead_archetype_id": {
+      "type": "string",
+      "enum": [
+        "LEAD_OFFER",
+        "LEAD_PROMISE",
+        "LEAD_PROBLEM_SOLUTION",
+        "LEAD_SECRET",
+        "LEAD_PROCLAMATION",
+        "LEAD_STORY"
+      ]
+    },
+    "brand_archetype_id": {
+      "type": "string",
+      "enum": [
+        "ARCHETYPE_LEADER",
+        "ARCHETYPE_ADVENTURER",
+        "ARCHETYPE_REPORTER",
+        "ARCHETYPE_RELUCTANT_HERO"
+      ]
+    },
+    "string_list": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "value_ladder_rung": {
+      "type": "string",
+      "enum": [
+        "Bait",
+        "Frontend",
+        "Middle",
+        "Backend",
+        "Continuity"
+      ]
+    },
+    "dr_rule_id": {
+      "type": "string",
+      "enum": [
+        "DR_ALWAYS_OFFER",
+        "DR_REASON_NOW",
+        "DR_CLEAR_INSTRUCTIONS",
+        "DR_TRACK_MEASURE",
+        "DR_NO_COST_BRAND",
+        "DR_FOLLOW_UP",
+        "DR_STRONG_COPY",
+        "DR_MAIL_ORDER_FORMAT",
+        "DR_RESULTS_RULE",
+        "DR_DISCIPLINE"
+      ]
+    },
+    "sugarman_element_id": {
+      "type": "string",
+      "enum": [
+        "SUGAR_TYPEFACE",
+        "SUGAR_FIRST_SENTENCE",
+        "SUGAR_SECOND_SENTENCE",
+        "SUGAR_PARAGRAPH_HEADINGS",
+        "SUGAR_PRODUCT_EXPLANATION",
+        "SUGAR_NEW_FEATURES",
+        "SUGAR_TECHNICAL_EXPLANATION",
+        "SUGAR_ANTICIPATE_OBJECTIONS",
+        "SUGAR_RESOLVE_OBJECTIONS",
+        "SUGAR_GENDER",
+        "SUGAR_CLARITY",
+        "SUGAR_RHYTHM",
+        "SUGAR_SERVICE",
+        "SUGAR_PHYSICAL_DIMENSIONS",
+        "SUGAR_TRIAL_PERIOD",
+        "SUGAR_PRICE_COMPARISON",
+        "SUGAR_TESTIMONIALS",
+        "SUGAR_PRICE",
+        "SUGAR_OFFER_SUMMARY",
+        "SUGAR_AVOID_TOO_MUCH",
+        "SUGAR_EASE_OF_ORDERING",
+        "SUGAR_ASK_FOR_ORDER",
+        "SUGAR_GRAPHIC_ELEMENTS"
+      ]
+    },
+    "headline_formula_id": {
+      "type": "string",
+      "enum": [
+        "HEADLINE_WHO_ELSE",
+        "HEADLINE_LAUGHED",
+        "HEADLINE_MISTAKES",
+        "HEADLINE_HOW_TO",
+        "HEADLINE_SECRET",
+        "HEADLINE_WARNING",
+        "HEADLINE_GIVE_ME",
+        "HEADLINE_DISCOVER",
+        "HEADLINE_NUMBER_WAYS",
+        "HEADLINE_AT_LAST",
+        "HEADLINE_WHAT_AUTHORITY",
+        "HEADLINE_LIES"
+      ]
+    },
+    "enhancer_id": {
+      "type": "string",
+      "enum": [
+        "ENH_SCARCITY",
+        "ENH_URGENCY",
+        "ENH_BONUSES",
+        "ENH_GUARANTEES",
+        "ENH_NAMING"
+      ]
+    },
+    "manana_antidote_id": {
+      "type": "string",
+      "enum": [
+        "ANTI_LIMITED_AVAILABILITY",
+        "ANTI_PREMIUM_BONUSES",
+        "ANTI_HARD_DEADLINES",
+        "ANTI_MULTIPLE_OFFERS",
+        "ANTI_DISCOUNTS_PENALTIES",
+        "ANTI_SWEEPSTAKES",
+        "ANTI_EXTREME_EASE"
+      ]
+    },
+    "value_equation_factor_id": {
+      "type": "string",
+      "enum": [
+        "VE_DREAM_OUTCOME",
+        "VE_PERCEIVED_LIKELIHOOD",
+        "VE_TIME_DELAY",
+        "VE_EFFORT_SACRIFICE"
+      ]
+    },
+    "value_ladder_id": {
+      "type": "string",
+      "enum": [
+        "LADDER_BAIT",
+        "LADDER_FRONTEND",
+        "LADDER_MIDDLE",
+        "LADDER_BACKEND",
+        "LADDER_CONTINUITY"
+      ]
+    },
+    "section_ref": {
+      "type": "string",
+      "pattern": "^SECTION_[A-Z0-9_]+$"
+    },
+    "derivation_link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "derived_from",
+        "rationale"
+      ],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "derived_from": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/section_ref"
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "derivation_log": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "axiom",
+        "laws",
+        "source_sections",
+        "chain"
+      ],
+      "properties": {
+        "axiom": {
+          "type": "string",
+          "minLength": 1
+        },
+        "laws": {
+          "$ref": "#/definitions/string_list",
+          "minItems": 1
+        },
+        "source_sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/section_ref"
+          }
+        },
+        "chain": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/derivation_link"
+          }
+        }
+      }
+    },
+    "enhancer_application": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "application"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/enhancer_id"
+        },
+        "application": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

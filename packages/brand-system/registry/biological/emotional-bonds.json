@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "9 Needs-Based Emotional Bond Drivers - Single Source of Truth for the Universal Brand System",
+  "core_principle": {
+    "axiom": "Emotional drivers create bonds stronger than logic. Meet the need, earn the loyalty.",
+    "mechanism": "Each need, when fulfilled, creates a specific psychological bond that transcends transactional relationship."
+  },
+  "needs": [
+    {
+      "id": "NEED_VALIDATION",
+      "name": "Validation / Hope",
+      "definition": "Encourage dreams at impasse",
+      "copy_application": "Your instincts were right all along. The path you sensed exists.",
+      "trigger_phrases": ["I knew it", "Finally someone understands", "This is exactly what I needed to hear"],
+      "bond_effect": "Association → Inspiration. They see you as the one who believed in them.",
+      "when_to_deploy": "When prospect is stuck, doubting themselves, or at a crossroads"
+    },
+    {
+      "id": "NEED_ABSOLUTION",
+      "name": "Absolution",
+      "definition": "Externalize failures via scapegoat",
+      "copy_application": "It's not your fault — it's the system. The deck was stacked against you.",
+      "trigger_phrases": ["I'm not crazy", "I was set up to fail", "Now I understand why"],
+      "bond_effect": "Relief → Receptivity. Guilt removed, they're ready to receive solution.",
+      "when_to_deploy": "When prospect carries shame or self-blame about their situation"
+    },
+    {
+      "id": "NEED_SECURITY",
+      "name": "Security",
+      "definition": "Allay fears that consume bandwidth",
+      "copy_application": "Provide evidence until fears subside. Address every 'what if' scenario.",
+      "trigger_phrases": ["I can finally relax", "They've thought of everything", "I'm protected"],
+      "bond_effect": "Undivided gratitude. Fear consumes cognitive resources; removing it earns devotion.",
+      "when_to_deploy": "When prospect is paralyzed by risk, uncertainty, or potential loss"
+    },
+    {
+      "id": "NEED_CONFIRMATION",
+      "name": "Confirmation",
+      "definition": "Affirm suspicions ('I knew it')",
+      "copy_application": "You suspected this for years. You were right. Here's the proof.",
+      "trigger_phrases": ["I always thought so", "This confirms everything", "I'm smarter than they said"],
+      "bond_effect": "Superiority surge → Instant ally. You validated their intelligence.",
+      "when_to_deploy": "When prospect has private doubts about conventional wisdom"
+    },
+    {
+      "id": "NEED_CAMARADERIE",
+      "name": "Camaraderie",
+      "definition": "Common enemy bonding",
+      "copy_application": "Together against [enemy]. We're fighting the same fight.",
+      "trigger_phrases": ["They get it", "We're in this together", "Finally, my people"],
+      "bond_effect": "Friend → Partner. Shared enemy creates shared identity.",
+      "when_to_deploy": "When there's a clear antagonist (industry, system, competitor, status quo)"
+    },
+    {
+      "id": "NEED_SIGNIFICANCE",
+      "name": "Significance",
+      "definition": "Feel needed, unique, essential",
+      "copy_application": "Six-step activation: Stakes → Role → Importance → Qualification → Sacrifice → Commit",
+      "trigger_phrases": ["They chose me", "I'm part of something bigger", "I matter here"],
+      "bond_effect": "Cult-level loyalty. They feel irreplaceable in the mission.",
+      "six_step_sequence": [
+        "Reveal the stakes (what's at risk)",
+        "Define their role (what only they can do)",
+        "Emphasize their importance (why them specifically)",
+        "Establish qualification (they passed the test)",
+        "Require sacrifice (small commitment)",
+        "Receive commitment (they're in)"
+      ],
+      "when_to_deploy": "When building community, movement, or high-ticket relationships"
+    },
+    {
+      "id": "NEED_AGENCY",
+      "name": "Agency",
+      "definition": "Preserve choice and autonomy",
+      "copy_application": "The decision is yours. You're in control. No pressure.",
+      "trigger_phrases": ["My choice", "I decided", "They respect my autonomy"],
+      "bond_effect": "Freedom → Deeper commitment. Paradox: Giving freedom increases loyalty.",
+      "when_to_deploy": "At decision points, especially when asking for commitment"
+    },
+    {
+      "id": "NEED_GNOSIS",
+      "name": "Gnosis",
+      "definition": "Secret knowledge allure",
+      "copy_application": "What insiders know. The hidden truth. What they don't want you to see.",
+      "trigger_phrases": ["I know something they don't", "Insider access", "The real story"],
+      "bond_effect": "Irresistible curiosity → Elevated status. Secret knowledge confers power.",
+      "when_to_deploy": "When offering exclusive insights, hidden mechanisms, or insider perspective"
+    },
+    {
+      "id": "NEED_CERTAINTY",
+      "name": "Certainty",
+      "definition": "Need to be right",
+      "copy_application": "Let them be right. Then add to it. Never contradict directly.",
+      "trigger_phrases": ["Exactly", "That's what I've been saying", "Finally someone agrees"],
+      "bond_effect": "Threat removed → Loyalty. Ego protected, walls come down.",
+      "when_to_deploy": "When prospect has strong existing beliefs that align with your message"
+    }
+  ],
+  "usage_rules": {
+    "reference_by": "Use semantic ID (e.g., NEED_VALIDATION) not position in all documents",
+    "selection_guide": "Identify prospect's dominant unmet need, then deploy matching copy",
+    "stacking": "Deploy 2-3 needs per piece for compound bonding effect",
+    "warning": "Overusing NEED_ABSOLUTION without solution creates victimhood, not action"
+  },
+  "relationship_to_lf8": {
+    "distinction": "LF8 = biological drives (hardwired). Emotional Bonds = psychological needs (relational).",
+    "integration": "LF8 creates initial desire. Emotional Bonds create lasting loyalty.",
+    "sequence": "Hook with LF8 → Bond with Needs → Retain through relationship"
+  },
+  "cross_references": {
+    "covenant": "SECTION_COVENANT_THEEMOTIONALBONDMAP",
+    "canon": "SECTION_CANON_THESIXVOICEMODES",
+    "choreography": "SECTION_CHOREO_THEMOMENTSOFTRUTH_5_12",
+    "manifesto": "SECTION_MANIFESTO_THEBIOLOGICALFOUNDATION"
+  }
+}

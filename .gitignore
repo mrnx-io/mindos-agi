@@ -48,6 +48,8 @@ tmp/
 temp/
 *.tmp
 *.bak
+__pycache__/
+*.pyc
 
 # Secrets (never commit)
 *.pem

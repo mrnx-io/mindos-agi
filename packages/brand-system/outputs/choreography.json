@@ -1,0 +1,229 @@
+{
+  "experience_choreography": {
+    "golden_thread": {
+      "core_emotion": "Relief through grounded confidence",
+      "validation": "Every moment should move the customer from pain anxiety to calm certainty."
+    },
+    "awareness_transitions": [
+      {
+        "from": "AWARE_UNAWARE",
+        "to": "AWARE_PROBLEM",
+        "mechanism": "Pain recognition story",
+        "moment_type": "Discovery Moment"
+      },
+      {
+        "from": "AWARE_PROBLEM",
+        "to": "AWARE_SOLUTION",
+        "mechanism": "Alignment diagnosis and mechanism",
+        "moment_type": "Hope Moment"
+      },
+      {
+        "from": "AWARE_SOLUTION",
+        "to": "AWARE_PRODUCT",
+        "mechanism": "Proof of fit and outcomes",
+        "moment_type": "Bridge Moment"
+      },
+      {
+        "from": "AWARE_PRODUCT",
+        "to": "AWARE_MOST",
+        "mechanism": "Guarantee and protocol clarity",
+        "moment_type": "Conviction Moment"
+      }
+    ],
+    "moments_of_truth": [
+      {
+        "moment": "Pain mirror",
+        "intent": "Make the customer feel fully seen.",
+        "behavioral_standard": "Use their exact pain language before any claim.",
+        "awareness_transition": {
+          "from": "AWARE_UNAWARE",
+          "to": "AWARE_PROBLEM"
+        },
+        "failure_signature": "Generic copy or vague pain statements.",
+        "recovery_ritual": "Return to verbatim customer quotes."
+      },
+      {
+        "moment": "Diagnosis quiz",
+        "intent": "Provide a clear, safe first step.",
+        "behavioral_standard": "Quiz takes under 60 seconds with a clear result.",
+        "awareness_transition": {
+          "from": "AWARE_PROBLEM",
+          "to": "AWARE_SOLUTION"
+        },
+        "failure_signature": "Confusing outcomes or no guidance.",
+        "recovery_ritual": "Show a simple result with one next step."
+      },
+      {
+        "moment": "Mechanism reveal",
+        "intent": "Explain why alignment relieves pain.",
+        "behavioral_standard": "Show the mechanism with one diagram and one sentence.",
+        "awareness_transition": {
+          "from": "AWARE_SOLUTION",
+          "to": "AWARE_PRODUCT"
+        },
+        "failure_signature": "Overly technical explanation.",
+        "recovery_ritual": "Replace with a single cause-and-effect line."
+      },
+      {
+        "moment": "Proof stack",
+        "intent": "Establish credibility and trust.",
+        "behavioral_standard": "Provide clinical proof plus real user outcomes.",
+        "awareness_transition": {
+          "from": "AWARE_SOLUTION",
+          "to": "AWARE_PRODUCT"
+        },
+        "failure_signature": "Unverified claims or missing sources.",
+        "recovery_ritual": "Add sources and remove any unverified claim."
+      },
+      {
+        "moment": "Offer threshold",
+        "intent": "Make the commitment feel earned.",
+        "behavioral_standard": "CTA appears after promise, mechanism, and proof.",
+        "awareness_transition": {
+          "from": "AWARE_PRODUCT",
+          "to": "AWARE_MOST"
+        },
+        "failure_signature": "CTA appears before understanding.",
+        "recovery_ritual": "Move CTA below proof and promise."
+      },
+      {
+        "moment": "Guarantee calm",
+        "intent": "Remove fear of wasting money.",
+        "behavioral_standard": "Guarantee language is clear and quiet.",
+        "awareness_transition": {
+          "from": "AWARE_PRODUCT",
+          "to": "AWARE_MOST"
+        },
+        "failure_signature": "Guarantee feels defensive or loud.",
+        "recovery_ritual": "Shorten language and add policy proof."
+      },
+      {
+        "moment": "First-day onboarding",
+        "intent": "Guide the first use to prevent drop-off.",
+        "behavioral_standard": "Send a 3-step setup within 5 minutes of purchase.",
+        "failure_signature": "Silence after purchase.",
+        "recovery_ritual": "Trigger immediate onboarding email and checklist."
+      }
+    ],
+    "enhancer_protocol": {
+      "enhancers": [
+        {
+          "id": "ENH_SCARCITY",
+          "application": "Use batch limits only when manufacturing capacity is reached.",
+          "evidence": "Production cap log."
+        },
+        {
+          "id": "ENH_URGENCY",
+          "application": "Use enrollment cutoffs for the guided protocol, not fake timers.",
+          "evidence": "Coach schedule."
+        },
+        {
+          "id": "ENH_BONUSES",
+          "application": "Offer the posture guide only with first purchase.",
+          "evidence": "Bonus access rules."
+        },
+        {
+          "id": "ENH_GUARANTEES",
+          "application": "30-day wear-and-feel guarantee stated plainly.",
+          "evidence": "Refund policy."
+        },
+        {
+          "id": "ENH_NAMING",
+          "application": "Use names that signal calm precision and alignment.",
+          "evidence": "Name testing notes."
+        }
+      ]
+    },
+    "manana_antidotes": [
+      {
+        "id": "ANTI_LIMITED_AVAILABILITY",
+        "application": "Batch limit notices when caps are real.",
+        "philosophy_alignment": "Scarcity must be earned."
+      },
+      {
+        "id": "ANTI_PREMIUM_BONUSES",
+        "application": "Bundle the posture guide with first purchase only.",
+        "philosophy_alignment": "Bonus must add real value."
+      },
+      {
+        "id": "ANTI_HARD_DEADLINES",
+        "application": "Close guided protocol enrollment monthly.",
+        "philosophy_alignment": "Deadlines must be true."
+      },
+      {
+        "id": "ANTI_MULTIPLE_OFFERS",
+        "application": "Offer only one primary kit on the page.",
+        "philosophy_alignment": "One decision per view."
+      },
+      {
+        "id": "ANTI_DISCOUNTS_PENALTIES",
+        "application": "Avoid discounting; use value justification.",
+        "philosophy_alignment": "Price reflects truth, not pressure."
+      },
+      {
+        "id": "ANTI_SWEEPSTAKES",
+        "application": "No giveaways that attract non-buyers.",
+        "philosophy_alignment": "Earned entry over noise."
+      },
+      {
+        "id": "ANTI_EXTREME_EASE",
+        "application": "Maintain the fit step even if it adds friction.",
+        "philosophy_alignment": "Sacred friction protects belief."
+      }
+    ],
+    "failure_signatures": [
+      "CTA before proof",
+      "Hype language that breaks trust",
+      "Onboarding gaps after purchase"
+    ],
+    "recovery_rituals": [
+      "Re-sequence content to restore proof before offer",
+      "Replace hype with measured claims",
+      "Trigger immediate onboarding sequence"
+    ],
+    "hierarchy_of_moments": [
+      "Pain mirror",
+      "Mechanism reveal",
+      "Offer threshold",
+      "Guarantee calm",
+      "First-day onboarding"
+    ],
+    "anti_patterns": [
+      "Fake countdown timers",
+      "Shame-based CTAs",
+      "Overloaded comparison tables"
+    ],
+    "derivation_log": {
+      "axiom": "Attention is sacred. Every demand on consciousness must be earned.",
+      "laws": [
+        "Earned Entry",
+        "Pregnant Void",
+        "Living Materials",
+        "Sacred Friction",
+        "The Threshold"
+      ],
+      "source_sections": [
+        "SECTION_CHOREO_THEGOLDENTHREAD",
+        "SECTION_CHOREO_THEMOMENTSOFTRUTH_5_12",
+        "SECTION_CHOREO_THEFIVEPSYCHOLOGICALENHANCERS",
+        "SECTION_CHOREO_THESEVENMANANAANTIDOTES"
+      ],
+      "chain": [
+        {
+          "decision": "Set the core emotion to relief through grounded confidence.",
+          "derived_from": [
+            "SECTION_CHOREO_THEGOLDENTHREAD"
+          ],
+          "rationale": "The journey must resolve pain into calm certainty."
+        },
+        {
+          "decision": "Define seven moments of truth aligned to awareness transitions.",
+          "derived_from": [
+            "SECTION_CHOREO_THEMOMENTSOFTRUTH_5_12"
+          ],
+          "rationale": "Belief changes only at specific high-stakes moments."
+        }
+      ]
+    }
+  }
+}

@@ -8,8 +8,12 @@
 
 const PORT = Number.parseInt(Deno.env.get("PORT") ?? "3002")
 const HOST = Deno.env.get("HOST") ?? "0.0.0.0"
-const MAX_EXECUTION_TIME_MS = Number.parseInt(Deno.env.get("MAX_EXECUTION_TIME_MS") ?? "30000")
-const MAX_MEMORY_MB = Number.parseInt(Deno.env.get("MAX_MEMORY_MB") ?? "128")
+const MAX_EXECUTION_TIME_MS = Number.parseInt(
+  Deno.env.get("EXECUTOR_TIMEOUT_MS") ?? Deno.env.get("MAX_EXECUTION_TIME_MS") ?? "30000"
+)
+const MAX_MEMORY_MB = Number.parseInt(
+  Deno.env.get("EXECUTOR_MAX_MEMORY_MB") ?? Deno.env.get("MAX_MEMORY_MB") ?? "128"
+)
 
 // -----------------------------------------------------------------------------
 // Types

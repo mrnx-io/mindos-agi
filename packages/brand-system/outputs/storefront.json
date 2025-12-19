@@ -1,0 +1,630 @@
+{
+  "storefront": {
+    "artifact_architecture": {
+      "type_specification": {
+        "artifact_type": "DTC ecommerce storefront",
+        "technical_stack": "Shopify + custom theme + Klaviyo + GA4",
+        "performance_requirements": "LCP < 2.0s, CLS < 0.1, TTFB < 0.8s, first input < 100ms"
+      },
+      "page_section_inventory": [
+        {
+          "name": "Pain Quiz Landing",
+          "funnel_stage": "Diagnose",
+          "awareness_level": "AWARE_PROBLEM",
+          "voice_mode": "Diagnostic",
+          "lf8_primary": "LF8_PAIN_FREEDOM"
+        },
+        {
+          "name": "Mechanism Explainer",
+          "funnel_stage": "Explain",
+          "awareness_level": "AWARE_SOLUTION",
+          "voice_mode": "Mechanism",
+          "lf8_primary": "LF8_PROTECTION"
+        },
+        {
+          "name": "Offer Page",
+          "funnel_stage": "Offer",
+          "awareness_level": "AWARE_PRODUCT",
+          "voice_mode": "Invitation",
+          "lf8_primary": "LF8_PAIN_FREEDOM"
+        },
+        {
+          "name": "Checkout",
+          "funnel_stage": "Offer",
+          "awareness_level": "AWARE_MOST",
+          "voice_mode": "Threshold",
+          "lf8_primary": "LF8_COMFORT"
+        },
+        {
+          "name": "Onboarding",
+          "funnel_stage": "Ascend",
+          "awareness_level": "AWARE_MOST",
+          "voice_mode": "Aftercare",
+          "lf8_primary": "LF8_PROTECTION"
+        }
+      ],
+      "component_architecture": [
+        {
+          "component": "Hero Panel",
+          "source_room": "Room 1: Threshold",
+          "token_references": ["ma_rest", "sumi", "bowDelay"],
+          "usage_contexts": ["Landing", "Offer"]
+        },
+        {
+          "component": "Mechanism Diagram",
+          "source_room": "Room 3: Proof",
+          "token_references": ["grain", "ma_breath"],
+          "usage_contexts": ["Explainer"]
+        },
+        {
+          "component": "Guarantee Block",
+          "source_room": "Room 6: Assurance",
+          "token_references": ["ma_void", "persimmon"],
+          "usage_contexts": ["Offer", "Checkout"]
+        }
+      ]
+    },
+    "value_ladder_build": {
+      "bait": {
+        "offer": "Foot pain self-assessment quiz",
+        "location": "Landing hero CTA",
+        "mechanism": "60-second diagnostic",
+        "next_step": "Mechanism explainer",
+        "lf8_served": "LF8_PAIN_FREEDOM"
+      },
+      "frontend": {
+        "offer": "Precision-fit insole starter kit",
+        "location": "Offer page primary block",
+        "price_point": "109 USD",
+        "value_equation": "Relief in 14 days with minimal effort",
+        "next_step": "Checkout",
+        "lf8_served": "LF8_PAIN_FREEDOM"
+      },
+      "middle": {
+        "offer": "Pro insole + mobility coaching",
+        "location": "Post-purchase upsell",
+        "price_point": "179 USD",
+        "lf8_served": "LF8_COMFORT"
+      },
+      "backend": {
+        "offer": "Clinical fitting session",
+        "location": "Email invite after purchase",
+        "price_point": "299 USD",
+        "qualification": "Persistent pain or high activity",
+        "lf8_served": "LF8_PROTECTION"
+      },
+      "continuity": {
+        "offer": "Annual replacement subscription",
+        "location": "Account portal",
+        "price_point": "89 USD/year",
+        "lf8_served": "LF8_COMFORT"
+      }
+    },
+    "funnel_implementation": [
+      {
+        "stage": "Diagnose",
+        "traffic_temperature": "Cold",
+        "awareness_entry": "AWARE_UNAWARE",
+        "awareness_exit": "AWARE_PROBLEM",
+        "entry_point": "Meta ad to pain quiz",
+        "content_experience": "Pain mirror headline + short quiz",
+        "voice_mode": "Diagnostic",
+        "lf8_primary": "LF8_PAIN_FREEDOM",
+        "lf8_secondary": "LF8_COMFORT",
+        "conversion_mechanism": "Quiz completion",
+        "enhancers": [
+          { "id": "ENH_NAMING", "application": "Quiz named 'Pain Pattern Finder'" }
+        ],
+        "manana_antidotes": [
+          { "id": "ANTI_EXTREME_EASE", "application": "Quiz kept under 60 seconds" }
+        ],
+        "moments_of_truth": ["Pain mirror", "Diagnosis quiz"],
+        "metrics": "Quiz completion rate, time to completion",
+        "dr_rules_applied": ["DR_CLEAR_INSTRUCTIONS", "DR_REASON_NOW"]
+      },
+      {
+        "stage": "Explain",
+        "traffic_temperature": "Warm",
+        "awareness_entry": "AWARE_PROBLEM",
+        "awareness_exit": "AWARE_SOLUTION",
+        "entry_point": "Quiz result page",
+        "content_experience": "Mechanism diagram + proof",
+        "voice_mode": "Mechanism",
+        "lf8_primary": "LF8_PROTECTION",
+        "lf8_secondary": "LF8_PAIN_FREEDOM",
+        "conversion_mechanism": "Scroll to offer",
+        "enhancers": [
+          { "id": "ENH_GUARANTEES", "application": "Risk reversal preview" }
+        ],
+        "manana_antidotes": [
+          { "id": "ANTI_MULTIPLE_OFFERS", "application": "Single primary offer preview" }
+        ],
+        "moments_of_truth": ["Mechanism reveal", "Proof stack"],
+        "metrics": "Scroll depth, mechanism video completion",
+        "dr_rules_applied": ["DR_STRONG_COPY", "DR_MAIL_ORDER_FORMAT"]
+      },
+      {
+        "stage": "Offer",
+        "traffic_temperature": "Warm",
+        "awareness_entry": "AWARE_SOLUTION",
+        "awareness_exit": "AWARE_PRODUCT",
+        "entry_point": "Offer page",
+        "content_experience": "Offer block + guarantee",
+        "voice_mode": "Invitation",
+        "lf8_primary": "LF8_PAIN_FREEDOM",
+        "lf8_secondary": "LF8_COMFORT",
+        "conversion_mechanism": "Add to cart",
+        "enhancers": [
+          { "id": "ENH_BONUSES", "application": "Posture guide bonus" },
+          { "id": "ENH_GUARANTEES", "application": "30-day guarantee" }
+        ],
+        "manana_antidotes": [
+          { "id": "ANTI_PREMIUM_BONUSES", "application": "Bonus only with first order" },
+          { "id": "ANTI_HARD_DEADLINES", "application": "Monthly protocol enrollment" }
+        ],
+        "moments_of_truth": ["Offer threshold", "Guarantee calm"],
+        "metrics": "Add-to-cart rate, guarantee section clicks",
+        "dr_rules_applied": ["DR_ALWAYS_OFFER", "DR_REASON_NOW", "DR_TRACK_MEASURE"]
+      },
+      {
+        "stage": "Ascend",
+        "traffic_temperature": "Hot",
+        "awareness_entry": "AWARE_PRODUCT",
+        "awareness_exit": "AWARE_MOST",
+        "entry_point": "Checkout and thank-you",
+        "content_experience": "Confirmation + onboarding",
+        "voice_mode": "Aftercare",
+        "lf8_primary": "LF8_PROTECTION",
+        "lf8_secondary": "LF8_COMFORT",
+        "conversion_mechanism": "Subscription opt-in",
+        "enhancers": [
+          { "id": "ENH_SCARCITY", "application": "Batch limits for replacement slots" }
+        ],
+        "manana_antidotes": [
+          { "id": "ANTI_LIMITED_AVAILABILITY", "application": "Replacement slots tracked monthly" }
+        ],
+        "moments_of_truth": ["First-day onboarding"],
+        "metrics": "Subscription opt-in rate, onboarding completion",
+        "dr_rules_applied": ["DR_FOLLOW_UP", "DR_RESULTS_RULE"]
+      }
+    ],
+    "dr_rule_compliance": [
+      {
+        "rule_id": "DR_ALWAYS_OFFER",
+        "requirement": "Every page contains a clear CTA.",
+        "implementation": "Primary CTA appears in hero and mid-page.",
+        "verification": "CTA audit per page."
+      },
+      {
+        "rule_id": "DR_REASON_NOW",
+        "requirement": "Provide a reason to act now.",
+        "implementation": "Monthly protocol enrollment cutoff.",
+        "verification": "Deadline reference in offer block."
+      },
+      {
+        "rule_id": "DR_CLEAR_INSTRUCTIONS",
+        "requirement": "Instructions must be explicit.",
+        "implementation": "Button text: 'Take the 60-second quiz'.",
+        "verification": "5-second clarity test."
+      },
+      {
+        "rule_id": "DR_TRACK_MEASURE",
+        "requirement": "Measure every step.",
+        "implementation": "GA4 events for quiz, add-to-cart, purchase.",
+        "verification": "Event logs and dashboards."
+      },
+      {
+        "rule_id": "DR_NO_COST_BRAND",
+        "requirement": "Brand is built through response.",
+        "implementation": "Creative testing tied to conversion lift.",
+        "verification": "A/B test results reviewed monthly."
+      },
+      {
+        "rule_id": "DR_FOLLOW_UP",
+        "requirement": "Every lead is followed up.",
+        "implementation": "5-email sequence after quiz.",
+        "verification": "Automation coverage report."
+      },
+      {
+        "rule_id": "DR_STRONG_COPY",
+        "requirement": "Copy must be emotional and clear.",
+        "implementation": "Pain language and relief promise.",
+        "verification": "Copy review checklist."
+      },
+      {
+        "rule_id": "DR_MAIL_ORDER_FORMAT",
+        "requirement": "Use proven structure.",
+        "implementation": "Problem, mechanism, proof, offer, guarantee.",
+        "verification": "Section order audit."
+      },
+      {
+        "rule_id": "DR_RESULTS_RULE",
+        "requirement": "Testing beats taste.",
+        "implementation": "Weekly test plan with control.",
+        "verification": "Test log and results."
+      },
+      {
+        "rule_id": "DR_DISCIPLINE",
+        "requirement": "Operate with rigor.",
+        "implementation": "Weekly KPI review and change control.",
+        "verification": "Meeting notes and decisions."
+      }
+    ],
+    "dr_permission_matrix": [
+      {
+        "enhancer_id": "ENH_SCARCITY",
+        "law_permission": ["Earned Entry", "Sacred Friction"],
+        "non_negotiables": ["No fake counters"],
+        "evidence_required": "Production cap documentation",
+        "failure_signature": "Panic or distrust signals",
+        "recovery_ritual_reference": "Choreography recovery ritual: restore proof before urgency"
+      },
+      {
+        "enhancer_id": "ENH_URGENCY",
+        "law_permission": ["Earned Entry", "The Threshold"],
+        "non_negotiables": ["Real deadline only"],
+        "evidence_required": "Enrollment calendar",
+        "failure_signature": "Anxiety spike in feedback",
+        "recovery_ritual_reference": "Choreography recovery ritual: soften tone"
+      },
+      {
+        "enhancer_id": "ENH_BONUSES",
+        "law_permission": ["Living Materials", "Earned Entry"],
+        "non_negotiables": ["Bonus must add real value"],
+        "evidence_required": "Bonus usage data",
+        "failure_signature": "Distraction from core offer",
+        "recovery_ritual_reference": "Choreography recovery ritual: remove or refocus bonus"
+      },
+      {
+        "enhancer_id": "ENH_GUARANTEES",
+        "law_permission": ["Sacred Friction", "The Threshold"],
+        "non_negotiables": ["Policy honored in practice"],
+        "evidence_required": "Refund tracking",
+        "failure_signature": "Suspicion or hesitation",
+        "recovery_ritual_reference": "Choreography recovery ritual: clarify policy"
+      },
+      {
+        "enhancer_id": "ENH_NAMING",
+        "law_permission": ["Living Materials", "Earned Entry"],
+        "non_negotiables": ["Name must be truthful"],
+        "evidence_required": "Name test notes",
+        "failure_signature": "Confusion or mismatch",
+        "recovery_ritual_reference": "Choreography recovery ritual: rename or explain"
+      }
+    ],
+    "token_application": {
+      "spacing": [
+        {
+          "context": "Hero block",
+          "token": "ma_rest",
+          "value": "24px",
+          "justification": "Gives the promise room to breathe."
+        },
+        {
+          "context": "Offer block",
+          "token": "ma_void",
+          "value": "64px",
+          "justification": "Honors the threshold before commitment."
+        }
+      ],
+      "color": [
+        {
+          "context": "Background",
+          "token": "washi",
+          "value": "#F7F2E8",
+          "lf8_response": "Calms threat response"
+        },
+        {
+          "context": "CTA",
+          "token": "persimmon",
+          "value": "#D45A2A",
+          "lf8_response": "Signals action without aggression"
+        }
+      ],
+      "typography": [
+        {
+          "level": "H1",
+          "token": "display",
+          "size_weight": "40px / 600",
+          "usage": "Hero headline"
+        },
+        {
+          "level": "Body",
+          "token": "body",
+          "size_weight": "16px / 400",
+          "usage": "Primary copy"
+        }
+      ],
+      "motion": [
+        {
+          "transition": "CTA hover",
+          "token": "whisper",
+          "timing": "160ms",
+          "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "psychological_purpose": "Gentle confirmation"
+        },
+        {
+          "transition": "Section reveal",
+          "token": "breath",
+          "timing": "240ms",
+          "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "psychological_purpose": "Signal progression"
+        }
+      ],
+      "copy_rhythm": [
+        {
+          "context": "CTA lead-in",
+          "token": "Bow",
+          "pattern": "Line break before CTA",
+          "justification": "Creates a clear threshold"
+        },
+        {
+          "context": "Proof block",
+          "token": "Whisper",
+          "pattern": "Short affirmation sentence",
+          "justification": "Keeps momentum without pressure"
+        },
+        {
+          "context": "Consequence",
+          "token": "Breath",
+          "pattern": "Consequence sentence after proof",
+          "justification": "Lets the implication land"
+        },
+        {
+          "context": "Final ask",
+          "token": "Room",
+          "pattern": "Whitespace before primary CTA",
+          "justification": "Allows a calm decision"
+        }
+      ]
+    },
+    "voice_application": {
+      "page_copy_audit": [
+        {
+          "page": "Pain Quiz Landing",
+          "headline_formula_id": "HEADLINE_MISTAKES",
+          "voice_mode": "Diagnostic",
+          "lf8": "LF8_PAIN_FREEDOM",
+          "slippery_slide_check": "Pass: each line pulls to the quiz"
+        },
+        {
+          "page": "Offer Page",
+          "headline_formula_id": "HEADLINE_AT_LAST",
+          "voice_mode": "Invitation",
+          "lf8": "LF8_COMFORT",
+          "slippery_slide_check": "Pass: proof precedes offer"
+        }
+      ],
+      "microcopy_lexicon_audit": [
+        {
+          "element": "CTA button",
+          "copy": "Take the 60-second pain quiz",
+          "sacred_words": ["earned", "relief"],
+          "forbidden_words": ["miracle"],
+          "verdict": "Pass"
+        },
+        {
+          "element": "Guarantee block",
+          "copy": "Try it for 30 days. Return it if it does not help.",
+          "sacred_words": ["steady"],
+          "forbidden_words": ["instant"],
+          "verdict": "Pass"
+        }
+      ],
+      "error_states": [
+        {
+          "error": "Quiz timeout",
+          "message": "No rush. Your answers are saved. Continue when ready.",
+          "recovery_ritual_reference": "Recovery ritual: restore calm and resume",
+          "tone": "Calm and respectful"
+        },
+        {
+          "error": "Payment declined",
+          "message": "Your card did not go through. Try again or use another method.",
+          "recovery_ritual_reference": "Recovery ritual: remove friction and clarify",
+          "tone": "Direct and helpful"
+        }
+      ]
+    },
+    "sugarman_audit": [
+      { "element_id": "SUGAR_TYPEFACE", "status": "Pass", "location": "Global", "notes": "Readable system sans" },
+      { "element_id": "SUGAR_FIRST_SENTENCE", "status": "Pass", "location": "Hero", "notes": "Short and compelling" },
+      { "element_id": "SUGAR_SECOND_SENTENCE", "status": "Pass", "location": "Hero", "notes": "Continues momentum" },
+      { "element_id": "SUGAR_PARAGRAPH_HEADINGS", "status": "Pass", "location": "Body", "notes": "Scannable" },
+      { "element_id": "SUGAR_PRODUCT_EXPLANATION", "status": "Pass", "location": "Mechanism", "notes": "Clear and concise" },
+      { "element_id": "SUGAR_NEW_FEATURES", "status": "Pass", "location": "Offer", "notes": "Unique alignment support" },
+      { "element_id": "SUGAR_TECHNICAL_EXPLANATION", "status": "Pass", "location": "Mechanism", "notes": "Simple schematic" },
+      { "element_id": "SUGAR_ANTICIPATE_OBJECTIONS", "status": "Pass", "location": "FAQ", "notes": "Fit and comfort addressed" },
+      { "element_id": "SUGAR_RESOLVE_OBJECTIONS", "status": "Pass", "location": "FAQ", "notes": "Guarantee and sizing" },
+      { "element_id": "SUGAR_GENDER", "status": "Pass", "location": "Global", "notes": "Neutral language" },
+      { "element_id": "SUGAR_CLARITY", "status": "Pass", "location": "Global", "notes": "No jargon" },
+      { "element_id": "SUGAR_RHYTHM", "status": "Pass", "location": "Body", "notes": "Varied sentence length" },
+      { "element_id": "SUGAR_SERVICE", "status": "Pass", "location": "Support", "notes": "Support contact visible" },
+      { "element_id": "SUGAR_PHYSICAL_DIMENSIONS", "status": "Pass", "location": "Specs", "notes": "Sizing chart included" },
+      { "element_id": "SUGAR_TRIAL_PERIOD", "status": "Pass", "location": "Guarantee", "notes": "30-day trial" },
+      { "element_id": "SUGAR_PRICE_COMPARISON", "status": "Pass", "location": "Offer", "notes": "Compared to orthotics" },
+      { "element_id": "SUGAR_TESTIMONIALS", "status": "Pass", "location": "Proof", "notes": "Real user quotes" },
+      { "element_id": "SUGAR_PRICE", "status": "Pass", "location": "Offer", "notes": "Transparent" },
+      { "element_id": "SUGAR_OFFER_SUMMARY", "status": "Pass", "location": "Offer", "notes": "Clear kit contents" },
+      { "element_id": "SUGAR_AVOID_TOO_MUCH", "status": "Pass", "location": "Body", "notes": "Lean copy" },
+      { "element_id": "SUGAR_EASE_OF_ORDERING", "status": "Pass", "location": "Checkout", "notes": "Simple checkout" },
+      { "element_id": "SUGAR_ASK_FOR_ORDER", "status": "Pass", "location": "CTA", "notes": "Direct ask" },
+      { "element_id": "SUGAR_GRAPHIC_ELEMENTS", "status": "Pass", "location": "Mechanism", "notes": "Supports explanation" }
+    ],
+    "moment_implementation": [
+      {
+        "moment": "Pain mirror",
+        "tier": 1,
+        "location": "Hero headline",
+        "awareness_entry": "AWARE_UNAWARE",
+        "awareness_exit": "AWARE_PROBLEM",
+        "lf8_primary": "LF8_PAIN_FREEDOM",
+        "behavioral_standard_implementation": "Use the exact pain phrase before any promise.",
+        "tempo": {
+          "timing": "Bow",
+          "energy": "Quiet",
+          "bow": "One-line pause before the quiz CTA"
+        },
+        "enhancers_applied": [
+          { "id": "ENH_NAMING", "application": "Pain Pattern Finder quiz" }
+        ],
+        "threshold_honor": "CTA placed after a short pause.",
+        "failure_detection": "High bounce or low quiz starts.",
+        "recovery_implementation": "Rewrite headline with clearer pain language.",
+        "verification_method": "Session recordings and quiz start rate."
+      },
+      {
+        "moment": "Mechanism reveal",
+        "tier": 1,
+        "location": "Mechanism section",
+        "awareness_entry": "AWARE_PROBLEM",
+        "awareness_exit": "AWARE_SOLUTION",
+        "lf8_primary": "LF8_PROTECTION",
+        "behavioral_standard_implementation": "One diagram, one sentence explanation.",
+        "tempo": {
+          "timing": "Breath",
+          "energy": "Building",
+          "bow": "Short pause before diagram appears"
+        },
+        "enhancers_applied": [
+          { "id": "ENH_GUARANTEES", "application": "Preview of risk reversal" }
+        ],
+        "threshold_honor": "Diagram appears after a brief stillness.",
+        "failure_detection": "Low scroll depth past diagram.",
+        "recovery_implementation": "Simplify the mechanism language.",
+        "verification_method": "Scroll and heatmap analysis."
+      },
+      {
+        "moment": "Offer threshold",
+        "tier": 1,
+        "location": "Offer block",
+        "awareness_entry": "AWARE_SOLUTION",
+        "awareness_exit": "AWARE_PRODUCT",
+        "lf8_primary": "LF8_PAIN_FREEDOM",
+        "behavioral_standard_implementation": "Offer follows proof and guarantee.",
+        "tempo": {
+          "timing": "Room",
+          "energy": "Resolution",
+          "bow": "Whitespace before price"
+        },
+        "enhancers_applied": [
+          { "id": "ENH_BONUSES", "application": "Posture guide included" },
+          { "id": "ENH_GUARANTEES", "application": "30-day trial" }
+        ],
+        "threshold_honor": "Whitespace separates proof from price.",
+        "failure_detection": "Low add-to-cart rate.",
+        "recovery_implementation": "Move guarantee closer to price.",
+        "verification_method": "Add-to-cart conversion rate."
+      },
+      {
+        "moment": "Guarantee calm",
+        "tier": 2,
+        "location": "Guarantee block",
+        "awareness_entry": "AWARE_PRODUCT",
+        "awareness_exit": "AWARE_MOST",
+        "lf8_primary": "LF8_COMFORT",
+        "behavioral_standard_implementation": "Guarantee stated in two sentences.",
+        "tempo": {
+          "timing": "Whisper",
+          "energy": "Calm",
+          "bow": "Short affirmation line"
+        },
+        "enhancers_applied": [
+          { "id": "ENH_GUARANTEES", "application": "Wear-and-feel promise" }
+        ],
+        "threshold_honor": "No urgency in guarantee language.",
+        "failure_detection": "Support tickets asking about returns.",
+        "recovery_implementation": "Clarify return steps.",
+        "verification_method": "Support ticket analysis."
+      },
+      {
+        "moment": "First-day onboarding",
+        "tier": 2,
+        "location": "Thank-you page and email",
+        "awareness_entry": "AWARE_MOST",
+        "awareness_exit": "AWARE_MOST",
+        "lf8_primary": "LF8_PROTECTION",
+        "behavioral_standard_implementation": "Three-step setup delivered within 5 minutes.",
+        "tempo": {
+          "timing": "Breath",
+          "energy": "Guiding",
+          "bow": "Short reassurance line"
+        },
+        "enhancers_applied": [
+          { "id": "ENH_NAMING", "application": "First Calm Step protocol" }
+        ],
+        "threshold_honor": "Onboarding framed as a ritual.",
+        "failure_detection": "Low onboarding completion.",
+        "recovery_implementation": "Send reminder with simplified steps.",
+        "verification_method": "Onboarding completion rate."
+      }
+    ],
+    "anti_pattern_compliance": [
+      {
+        "anti_pattern": "Fake countdown timers",
+        "competitor_behavior": "Evergreen timers reset on refresh",
+        "our_artifact": "No timers unless enrollment actually closes",
+        "compliant": true
+      },
+      {
+        "anti_pattern": "Shame-based CTAs",
+        "competitor_behavior": "Guilt language for not buying",
+        "our_artifact": "Calm, respectful invitations",
+        "compliant": true
+      },
+      {
+        "anti_pattern": "Overloaded comparison tables",
+        "competitor_behavior": "Dozens of confusing specs",
+        "our_artifact": "Single mechanism diagram and key differences",
+        "compliant": true
+      }
+    ],
+    "paradox_verification": {
+      "logic_test": [
+        "All elements map to tokens or laws.",
+        "All claims link to evidence or mechanism.",
+        "Every CTA follows proof and promise."
+      ],
+      "mystery_test": [
+        "Design feels calm and intentional.",
+        "Whitespace creates a quiet sense of premium."
+      ],
+      "mystery_proxy_metrics": {
+        "whitespace_ratio": 0.45,
+        "information_density": 22,
+        "open_loop_ratio": 0.4,
+        "explanation_to_implication_ratio": 1.2,
+        "named_reasons_before_consequence": 2
+      }
+    },
+    "derivation_log": {
+      "axiom": "Attention is sacred. Every demand on consciousness must be earned.",
+      "laws": [
+        "Earned Entry",
+        "Pregnant Void",
+        "Living Materials",
+        "Sacred Friction",
+        "The Threshold"
+      ],
+      "source_sections": [
+        "SECTION_STOREFRONT_THESTOREFRONT",
+        "SECTION_STOREFRONT_THEVALUELADDERBUILD",
+        "SECTION_STOREFRONT_FUNNELIMPLEMENTATION",
+        "SECTION_STOREFRONT_THE_10_DRRULESCOMPLIANCE",
+        "SECTION_STOREFRONT_THEPARADOXVERIFICATION"
+      ],
+      "chain": [
+        {
+          "decision": "Map the artifact to the Diagnose-Explain-Offer-Ascend funnel.",
+          "derived_from": ["SECTION_STOREFRONT_FUNNELIMPLEMENTATION"],
+          "rationale": "The storefront must follow the covenant funnel spine."
+        },
+        {
+          "decision": "Enforce DR rules and permission matrix for enhancers.",
+          "derived_from": ["SECTION_STOREFRONT_THE_10_DRRULESCOMPLIANCE"],
+          "rationale": "Conversion tools are valid only when earned by law."
+        }
+      ]
+    }
+  }
+}

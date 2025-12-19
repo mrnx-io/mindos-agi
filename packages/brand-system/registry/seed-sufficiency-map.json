@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Seed sufficiency requirements for downstream outputs",
+  "requirements": [
+    {
+      "output": "outputs/covenant.json",
+      "schema": "schemas/covenant.schema.json",
+      "purpose": "Unit economics derivation without guessing",
+      "required_seed_paths": [
+        "economic_constraints.cac_budget",
+        "economic_constraints.unit_economics_inputs.average_order_value",
+        "economic_constraints.unit_economics_inputs.gross_margin_percent",
+        "economic_constraints.unit_economics_inputs.purchase_frequency_per_year",
+        "economic_constraints.unit_economics_inputs.average_retention_months",
+        "economic_constraints.unit_economics_inputs.contribution_margin_percent",
+        "economic_constraints.unit_economics_inputs.target_ltv_cac_ratio",
+        "economic_constraints.unit_economics_inputs.target_payback_period_months"
+      ]
+    }
+  ]
+}

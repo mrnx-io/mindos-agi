@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "brand_name": "Grounded Atlas",
+    "created_at": "2025-02-01",
+    "last_updated": "2025-02-01",
+    "seed_version": "1.1.0"
+  },
+  "product_service": {
+    "category": "DTC physical product",
+    "core_offering": "Premium biomechanical insoles that relieve plantar fasciitis and knee pain within 14 days.",
+    "delivery_model": "Physical product with a guided mobility program",
+    "current_stage": "Revenue"
+  },
+  "founder_assets": {
+    "backstory": "After years of plantar fasciitis from standing work, the founder studied biomechanics and built a prototype that finally stopped the pain.",
+    "authority_proof": [
+      "Certified pedorthist",
+      "Former footwear engineer (10 years)",
+      "500 clinical fittings completed"
+    ],
+    "character_flaws": [
+      "Impatient with gimmicks",
+      "Once dismissed orthotics as a crutch"
+    ],
+    "strong_opinions": [
+      "Soft cushioning without structure prolongs pain",
+      "Support must be earned by alignment, not bulk"
+    ]
+  },
+  "market_evidence": {
+    "pain_statement": "My feet are on fire by mid-afternoon and I dread every step.",
+    "watering_holes": [
+      "r/plantarfasciitis",
+      "Runner's World forums",
+      "Facebook group: Plantar Fasciitis Support",
+      "YouTube: foot pain rehab channels"
+    ],
+    "wallet_evidence": [
+      "200-500 USD on physical therapy",
+      "20-60 USD on drugstore insoles",
+      "80-120 USD on compression sleeves"
+    ],
+    "failed_alternatives": [
+      "Cheap gel insoles flatten in days",
+      "Generic stretching routines with no feedback",
+      "Pain meds that mask but do not fix"
+    ]
+  },
+  "economic_constraints": {
+    "price_corridor": {
+      "min": 89,
+      "max": 149,
+      "currency": "USD"
+    },
+    "cost_structure": {
+      "fixed_monthly_costs": 12000,
+      "variable_cost_per_unit": 26,
+      "notes": "Manufacturing, shipping, returns, and payment fees"
+    },
+    "cac_budget": 45,
+    "runway_months": 12,
+    "unit_economics_inputs": {
+      "average_order_value": 109,
+      "gross_margin_percent": 68,
+      "purchase_frequency_per_year": 1.3,
+      "average_retention_months": 24,
+      "refund_rate_percent": 6,
+      "churn_rate_percent": 12,
+      "contribution_margin_percent": 45,
+      "target_ltv_cac_ratio": 3.5,
+      "target_payback_period_months": 2,
+      "target_lifetime_value": 320
+    }
+  },
+  "operational_constraints": {
+    "team_size": 6,
+    "technical_capability": "Shopify, email automation, and lightweight custom frontend",
+    "time_to_market": "8 weeks",
+    "geographic_focus": "US and Canada"
+  },
+  "existing_traction": {
+    "current_customers": "450 customers, 52000 USD lifetime revenue",
+    "conversion_data": {
+      "available": true,
+      "notes": "Last 90 days from Shopify and GA4",
+      "window": "2024-07-01 to 2024-09-30",
+      "average_order_value": 104,
+      "funnel": {
+        "visits": 42000,
+        "opt_in_rate_percent": 5.8,
+        "checkout_rate_percent": 3.1,
+        "close_rate_percent": 1.2
+      }
+    },
+    "testimonials": [
+      "I walked a full shift without pain for the first time in years.",
+      "The arch support feels precise, not bulky.",
+      "My morning steps stopped feeling sharp within a week."
+    ],
+    "failures": [
+      "Broad interest targeting underperformed on Meta",
+      "Discount-heavy offers lowered trust and raised returns"
+    ]
+  },
+  "non_negotiables": {
+    "ethical_boundaries": [
+      "No fake scarcity",
+      "No pain shaming",
+      "No medical claims without evidence"
+    ],
+    "brand_constraints": [
+      "Minimal, calm aesthetic",
+      "Plain language over hype"
+    ],
+    "regulatory_requirements": [
+      "FTC advertising compliance",
+      "FDA device classification where applicable",
+      "Privacy laws: GDPR and CCPA"
+    ]
+  }
+}

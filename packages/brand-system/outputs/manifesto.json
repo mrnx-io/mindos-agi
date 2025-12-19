@@ -1,0 +1,88 @@
+{
+  "manifesto": {
+    "axiom": "Attention is sacred. Every demand on consciousness must be earned.",
+    "lf8_grounding": {
+      "primary": "LF8_PAIN_FREEDOM",
+      "secondary": "LF8_COMFORT",
+      "tertiary": "LF8_PROTECTION"
+    },
+    "laws": [
+      {
+        "name": "Earned Entry",
+        "statement": "Nothing appears without justification; every element must repay its attention cost.",
+        "derivation": "If attention is sacred, entry must be earned, never assumed.",
+        "psychological_truth": "The nervous system rejects unearned stimuli as threat."
+      },
+      {
+        "name": "Pregnant Void",
+        "statement": "Silence and space are active; absence creates meaning and invites focus.",
+        "derivation": "Scarcity increases perceived value and reduces cognitive load.",
+        "psychological_truth": "The brain interprets space as safety and readiness to engage."
+      },
+      {
+        "name": "Living Materials",
+        "statement": "Use materials that feel honest and grounded; avoid artificial signal inflation.",
+        "derivation": "Trust grows when texture matches truth.",
+        "psychological_truth": "Humans detect mismatch between surface and substance and withdraw."
+      },
+      {
+        "name": "Sacred Friction",
+        "statement": "Some effort is required; remove chaos, keep meaningful effort.",
+        "derivation": "If action is too easy, commitment is fragile.",
+        "psychological_truth": "Effort signals value and increases follow-through."
+      },
+      {
+        "name": "The Threshold",
+        "statement": "Every transition is a ritual; crossings must be felt and honored.",
+        "derivation": "Meaning is formed at boundaries, not in the middle.",
+        "psychological_truth": "The brain encodes change when it is acknowledged, not rushed."
+      }
+    ],
+    "paradox": {
+      "logical_requirement": "Every decision traces to an explicit law or token, with no arbitrary choices.",
+      "mysterious_requirement": "Restraint leaves room for felt meaning beyond explanation."
+    },
+    "vision": "A world where movement feels safe and confident, and every interaction respects attention.",
+    "derivation_log": {
+      "axiom": "Attention is sacred. Every demand on consciousness must be earned.",
+      "laws": [
+        "Earned Entry",
+        "Pregnant Void",
+        "Living Materials",
+        "Sacred Friction",
+        "The Threshold"
+      ],
+      "source_sections": [
+        "SECTION_MANIFESTO_THEAXIOM",
+        "SECTION_MANIFESTO_THEFIVELAWS",
+        "SECTION_MANIFESTO_THEPARADOX",
+        "SECTION_MANIFESTO_THEBIOLOGICALFOUNDATION"
+      ],
+      "chain": [
+        {
+          "decision": "Anchor the system on the axiom that attention must be earned.",
+          "derived_from": ["SECTION_MANIFESTO_THEAXIOM"],
+          "rationale": "The axiom defines the ethical and cognitive basis for all downstream rules."
+        },
+        {
+          "decision": "Codify the five laws as non-negotiable constraints.",
+          "derived_from": ["SECTION_MANIFESTO_THEFIVELAWS"],
+          "rationale": "Laws translate the axiom into operational behavior."
+        },
+        {
+          "decision": "Set the paradox test to require logic and mystery together.",
+          "derived_from": ["SECTION_MANIFESTO_THEPARADOX"],
+          "rationale": "A brand must satisfy rational audit while preserving felt meaning."
+        },
+        {
+          "decision": "Prioritize LF8_PAIN_FREEDOM and LF8_COMFORT for this brand.",
+          "derived_from": [
+            "SECTION_MANIFESTO_THEBIOLOGICALFOUNDATION",
+            "SECTION_MANIFESTO_THE_EIGHT_PRIMAL_VOICES"
+          ],
+          "rationale": "Pain relief and comfort govern decision-making in chronic discomfort contexts."
+        }
+      ]
+    }
+  }
+}

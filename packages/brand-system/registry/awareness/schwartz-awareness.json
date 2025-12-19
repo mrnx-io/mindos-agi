@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Schwartz 5 Awareness Levels - Single Source of Truth for the Universal Brand System",
+  "core_principle": {
+    "axiom": "Strategy = Prospect's Reality. Headlines must enter the ongoing conversation in their mind.",
+    "mechanism": "Match message directness to awareness level. Wrong match = message rejected."
+  },
+  "levels": [
+    {
+      "id": "AWARE_MOST",
+      "level": 1,
+      "name": "Most Aware",
+      "state": "Ready to buy",
+      "what_they_know": "Product, price, benefits. They want it.",
+      "strategy": "Direct offer, compelling reason to act NOW",
+      "headline_approach": "50% off [Product] — Today Only",
+      "lead_archetype": "LEAD_OFFER",
+      "directness": "maximum",
+      "key_challenge": "Give them a reason to act immediately, not later"
+    },
+    {
+      "id": "AWARE_PRODUCT",
+      "level": 2,
+      "name": "Product-Aware",
+      "state": "Comparing options",
+      "what_they_know": "Product exists, unsure if it's the best choice",
+      "strategy": "Sharpen desire, demonstrate superiority",
+      "headline_approach": "Why [Product] Beats [Competitor]",
+      "lead_archetype": "LEAD_PROMISE",
+      "directness": "high",
+      "key_challenge": "Prove you're the best option among known alternatives"
+    },
+    {
+      "id": "AWARE_SOLUTION",
+      "level": 3,
+      "name": "Solution-Aware",
+      "state": "Seeking solution",
+      "what_they_know": "Result needed, not aware of your specific product",
+      "strategy": "Name their desire + connect to your solution",
+      "headline_approach": "The Fastest Way to [Result]",
+      "lead_archetype": "LEAD_PROMISE",
+      "directness": "moderate",
+      "key_challenge": "Bridge from their goal to your method"
+    },
+    {
+      "id": "AWARE_PROBLEM",
+      "level": 4,
+      "name": "Problem-Aware",
+      "state": "Feeling pain",
+      "what_they_know": "Problem exists, no solution in mind",
+      "strategy": "Agitate pain + present yourself as the answer",
+      "headline_approach": "Tired of [Pain]? Here's the Fix",
+      "lead_archetype": "LEAD_PROBLEM_SOLUTION",
+      "directness": "moderate-indirect",
+      "key_challenge": "Make the pain vivid, then offer relief"
+    },
+    {
+      "id": "AWARE_UNAWARE",
+      "level": 5,
+      "name": "Unaware",
+      "state": "No idea",
+      "what_they_know": "Neither problem nor solution",
+      "strategy": "Indirect identification, story-based entry",
+      "headline_approach": "They Laughed When I Sat Down at the Piano...",
+      "lead_archetype": "LEAD_STORY",
+      "directness": "minimum",
+      "key_challenge": "Create curiosity without mentioning product or problem"
+    }
+  ],
+  "mapping_matrix": {
+    "description": "Lead archetype selection by awareness level",
+    "matrix": [
+      { "awareness": "AWARE_MOST", "primary_lead": "LEAD_OFFER", "alternate_lead": null, "directness": "Direct" },
+      { "awareness": "AWARE_PRODUCT", "primary_lead": "LEAD_PROMISE", "alternate_lead": "LEAD_OFFER", "directness": "Direct" },
+      { "awareness": "AWARE_SOLUTION", "primary_lead": "LEAD_PROMISE", "alternate_lead": "LEAD_PROBLEM_SOLUTION", "directness": "Direct/Moderate" },
+      { "awareness": "AWARE_PROBLEM", "primary_lead": "LEAD_PROBLEM_SOLUTION", "alternate_lead": "LEAD_SECRET", "directness": "Moderate" },
+      { "awareness": "AWARE_UNAWARE", "primary_lead": "LEAD_STORY", "alternate_lead": "LEAD_PROCLAMATION", "directness": "Indirect" }
+    ]
+  },
+  "usage_rules": {
+    "reference_by": "Use semantic ID (e.g., AWARE_PROBLEM) not level number in all documents",
+    "diagnosis_first": "Always identify awareness level before selecting headline/lead approach",
+    "common_mistake": "Using direct approach on unaware audience (rejection) or indirect on most-aware (frustration)",
+    "funnel_principle": "As prospect moves through funnel, awareness increases. Adjust messaging accordingly."
+  },
+  "cross_references": {
+    "lead_archetypes": "registry/awareness/lead-archetypes.json (detailed lead type specifications)",
+    "orchestration": "SECTION_ORCH_THE_AWARENESS_SPECTRUM",
+    "covenant": "SECTION_COVENANT_THESTARVINGCROWD",
+    "storefront": "SECTION_STOREFRONT_FUNNELIMPLEMENTATION"
+  }
+}

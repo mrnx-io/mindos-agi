@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "6 Lead Archetypes (Voice Leads) - Single Source of Truth for the Universal Brand System",
+  "core_principle": {
+    "axiom": "Lead = Emotional Gatekeeper. 80% of impact comes from first 20% of copy (Pareto).",
+    "sequence": "Emotional preference → Logical rationalization. Hook emotionally first, justify logically second."
+  },
+  "archetypes": [
+    {
+      "id": "LEAD_OFFER",
+      "name": "Offer Lead",
+      "approach": "Direct",
+      "best_for": "Most Aware prospects ready to buy (AWARE_MOST)",
+      "four_rules": [
+        "Open with compelling detail",
+        "State value benefit immediately",
+        "Elaborate on specifics",
+        "Give reason why (justification)"
+      ],
+      "example": {
+        "source": "The Economist",
+        "text": "May I send you 3 FREE Issues of The Economist? Over 2.5 million educated professionals trust The Economist for global insight...",
+        "mechanics": "Status + elite readership → +29% response via prestige"
+      },
+      "when_to_use": "Audience knows product, wants it, needs reason to act now",
+      "directness_score": 10
+    },
+    {
+      "id": "LEAD_PROMISE",
+      "name": "Promise Lead",
+      "approach": "Direct",
+      "best_for": "Product/Solution Aware prospects evaluating options (AWARE_PRODUCT, AWARE_SOLUTION)",
+      "usp_formula": {
+        "specific": "Exact benefit",
+        "unique": "Only you offer it",
+        "mass_appeal": "Wide desire"
+      },
+      "example": {
+        "source": "Dale Carnegie",
+        "text": "How to Win Friends and Influence People",
+        "mechanics": "Rockefeller quote ties to LF8_SUPERIORITY → +influence desire"
+      },
+      "when_to_use": "Audience knows category, comparing options, wants proof of superiority",
+      "directness_score": 8
+    },
+    {
+      "id": "LEAD_PROBLEM_SOLUTION",
+      "name": "Problem-Solution Lead",
+      "approach": "Moderate Indirect",
+      "best_for": "Solution/Problem Aware prospects feeling pain (AWARE_SOLUTION, AWARE_PROBLEM)",
+      "sub_types": [
+        { "type": "If-Then", "pattern": "If you struggle with X, then..." },
+        { "type": "Inversion", "pattern": "What if X wasn't the problem?" },
+        { "type": "ID", "pattern": "Are you a [type] who..." },
+        { "type": "Question", "pattern": "Do you ever feel..." },
+        { "type": "Instruction", "pattern": "Stop doing X. Start doing Y." }
+      ],
+      "example": {
+        "source": "Max Sackheim",
+        "text": "Do You Make These Mistakes in English?",
+        "mechanics": "Insecurity (LF8_APPROVAL) → empathy → solution → +readership via question"
+      },
+      "when_to_use": "Audience feels pain but hasn't identified your solution yet",
+      "directness_score": 5
+    },
+    {
+      "id": "LEAD_SECRET",
+      "name": "Secret Lead",
+      "approach": "Indirect",
+      "best_for": "Problem/Unaware prospects needing curiosity hook (AWARE_PROBLEM, AWARE_UNAWARE)",
+      "four_rules": [
+        "Open with intriguing benefit",
+        "Introduce via headline",
+        "Never disclose the secret",
+        "Escalate clues throughout"
+      ],
+      "techniques": {
+        "neologizing": "Invent new term for known concept",
+        "transubstantiation": "Rename commodity as discovery",
+        "velvet_pouch": "Tease benefits without reveal"
+      },
+      "example": {
+        "source": "Chaffee",
+        "text": "The Royalty Program: How ordinary investors collect 'royalty checks' every month...",
+        "mechanics": "Dividends → 'royalties' → curiosity gap → 3× read-through"
+      },
+      "when_to_use": "Audience needs curiosity to engage; direct approach would be rejected",
+      "directness_score": 3
+    },
+    {
+      "id": "LEAD_PROCLAMATION",
+      "name": "Proclamation Lead",
+      "approach": "Strong Indirect",
+      "best_for": "Unaware prospects needing shock entry (AWARE_UNAWARE)",
+      "four_rules": [
+        "Make bold, shocking statement",
+        "Imply strong promise",
+        "Keep relevant to offer",
+        "Close with return to claim"
+      ],
+      "example": {
+        "source": "Classic DR",
+        "text": "Read This Or Die: According to Johns Hopkins, 95% of adults have these 3 conditions—and most don't know it...",
+        "mechanics": "Survival fear (LF8_SURVIVAL) → tension → implied cure → +intrigue"
+      },
+      "when_to_use": "Audience has no awareness; need pattern interrupt to get attention",
+      "directness_score": 2
+    },
+    {
+      "id": "LEAD_STORY",
+      "name": "Story Lead",
+      "approach": "High Indirect",
+      "best_for": "Skeptical/Unaware prospects with resistance (AWARE_UNAWARE + high skepticism)",
+      "elements": [
+        "Narrative immersion",
+        "Golden thread (emotion tie throughout)",
+        "Unresolved hook",
+        "TPM (Transformational Philosophical Message)"
+      ],
+      "example": {
+        "source": "Wall Street Journal",
+        "text": "On a beautiful late spring afternoon, twenty-five years ago, two young men graduated from the same college. They were very much alike...",
+        "mechanics": "Equal start → divergent ends → 'What made the difference?' → vicarious LF8_SUPERIORITY desire"
+      },
+      "when_to_use": "Audience is skeptical or resistant to selling; story bypasses defenses",
+      "directness_score": 1
+    }
+  ],
+  "directness_spectrum": {
+    "description": "All 6 leads arranged from most direct to most indirect",
+    "spectrum": ["LEAD_OFFER", "LEAD_PROMISE", "LEAD_PROBLEM_SOLUTION", "LEAD_SECRET", "LEAD_PROCLAMATION", "LEAD_STORY"],
+    "principle": "As awareness decreases, directness must also decrease"
+  },
+  "usage_rules": {
+    "reference_by": "Use semantic ID (e.g., LEAD_STORY) not position in all documents",
+    "selection_protocol": "1. Identify awareness level → 2. Check directness spectrum → 3. Select matching lead",
+    "mismatch_warning": "Direct lead to unaware audience = rejection. Indirect lead to most-aware = frustration.",
+    "testing_note": "When uncertain, test adjacent leads on spectrum. Data overrides theory."
+  },
+  "terminology_clarification": {
+    "note": "LEAD_ARCHETYPES (this file) = 6 Voice Lead Types for copy structure",
+    "distinction": "BRAND_ARCHETYPES (registry/awareness/brand-archetypes.json) = 4 Character Archetypes for persona (Leader, Adventurer, Reporter, Reluctant Hero)",
+    "avoid_confusion": "Voice Leads = HOW you open copy. Brand Archetypes = WHO you embody across all content."
+  },
+  "cross_references": {
+    "schwartz_awareness": "registry/awareness/schwartz-awareness.json (awareness level definitions)",
+    "orchestration": "SECTION_ORCH_THE_AWARENESS_SPECTRUM",
+    "canon": "SECTION_CANON_THESIXVOICEMODES",
+    "covenant": "SECTION_COVENANT_THEATTRACTIVECHARACTER"
+  }
+}

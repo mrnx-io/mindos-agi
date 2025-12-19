@@ -1,39 +1,19 @@
-# =============================================================================
-# MindOS - grounding-service Fly.io Configuration
-# Fact Verification via Wikipedia/Brave Search
-# =============================================================================
-
-app = "mindos-grounding-service"
-primary_region = "sjc"  # San Jose, US West
+app = "mindos-agi-grounding-service"
+primary_region = "sjc"
 
 [build]
-  dockerfile = "Dockerfile"
-
-[env]
-  NODE_ENV = "production"
-  PORT = "9200"
-  LOG_LEVEL = "info"
+  dockerfile = "apps/grounding-service/Dockerfile"
+  context = "."
 
 [http_service]
   internal_port = 9200
   force_https = true
-  auto_stop_machines = "suspend"  # Suspend when idle
+  auto_stop_machines = "stop"
   auto_start_machines = true
   min_machines_running = 0
   processes = ["app"]
 
-[[http_service.checks]]
-  grace_period = "10s"
-  interval = "30s"
-  method = "GET"
-  path = "/health"
-  timeout = "5s"
-
 [[vm]]
-  memory = "512mb"
   cpu_kind = "shared"
   cpus = 1
-
-[metrics]
-  port = 9091
-  path = "/metrics"
+  memory = "1gb"

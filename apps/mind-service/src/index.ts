@@ -8,6 +8,7 @@ import { checkDatabaseHealth, closeDatabasePool } from "./db.js"
 import { logger } from "./logger.js"
 import { checkExecutorHealth } from "./tooling/executorClient.js"
 import { checkToolMeshHealth } from "./tooling/toolmeshClient.js"
+import { identityService } from "./workflows/identity.js"
 import { createIdentity, mindObject } from "./workflows/mind.js"
 import { taskObject } from "./workflows/task.js"
 
@@ -58,7 +59,7 @@ async function main() {
   // Start Restate server using the new serve() API
   const boundPort = await restate.serve({
     port: env.PORT,
-    services: [mindObject, taskObject],
+    services: [mindObject, taskObject, identityService],
   })
 
   logger.info({ port: boundPort }, "Mind Service started")
@@ -94,7 +95,7 @@ async function main() {
 // Exports for programmatic use
 // -----------------------------------------------------------------------------
 
-export { mindObject, taskObject, createIdentity }
+export { mindObject, taskObject, identityService, createIdentity }
 export { healthCheck }
 export * from "./types.js"
 export * from "./config.js"

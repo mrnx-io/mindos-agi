@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "brand_name": "TODO",
+    "created_at": "YYYY-MM-DD",
+    "last_updated": "YYYY-MM-DD",
+    "seed_version": "1.1.0"
+  },
+  "product_service": {
+    "category": "TODO",
+    "core_offering": "TODO",
+    "delivery_model": "TODO",
+    "current_stage": "TODO"
+  },
+  "founder_assets": {
+    "backstory": "TODO",
+    "authority_proof": ["TODO"],
+    "character_flaws": ["TODO"],
+    "strong_opinions": ["TODO"]
+  },
+  "market_evidence": {
+    "pain_statement": "TODO",
+    "watering_holes": ["TODO"],
+    "wallet_evidence": ["TODO"],
+    "failed_alternatives": ["TODO"]
+  },
+  "economic_constraints": {
+    "price_corridor": {
+      "min": 0,
+      "max": 0,
+      "currency": "TODO"
+    },
+    "cost_structure": {
+      "fixed_monthly_costs": 0,
+      "variable_cost_per_unit": 0,
+      "notes": "TODO"
+    },
+    "cac_budget": 0,
+    "runway_months": 0,
+    "unit_economics_inputs": {
+      "average_order_value": 0,
+      "gross_margin_percent": 0,
+      "purchase_frequency_per_year": 0,
+      "average_retention_months": 0,
+      "refund_rate_percent": 0,
+      "churn_rate_percent": 0,
+      "contribution_margin_percent": 0,
+      "target_ltv_cac_ratio": 0,
+      "target_payback_period_months": 0,
+      "target_lifetime_value": 0
+    }
+  },
+  "operational_constraints": {
+    "team_size": 0,
+    "technical_capability": "TODO",
+    "time_to_market": "TODO",
+    "geographic_focus": "TODO"
+  },
+  "existing_traction": {
+    "current_customers": "TODO",
+    "conversion_data": {
+      "available": false,
+      "notes": "TODO",
+      "window": "TODO",
+      "average_order_value": 0,
+      "funnel": {
+        "visits": 0,
+        "opt_in_rate_percent": 0,
+        "checkout_rate_percent": 0,
+        "close_rate_percent": 0
+      }
+    },
+    "testimonials": ["TODO"],
+    "failures": ["TODO"]
+  },
+  "non_negotiables": {
+    "ethical_boundaries": ["TODO"],
+    "brand_constraints": ["TODO"],
+    "regulatory_requirements": ["TODO"]
+  }
+}

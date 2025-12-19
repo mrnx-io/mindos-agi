@@ -1,0 +1,204 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.1.0",
+  "description": "10 Direct Response Rules - Single Source of Truth for the Universal Brand System",
+  "permission_framework": {
+    "purpose": "Each DR Rule is gated through the Five Laws to prevent conversion optimization from violating 'Attention is sacred'",
+    "five_laws": ["Earned Entry", "Pregnant Void", "Living Materials", "Sacred Friction", "The Threshold"]
+  },
+  "dr_rules": [
+    {
+      "id": "DR_ALWAYS_OFFER",
+      "number": 1,
+      "name": "Always an Offer",
+      "principle": "Every piece must have a measurable offer",
+      "mechanism": "Creates specific, trackable action from audience",
+      "offer_types": ["Lead-gen (free info, consultation, audit)", "Direct (purchase, trial, signup)", "Hybrid (info kit + trial)"],
+      "verification": "Can you measure exactly how many people responded to this specific piece?",
+      "permission_conditions": {
+        "serves_law": "The Threshold",
+        "risks_violating": "Earned Entry",
+        "permitted_when": "Value has been delivered first; offer is a natural next step after earning attention",
+        "forbidden_when": "Offer precedes value delivery; asking before earning"
+      }
+    },
+    {
+      "id": "DR_REASON_NOW",
+      "number": 2,
+      "name": "Reason to Respond Now",
+      "principle": "Engineer urgency through legitimate constraints",
+      "mechanism": "Overcomes Mañana (tomorrow) procrastination instinct",
+      "urgency_types": ["Scarcity (limited slots, inventory)", "Exclusivity (qualified applicants only)", "Contextual (deadlines, seasonal)", "Structural (auctions, first-come)"],
+      "verification": "If they don't respond today, what specifically do they lose?",
+      "permission_conditions": {
+        "serves_law": "The Threshold",
+        "risks_violating": "Earned Entry",
+        "permitted_when": "Urgency is genuine (real deadline, limited capacity, actual event)",
+        "forbidden_when": "Urgency is manufactured (fake countdown timers, evergreen 'limited time', artificial scarcity)"
+      }
+    },
+    {
+      "id": "DR_CLEAR_INSTRUCTIONS",
+      "number": 3,
+      "name": "Clear Instructions",
+      "principle": "Explicit CTA with zero ambiguity",
+      "mechanism": "Disney principle - eliminate confusion to increase satisfaction",
+      "requirement": "Tell them exactly what to do: 'Click This Button Now'",
+      "verification": "Could a distracted reader understand exactly what action to take?",
+      "permission_conditions": {
+        "serves_law": "The Threshold",
+        "risks_violating": "Sacred Friction",
+        "permitted_when": "After friction has filtered for intention; clarity serves the committed",
+        "forbidden_when": "Frictionless path manipulates reflex before reflection; see Friction Budget for allocation guidance",
+        "friction_budget_ref": "SECTION_TRADEOFF_THEFRICTIONBUDGET"
+      }
+    },
+    {
+      "id": "DR_TRACK_MEASURE",
+      "number": 4,
+      "name": "Track, Measure, Account",
+      "principle": "Every dollar must return ≥2×. Math over magic",
+      "mechanism": "Data-driven optimization replaces guesswork",
+      "metrics": {
+        "target": "LTV:CAC ≥ 3:1",
+        "tools": ["Unique codes", "Surveys", "Pixel tracking"],
+        "insight": "Ad #2 may win on LTV even if worse on immediate response"
+      },
+      "verification": "Can you trace each sale back to its source and calculate true ROI?",
+      "permission_conditions": {
+        "serves_law": "Earned Entry",
+        "risks_violating": "None",
+        "permitted_when": "Always — measurement is always ethical",
+        "forbidden_when": "Never forbidden — this rule has no ethical conflict with the axiom"
+      }
+    },
+    {
+      "id": "DR_NO_COST_BRAND",
+      "number": 5,
+      "name": "No-Cost Brand-Building",
+      "principle": "Brand = byproduct of direct response, not separate expense",
+      "mechanism": "Blind ads suppress response; un-brand for curiosity when needed",
+      "warning": "Brand-building that doesn't produce measurable response is vanity spending",
+      "verification": "Does every brand-building element also drive measurable action?",
+      "permission_conditions": {
+        "serves_law": "Pregnant Void",
+        "risks_violating": "Living Materials",
+        "permitted_when": "Un-branding serves curiosity without erasing identity; brand elements serve dual purpose",
+        "forbidden_when": "Un-branding dilutes identity to the point of generic anonymity; efficiency erases the frame"
+      }
+    },
+    {
+      "id": "DR_FOLLOW_UP",
+      "number": 6,
+      "name": "Follow-Up",
+      "principle": "Systematic pursuit of every lead through full sequence",
+      "mechanism": "Plug the 5 holes where leads leak",
+      "five_holes": [
+        "Unknown callers (who inquired?)",
+        "Trade shows (collected cards, never contacted)",
+        "Referrals (mentioned but not followed)",
+        "New customers (no onboarding sequence)",
+        "Lost clients (no reactivation)"
+      ],
+      "sequence": "Re-state offer → Stern notice → Final → Change offer",
+      "verification": "Is every lead being contacted at least 5 times before abandonment?",
+      "permission_conditions": {
+        "serves_law": "The Threshold",
+        "risks_violating": "Earned Entry",
+        "permitted_when": "Lead has given explicit permission; follow-up continues earned conversation",
+        "forbidden_when": "Follow-up becomes harassment; persistence violates consent; 'stern notice' crosses into manipulation"
+      }
+    },
+    {
+      "id": "DR_STRONG_COPY",
+      "number": 7,
+      "name": "Strong Copy",
+      "principle": "Emotional/conversational writing from customer psyche",
+      "mechanism": "Timid salesmen have skinny kids",
+      "avoid_6_defaults": [
+        "Company focus",
+        "Feature lists",
+        "Jargon",
+        "Passive voice",
+        "Weak verbs",
+        "No story"
+      ],
+      "verification": "Would a customer read this aloud to a friend with enthusiasm?",
+      "permission_conditions": {
+        "serves_law": "Earned Entry",
+        "risks_violating": "Sacred Friction",
+        "permitted_when": "Emotional power aligns with brand voice; strength comes from authenticity",
+        "forbidden_when": "Emotional manipulation replaces genuine connection; bold copy violates established voice architecture"
+      }
+    },
+    {
+      "id": "DR_MAIL_ORDER_FORMAT",
+      "number": 8,
+      "name": "Mail-Order Format",
+      "principle": "Use proven formats that sell",
+      "mechanism": "Format credibility transfers to message",
+      "proven_formats": {
+        "pictorial": "Image-heavy, aspirational",
+        "advertorial": "Editorial disguise",
+        "letter": "Personal, direct address"
+      },
+      "verification": "Is the format battle-tested for this type of offer?",
+      "permission_conditions": {
+        "serves_law": "Living Materials",
+        "risks_violating": "Earned Entry",
+        "permitted_when": "Format serves identity; proven structure enhances rather than overrides brand architecture",
+        "forbidden_when": "Generic template erases brand voice; format becomes more prominent than message"
+      }
+    },
+    {
+      "id": "DR_RESULTS_RULE",
+      "number": 9,
+      "name": "Results Rule",
+      "principle": "Test controls, embrace 'weird', math over fads",
+      "mechanism": "Ugly that sells beats beautiful that doesn't",
+      "testing_requirements": ["Split test headline/offer", "Embrace counterintuitive winners", "Data overrides opinion"],
+      "verification": "Are you testing at least one element in every campaign?",
+      "permission_conditions": {
+        "serves_law": "Earned Entry",
+        "risks_violating": "Living Materials",
+        "permitted_when": "Testing doesn't compromise core identity; 'ugly winners' still pass the Paradox Gate",
+        "forbidden_when": "Short-term conversion destroys long-term brand integrity; 'ugly that sells' becomes 'ugly that degrades'"
+      }
+    },
+    {
+      "id": "DR_DISCIPLINE",
+      "number": 10,
+      "name": "Discipline",
+      "principle": "Strict diet: purge junk, plan rules, track metrics",
+      "mechanism": "Build muscle, avoid hazards through systematic rigor",
+      "daily_practice": [
+        "Purge non-performing elements",
+        "Follow established rules",
+        "Track all metrics",
+        "Build on what works",
+        "Avoid proven hazards"
+      ],
+      "verification": "Can you account for every dollar spent and its return?",
+      "permission_conditions": {
+        "serves_law": "Earned Entry",
+        "risks_violating": "None",
+        "permitted_when": "Always — systematic rigor enables all other permissions",
+        "forbidden_when": "Never forbidden — this rule is pure accountability"
+      }
+    }
+  ],
+  "usage_rules": {
+    "reference_by": "Use semantic ID (e.g., DR_ALWAYS_OFFER) not number in all documents",
+    "validation_standard": "Every piece of marketing must pass all 10 verification questions",
+    "priority": "Rules 1-3 are non-negotiable foundations; Rules 4-10 are optimization layers",
+    "math_first": "Every dollar must return ≥2×. When in doubt, measure.",
+    "permission_check": "Before applying any rule, verify permission_conditions.permitted_when is satisfied"
+  },
+  "cross_references": {
+    "storefront": "SECTION_STOREFRONT_VALIDATIONCHECKLIST",
+    "orchestration": "SECTION_ORCH_THEPERSUASIONOPERATINGSYSTEM",
+    "covenant": "SECTION_COVENANT_THEOFFERARCHITECTURE",
+    "choreography": "SECTION_CHOREO_FRICTIONVSCONVERSION",
+    "friction_budget": "SECTION_TRADEOFF_THEFRICTIONBUDGET"
+  }
+}

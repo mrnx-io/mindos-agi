@@ -1,0 +1,172 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "12 Headline Formulas with LF8 Mapping - Single Source of Truth for the Universal Brand System",
+  "core_principle": {
+    "axiom": "The headline's only job is to get the first sentence read. 80% of ad dollars are spent in the headline.",
+    "evidence": "Haldeman-Julius data: LF8 titles = 4-8× lift over generic titles"
+  },
+  "formulas": [
+    {
+      "id": "HEADLINE_WHO_ELSE",
+      "number": 1,
+      "name": "Who Else",
+      "formula": "Who Else Wants [Desirable Outcome]?",
+      "example": "Who Else Wants to Retire 10 Years Early?",
+      "template": "Who Else Wants [OUTCOME]?",
+      "lf8_primary": "LF8_APPROVAL",
+      "lf8_secondary": "Variable based on outcome",
+      "mechanism": "Social proof implied (others already want this). Bandwagon effect.",
+      "best_for": "AWARE_SOLUTION, AWARE_PRODUCT"
+    },
+    {
+      "id": "HEADLINE_LAUGHED",
+      "number": 2,
+      "name": "They Laughed",
+      "formula": "They Laughed When I [Action], But When I [Result]...",
+      "example": "They Laughed When I Said I'd Quit. Then I Showed Them My Bank Statement.",
+      "template": "They Laughed When I [ACTION], But When I [RESULT]...",
+      "lf8_primary": "LF8_SUPERIORITY",
+      "lf8_secondary": "LF8_APPROVAL",
+      "mechanism": "Underdog story. Revenge fantasy. Status reversal.",
+      "best_for": "AWARE_UNAWARE, AWARE_PROBLEM"
+    },
+    {
+      "id": "HEADLINE_MISTAKES",
+      "number": 3,
+      "name": "Mistakes",
+      "formula": "Do You Make These [Number] Mistakes in [Area]?",
+      "example": "Do You Make These 7 Mistakes in Email?",
+      "template": "Do You Make These [NUMBER] Mistakes in [AREA]?",
+      "lf8_primary": "LF8_PAIN_FREEDOM",
+      "lf8_secondary": "LF8_APPROVAL",
+      "mechanism": "Curiosity + fear of looking foolish. Self-diagnosis invitation.",
+      "best_for": "AWARE_PROBLEM, AWARE_SOLUTION"
+    },
+    {
+      "id": "HEADLINE_HOW_TO",
+      "number": 4,
+      "name": "How To",
+      "formula": "How to [Achieve Benefit] in [Timeframe]",
+      "example": "How to Write Copy That Sells",
+      "template": "How to [BENEFIT] [optional: in TIMEFRAME]",
+      "lf8_primary": "Variable based on benefit",
+      "lf8_secondary": "LF8_COMFORT",
+      "mechanism": "Promise of method. Implies simplicity. Tutorial framing.",
+      "best_for": "AWARE_SOLUTION, AWARE_PRODUCT"
+    },
+    {
+      "id": "HEADLINE_SECRET",
+      "number": 5,
+      "name": "Secret",
+      "formula": "The Secret of [Desired Outcome]",
+      "example": "The Secret of Six-Figure Freelancers",
+      "template": "The Secret of [OUTCOME]",
+      "lf8_primary": "LF8_SUPERIORITY",
+      "lf8_secondary": "Variable",
+      "mechanism": "Gnosis need. Insider knowledge. Exclusivity implied.",
+      "best_for": "AWARE_PROBLEM, AWARE_UNAWARE"
+    },
+    {
+      "id": "HEADLINE_WARNING",
+      "number": 6,
+      "name": "Warning",
+      "formula": "Warning: [Danger] Could [Consequence]",
+      "example": "Warning: This Mistake Could Cost Your Retirement",
+      "template": "Warning: [DANGER] Could [CONSEQUENCE]",
+      "lf8_primary": "LF8_PAIN_FREEDOM",
+      "lf8_secondary": "LF8_SURVIVAL",
+      "mechanism": "Fear activation. Loss aversion (2× stronger than gain).",
+      "best_for": "AWARE_UNAWARE, AWARE_PROBLEM"
+    },
+    {
+      "id": "HEADLINE_GIVE_ME",
+      "number": 7,
+      "name": "Give Me",
+      "formula": "Give Me [Time] and I'll Give You [Result]",
+      "example": "Give Me 30 Days and I'll Give You Abs",
+      "template": "Give Me [TIME] and I'll Give You [RESULT]",
+      "lf8_primary": "Variable based on result",
+      "lf8_secondary": "LF8_COMFORT",
+      "mechanism": "Fair exchange framing. Time investment clear. Result promised.",
+      "best_for": "AWARE_SOLUTION, AWARE_PRODUCT"
+    },
+    {
+      "id": "HEADLINE_DISCOVER",
+      "number": 8,
+      "name": "Discover",
+      "formula": "Discover the [Adjective] Way to [Benefit]",
+      "example": "Discover the Lazy Way to Build Wealth",
+      "template": "Discover the [ADJECTIVE] Way to [BENEFIT]",
+      "lf8_primary": "Variable based on benefit",
+      "lf8_secondary": "LF8_COMFORT",
+      "mechanism": "Revelation framing. Implies ease. Discovery = ownership.",
+      "best_for": "AWARE_SOLUTION, AWARE_PROBLEM"
+    },
+    {
+      "id": "HEADLINE_NUMBER_WAYS",
+      "number": 9,
+      "name": "Number Ways",
+      "formula": "[Number] Ways to [Solve Problem]",
+      "example": "7 Ways to Double Your Close Rate",
+      "template": "[NUMBER] Ways to [BENEFIT]",
+      "lf8_primary": "Variable based on problem",
+      "lf8_secondary": "LF8_COMFORT",
+      "mechanism": "Listicle structure. Specific = credible. Multiple options = one will work.",
+      "best_for": "AWARE_SOLUTION, AWARE_PRODUCT"
+    },
+    {
+      "id": "HEADLINE_AT_LAST",
+      "number": 10,
+      "name": "At Last",
+      "formula": "At Last! [Solution] That Actually [Works]",
+      "example": "At Last! A Diet That Actually Keeps Weight Off",
+      "template": "At Last! [SOLUTION] That Actually [WORKS]",
+      "lf8_primary": "LF8_PAIN_FREEDOM",
+      "lf8_secondary": "Variable",
+      "mechanism": "Implies prior failures. Vindication for skeptics. Frustration addressed.",
+      "best_for": "AWARE_PROBLEM, AWARE_SOLUTION"
+    },
+    {
+      "id": "HEADLINE_WHAT_AUTHORITY",
+      "number": 11,
+      "name": "What Authority",
+      "formula": "What [Authority] Don't Tell You About [Topic]",
+      "example": "What Doctors Don't Tell You About Sleep",
+      "template": "What [AUTHORITY] Don't Tell You About [TOPIC]",
+      "lf8_primary": "LF8_SUPERIORITY",
+      "lf8_secondary": "LF8_PAIN_FREEDOM",
+      "mechanism": "Conspiracy framing. Us vs. them. Secret knowledge appeal (Gnosis).",
+      "best_for": "AWARE_PROBLEM, AWARE_UNAWARE"
+    },
+    {
+      "id": "HEADLINE_LIES",
+      "number": 12,
+      "name": "Lies",
+      "formula": "[Number] Lies About [Topic] That Keep You [Problem]",
+      "example": "5 Lies About Passive Income That Keep You Broke",
+      "template": "[NUMBER] Lies About [TOPIC] That Keep You [PROBLEM]",
+      "lf8_primary": "LF8_PAIN_FREEDOM",
+      "lf8_secondary": "LF8_SUPERIORITY",
+      "mechanism": "Enemy identification. Absolution (not your fault). Truth seeker positioning.",
+      "best_for": "AWARE_PROBLEM, AWARE_UNAWARE"
+    }
+  ],
+  "lf8_effectiveness_ranking": {
+    "description": "Headline formula effectiveness by LF8 driver activation",
+    "most_powerful": ["HEADLINE_LAUGHED", "HEADLINE_WARNING", "HEADLINE_LIES"],
+    "note": "Sexual/superiority appeals historically show highest conversion (Haldeman-Julius data)"
+  },
+  "usage_rules": {
+    "reference_by": "Use semantic ID (e.g., HEADLINE_LAUGHED) not number in all documents",
+    "selection_protocol": "1. Identify primary LF8 driver → 2. Match to formula → 3. Check awareness fit",
+    "testing_priority": "Test LF8 titles first. Data: LF8 titles = 4-8× lift over secondary want titles.",
+    "customization": "Templates are starting points. Adapt to brand voice while preserving structure."
+  },
+  "cross_references": {
+    "lf8": "registry/biological/lf8.json (driver definitions for mapping)",
+    "schwartz_awareness": "registry/awareness/schwartz-awareness.json (awareness fit guidance)",
+    "canon": "SECTION_CANON_THETWELVEHEADLINEFORMULAS",
+    "storefront": "SECTION_STOREFRONT_VOICEAPPLICATION"
+  }
+}

@@ -1,39 +1,19 @@
-# =============================================================================
-# MindOS - mind-service Fly.io Configuration
-# Restate Virtual Object - Core Agent Orchestration
-# =============================================================================
-
-app = "mindos-mind-service"
-primary_region = "sjc"  # San Jose, US West
+app = "mindos-agi-mind-service"
+primary_region = "sjc"
 
 [build]
-  dockerfile = "Dockerfile"
-
-[env]
-  NODE_ENV = "production"
-  PORT = "8080"
-  LOG_LEVEL = "info"
+  dockerfile = "apps/mind-service/Dockerfile"
+  context = "."
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = "off"  # Keep always running for Restate
+  auto_stop_machines = "stop"
   auto_start_machines = true
-  min_machines_running = 1
+  min_machines_running = 0
   processes = ["app"]
 
-[[http_service.checks]]
-  grace_period = "10s"
-  interval = "30s"
-  method = "GET"
-  path = "/restate/health"
-  timeout = "5s"
-
 [[vm]]
-  memory = "1gb"
   cpu_kind = "shared"
   cpus = 1
-
-[metrics]
-  port = 9091
-  path = "/metrics"
+  memory = "1gb"

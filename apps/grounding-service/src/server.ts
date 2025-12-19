@@ -22,6 +22,9 @@ const env = {
   WIKIPEDIA_API_URL: process.env.WIKIPEDIA_API_URL ?? "https://en.wikipedia.org/api/rest_v1",
   BRAVE_API_KEY: process.env.BRAVE_API_KEY ?? "",
   GROUNDING_MODEL: process.env.GROUNDING_MODEL ?? "gpt-5.2-mini",
+  GROUNDING_CONFIDENCE_THRESHOLD: Number.parseFloat(
+    process.env.GROUNDING_CONFIDENCE_THRESHOLD ?? "0.7"
+  ),
   LOG_LEVEL: process.env.LOG_LEVEL ?? "info",
 }
 
@@ -81,7 +84,12 @@ const VerifyClaimSchema = z.object({
   claim: z.string().min(1),
   context: z.string().optional(),
   sources: z.array(z.string()).optional(),
-  min_confidence: z.number().min(0).max(1).optional().default(0.7),
+  min_confidence: z
+    .number()
+    .min(0)
+    .max(1)
+    .optional()
+    .default(env.GROUNDING_CONFIDENCE_THRESHOLD),
 })
 
 // -----------------------------------------------------------------------------

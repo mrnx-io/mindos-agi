@@ -1,41 +1,19 @@
-# =============================================================================
-# MindOS - executor Fly.io Configuration
-# Deno Sandbox for Isolated Code Execution
-# =============================================================================
-
-app = "mindos-executor"
-primary_region = "sjc"  # San Jose, US West
+app = "mindos-agi-executor"
+primary_region = "sjc"
 
 [build]
-  dockerfile = "Dockerfile"
-
-[env]
-  PORT = "9100"
-  HOST = "0.0.0.0"
-  MAX_EXECUTION_TIME_MS = "30000"
-  MAX_MEMORY_MB = "128"
+  dockerfile = "apps/executor/Dockerfile"
+  context = "."
 
 [http_service]
   internal_port = 9100
   force_https = true
-  auto_stop_machines = "suspend"  # Suspend when idle to save costs
+  auto_stop_machines = "stop"
   auto_start_machines = true
   min_machines_running = 0
   processes = ["app"]
 
-[[http_service.checks]]
-  grace_period = "10s"
-  interval = "30s"
-  method = "GET"
-  path = "/health"
-  timeout = "5s"
-
-# Higher resources for code execution bursts
 [[vm]]
-  memory = "2gb"
   cpu_kind = "shared"
-  cpus = 2
-
-[metrics]
-  port = 9091
-  path = "/metrics"
+  cpus = 1
+  memory = "1gb"

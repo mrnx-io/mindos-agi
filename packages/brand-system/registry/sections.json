@@ -1,0 +1,2130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical section ID registry for the Universal Brand System",
+  "usage_rules": {
+    "reference_by": "Use SECTION_* IDs in all cross-references",
+    "resolution": "Resolve SECTION_* IDs via this registry to file + anchor",
+    "stability": "IDs are derived from headings; changing headings requires regenerating this registry"
+  },
+  "sections": [
+    {
+      "id": "SECTION_GATE_THEPARADOXGATE",
+      "file": "docs/00-gate.md",
+      "heading": "T H E P A R A D O X G A T E",
+      "level": 1
+    },
+    {
+      "id": "SECTION_GATE_THE_TEST_THAT_SEPARATES_CRAFT_FROM_NOISE",
+      "file": "docs/00-gate.md",
+      "heading": "The Test That Separates Craft From Noise",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_WHERETOSTART",
+      "file": "docs/00-gate.md",
+      "heading": "W H E R E T O S T A R T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_THEDIAGNOSIS",
+      "file": "docs/00-gate.md",
+      "heading": "I. T H E D I A G N O S I S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_WHY_GENERIC_BRAND_WORK_FAILS",
+      "file": "docs/00-gate.md",
+      "heading": "Why Generic Brand Work Fails",
+      "level": 3
+    },
+    {
+      "id": "SECTION_GATE_THEDIFFERENTIATION",
+      "file": "docs/00-gate.md",
+      "heading": "II. T H E D I F F E R E N T I A T I O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_WHY_THIS_SYSTEM_IS_DIFFERENT",
+      "file": "docs/00-gate.md",
+      "heading": "Why This System Is Different",
+      "level": 3
+    },
+    {
+      "id": "SECTION_GATE_PHILOSOPHYASARCHITECTURE",
+      "file": "docs/00-gate.md",
+      "heading": "III. P H I L O S O P H Y A S A R C H I T E C T U R E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_WHY_PHILOSOPHY_MUST_COME_FIRST",
+      "file": "docs/00-gate.md",
+      "heading": "Why Philosophy Must Come First",
+      "level": 3
+    },
+    {
+      "id": "SECTION_GATE_THETEST",
+      "file": "docs/00-gate.md",
+      "heading": "T H E T E S T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_THEPROBLEM",
+      "file": "docs/00-gate.md",
+      "heading": "T H E P R O B L E M",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_THEPROMISE",
+      "file": "docs/00-gate.md",
+      "heading": "T H E P R O M I S E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_THEPATH",
+      "file": "docs/00-gate.md",
+      "heading": "T H E P A T H",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_THEINVITATION",
+      "file": "docs/00-gate.md",
+      "heading": "T H E I N V I T A T I O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_THECLOSING",
+      "file": "docs/00-gate.md",
+      "heading": "T H E C L O S I N G",
+      "level": 2
+    },
+    {
+      "id": "SECTION_GATE_DOCUMENTSEQUENCE",
+      "file": "docs/00-gate.md",
+      "heading": "D O C U M E N T S E Q U E N C E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_THECANONOFEXPRESSION",
+      "file": "docs/05-canon.md",
+      "heading": "T H E C A N O N O F E X P R E S S I O N",
+      "level": 1
+    },
+    {
+      "id": "SECTION_CANON_THE_GRAMMAR_OF_EARNED_ATTENTION",
+      "file": "docs/05-canon.md",
+      "heading": "The Grammar of Earned Attention",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_THESLIPPERYSLIDE",
+      "file": "docs/05-canon.md",
+      "heading": "0. T H E S L I P P E R Y S L I D E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_INPUTSREQUIRED",
+      "file": "docs/05-canon.md",
+      "heading": "I N P U T S R E Q U I R E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_OUTPUTSPRODUCED",
+      "file": "docs/05-canon.md",
+      "heading": "O U T P U T S P R O D U C E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_IDENTITY",
+      "file": "docs/05-canon.md",
+      "heading": "I. I D E N T I T Y",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_TASK",
+      "file": "docs/05-canon.md",
+      "heading": "II. T A S K",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_CONSTRAINTS",
+      "file": "docs/05-canon.md",
+      "heading": "III. C O N S T R A I N T S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_REQUIREDATOMS",
+      "file": "docs/05-canon.md",
+      "heading": "IV. R E Q U I R E D A T O M S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_THELEXICON",
+      "file": "docs/05-canon.md",
+      "heading": "1. T H E L E X I C O N",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CANON_KEY_TERMS_DEFINITIONS",
+      "file": "docs/05-canon.md",
+      "heading": "Key Terms + Definitions",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_SACRED_WORDS",
+      "file": "docs/05-canon.md",
+      "heading": "Sacred Words",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_FORBIDDEN_WORDS",
+      "file": "docs/05-canon.md",
+      "heading": "Forbidden Words",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_CROWD_VOCABULARY",
+      "file": "docs/05-canon.md",
+      "heading": "Crowd Vocabulary",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_THESIXVOICEMODES",
+      "file": "docs/05-canon.md",
+      "heading": "2. T H E S I X V O I C E M O D E S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CANON_MODE_1_OFFERMODE_DIRECT",
+      "file": "docs/05-canon.md",
+      "heading": "Mode 1: O F F E R M O D E (Direct)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_MODE_2_PROMISEMODE_DIRECT",
+      "file": "docs/05-canon.md",
+      "heading": "Mode 2: P R O M I S E M O D E (Direct)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_MODE_3_BRIDGEMODE_MODERATE_INDIRECT",
+      "file": "docs/05-canon.md",
+      "heading": "Mode 3: B R I D G E M O D E (Moderate Indirect)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_MODE_4_SECRETMODE_INDIRECT",
+      "file": "docs/05-canon.md",
+      "heading": "Mode 4: S E C R E T M O D E (Indirect)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_MODE_5_PROCLAMATIONMODE_STRONG_INDIRECT",
+      "file": "docs/05-canon.md",
+      "heading": "Mode 5: P R O C L A M A T I O N M O D E (Strong Indirect)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_MODE_6_STORYMODE_HIGH_INDIRECT",
+      "file": "docs/05-canon.md",
+      "heading": "Mode 6: S T O R Y M O D E (High Indirect)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_THETWELVEHEADLINEFORMULAS",
+      "file": "docs/05-canon.md",
+      "heading": "3. T H E T W E L V E H E A D L I N E F O R M U L A S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CANON_THESIXSTORYLINES",
+      "file": "docs/05-canon.md",
+      "heading": "4. T H E S I X S T O R Y L I N E S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CANON_STORYLINE_1_LOSSANDREDEMPTION",
+      "file": "docs/05-canon.md",
+      "heading": "Storyline 1: L O S S A N D R E D E M P T I O N",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_STORYLINE_2_USVSTHEM",
+      "file": "docs/05-canon.md",
+      "heading": "Storyline 2: U S V S. T H E M",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_STORYLINE_3_BEFOREANDAFTER",
+      "file": "docs/05-canon.md",
+      "heading": "Storyline 3: B E F O R E A N D A F T E R",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_STORYLINE_4_AMAZINGDISCOVERY",
+      "file": "docs/05-canon.md",
+      "heading": "Storyline 4: A M A Z I N G D I S C O V E R Y",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_STORYLINE_5_SECRETTELLING",
+      "file": "docs/05-canon.md",
+      "heading": "Storyline 5: S E C R E T T E L L I N G",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_STORYLINE_6_THIRDPARTYPROOF",
+      "file": "docs/05-canon.md",
+      "heading": "Storyline 6: T H I R D - P A R T Y P R O O F",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_THESOAPOPERASEQUENCE",
+      "file": "docs/05-canon.md",
+      "heading": "5. T H E S O A P O P E R A S E Q U E N C E",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CANON_THEVOICERULES",
+      "file": "docs/05-canon.md",
+      "heading": "6. T H E V O I C E R U L E S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CANON_SYNTAX",
+      "file": "docs/05-canon.md",
+      "heading": "Syntax",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_PACE",
+      "file": "docs/05-canon.md",
+      "heading": "Pace",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_POSTURE",
+      "file": "docs/05-canon.md",
+      "heading": "Posture",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_TABOO_MOVES",
+      "file": "docs/05-canon.md",
+      "heading": "Taboo Moves",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_FORMINVARIANTS",
+      "file": "docs/05-canon.md",
+      "heading": "7. F O R M I N V A R I A N T S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CANON_SPACE_DOCTRINE_MA",
+      "file": "docs/05-canon.md",
+      "heading": "Space Doctrine (Ma)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_TYPOGRAPHIC_POSTURE",
+      "file": "docs/05-canon.md",
+      "heading": "Typographic Posture",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_CHROMA_DISCIPLINE",
+      "file": "docs/05-canon.md",
+      "heading": "Chroma Discipline",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_IMAGERY_ETHIC",
+      "file": "docs/05-canon.md",
+      "heading": "Imagery Ethic",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_MOTION_DOCTRINE",
+      "file": "docs/05-canon.md",
+      "heading": "Motion Doctrine",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_DEGREESOFFREEDOM",
+      "file": "docs/05-canon.md",
+      "heading": "8. D E G R E E S O F F R E E D O M",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CANON_WHAT_MAY_VARY",
+      "file": "docs/05-canon.md",
+      "heading": "What May Vary",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_WHAT_MUST_NEVER_VARY",
+      "file": "docs/05-canon.md",
+      "heading": "What Must Never Vary",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_BOUNDARY_DECISION_PROTOCOL",
+      "file": "docs/05-canon.md",
+      "heading": "Boundary Decision Protocol",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_THESLIPPERYSLIDECHECKLIST",
+      "file": "docs/05-canon.md",
+      "heading": "9. T H E S L I P P E R Y S L I D E C H E C K L I S T",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CANON_FLOW_CHECK",
+      "file": "docs/05-canon.md",
+      "heading": "Flow Check",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_LAW_CHECK",
+      "file": "docs/05-canon.md",
+      "heading": "Law Check",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_TECHNICAL_CHECK",
+      "file": "docs/05-canon.md",
+      "heading": "Technical Check",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_PARADOX_CHECK",
+      "file": "docs/05-canon.md",
+      "heading": "Paradox Check",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CANON_STYLE",
+      "file": "docs/05-canon.md",
+      "heading": "V. S T Y L E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_VALIDATIONCHECKLIST",
+      "file": "docs/05-canon.md",
+      "heading": "VI. V A L I D A T I O N C H E C K L I S T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CANON_THECLOSING",
+      "file": "docs/05-canon.md",
+      "heading": "T H E C L O S I N G",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_THETRADEOFFLADDER",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "T H E T R A D E O F F L A D D E R",
+      "level": 1
+    },
+    {
+      "id": "SECTION_TRADEOFF_THE_HIERARCHY_OF_SACRIFICE",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "The Hierarchy of Sacrifice",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_THEGOVERNINGINSIGHT",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "T H E G O V E R N I N G I N S I G H T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_INPUTSREQUIRED",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "I N P U T S R E Q U I R E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_OUTPUTSPRODUCED",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "O U T P U T S P R O D U C E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_THEBIOLOGICALHIERARCHY",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "0. T H E B I O L O G I C A L H I E R A R C H Y",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_IDENTITY",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "I. I D E N T I T Y",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_TASK",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "II. T A S K",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_CONSTRAINTS",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "III. C O N S T R A I N T S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_REQUIREDATOMS",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "IV. R E Q U I R E D A T O M S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_THELF_8_CONFLICTRESOLUTION",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "1. T H E L F 8 C O N F L I C T R E S O L U T I O N",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_THERANKEDPRINCIPLES_5_9",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "2. T H E R A N K E D P R I N C I P L E S (5-9)",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_THECOLLISIONLOG_3_5_EXAMPLES",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "3. T H E C O L L I S I O N L O G (3-5 examples)",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_THEOVERRIDECLAUSE",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "4. T H E O V E R R I D E C L A U S E",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_THEUNLOSABLEFRAMES",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "5. T H E U N L O S A B L E F R A M E S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_THEFIVELAWSINTENSION",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "V. T H E F I V E L A W S I N T E N S I O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_THEFRICTIONBUDGET",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "V-B. T H E F R I C T I O N B U D G E T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_WHEN_FRICTION_IS_MANDATORY",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "When Friction is Mandatory",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_WHEN_EASE_MUST_WIN",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "When Ease Must Win",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_FRICTION_ALLOCATION_BY_FUNNEL_STAGE",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "Friction Allocation by Funnel Stage",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_TRAFFIC_TEMPERATURE_GUIDANCE",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "Traffic Temperature Guidance",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_THE_RESOLUTION",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "The Resolution",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_CROSS_REFERENCE",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "Cross-Reference",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_STYLE",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "VI. S T Y L E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_EXAMPLEAPPLICATION",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "VI-B. E X A M P L E A P P L I C A T I O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_EXAMPLE_BRAND_MERIDIAN_PREMIUM_SLEEP_SYSTEM",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "Example Brand: \"Meridian\" (Premium Sleep System)",
+      "level": 3
+    },
+    {
+      "id": "SECTION_TRADEOFF_VALIDATIONCHECKLIST",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "VII. V A L I D A T I O N C H E C K L I S T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_TRADEOFF_THECLOSING",
+      "file": "docs/04-tradeoff-ladder.md",
+      "heading": "T H E C L O S I N G",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_THECOVENANT",
+      "file": "docs/02-covenant.md",
+      "heading": "T H E C O V E N A N T",
+      "level": 1
+    },
+    {
+      "id": "SECTION_COVENANT_THE_STRATEGIC_ARCHITECTURE_OF_IRRESISTIBLE_DESIRE",
+      "file": "docs/02-covenant.md",
+      "heading": "The Strategic Architecture of Irresistible Desire",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_INPUTSREQUIRED",
+      "file": "docs/02-covenant.md",
+      "heading": "I N P U T S R E Q U I R E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_OUTPUTSPRODUCED",
+      "file": "docs/02-covenant.md",
+      "heading": "O U T P U T S P R O D U C E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_THEAXIOMBRIDGE",
+      "file": "docs/02-covenant.md",
+      "heading": "0-A. T H E A X I O M B R I D G E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_HOW_STRATEGY_SERVES_ATTENTION_IS_SACRED",
+      "file": "docs/02-covenant.md",
+      "heading": "How Strategy Serves \"Attention Is Sacred\"",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THEFOUNDATIONALTRUTH",
+      "file": "docs/02-covenant.md",
+      "heading": "0. T H E F O U N D A T I O N A L T R U T H",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_IDENTITY",
+      "file": "docs/02-covenant.md",
+      "heading": "I. I D E N T I T Y",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_TASK",
+      "file": "docs/02-covenant.md",
+      "heading": "II. T A S K",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_CONSTRAINTS",
+      "file": "docs/02-covenant.md",
+      "heading": "III. C O N S T R A I N T S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_THETWELVEATOMS",
+      "file": "docs/02-covenant.md",
+      "heading": "IV. T H E T W E L V E A T O M S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_THESTARVINGCROWD",
+      "file": "docs/02-covenant.md",
+      "heading": "1. T H E S T A R V I N G C R O W D",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THEEMOTIONALBONDMAP",
+      "file": "docs/02-covenant.md",
+      "heading": "2. T H E E M O T I O N A L B O N D M A P",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THEATTRACTIVECHARACTER",
+      "file": "docs/02-covenant.md",
+      "heading": "3. T H E A T T R A C T I V E C H A R A C T E R",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THEOFFERARCHITECTURE",
+      "file": "docs/02-covenant.md",
+      "heading": "4. T H E O F F E R A R C H I T E C T U R E",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THEVALUELADDER",
+      "file": "docs/02-covenant.md",
+      "heading": "5. T H E V A L U E L A D D E R",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THEPRODUCTLINE",
+      "file": "docs/02-covenant.md",
+      "heading": "6. T H E P R O D U C T L I N E",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THEPRICINGSTRATEGY",
+      "file": "docs/02-covenant.md",
+      "heading": "7. T H E P R I C I N G S T R A T E G Y",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THECOMPETITIVEPOSITION",
+      "file": "docs/02-covenant.md",
+      "heading": "8. T H E C O M P E T I T I V E P O S I T I O N",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THEPROMISEHIERARCHY",
+      "file": "docs/02-covenant.md",
+      "heading": "9. T H E P R O M I S E H I E R A R C H Y",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THESTRATEGICTRADEOFFS",
+      "file": "docs/02-covenant.md",
+      "heading": "10. T H E S T R A T E G I C T R A D E O F F S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THEACQUISITIONARCHITECTURE",
+      "file": "docs/02-covenant.md",
+      "heading": "11. T H E A C Q U I S I T I O N A R C H I T E C T U R E",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THEFUNNELARCHITECTURE",
+      "file": "docs/02-covenant.md",
+      "heading": "12. T H E F U N N E L A R C H I T E C T U R E",
+      "level": 3
+    },
+    {
+      "id": "SECTION_COVENANT_THECOGNITIVEBIASTOOLKIT",
+      "file": "docs/02-covenant.md",
+      "heading": "V. T H E C O G N I T I V E B I A S T O O L K I T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_UNITECONOMICS",
+      "file": "docs/02-covenant.md",
+      "heading": "VI. U N I T E C O N O M I C S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_STYLE",
+      "file": "docs/02-covenant.md",
+      "heading": "VII. S T Y L E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_VALIDATIONCHECKLIST",
+      "file": "docs/02-covenant.md",
+      "heading": "VIII. V A L I D A T I O N C H E C K L I S T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_COVENANT_THECLOSING",
+      "file": "docs/02-covenant.md",
+      "heading": "T H E C L O S I N G",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_THESTOREFRONT",
+      "file": "docs/07-storefront.md",
+      "heading": "T H E S T O R E F R O N T",
+      "level": 1
+    },
+    {
+      "id": "SECTION_STOREFRONT_PHILOSOPHY_MADE_TOUCHABLE",
+      "file": "docs/07-storefront.md",
+      "heading": "Philosophy Made Touchable",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_THEPROOF",
+      "file": "docs/07-storefront.md",
+      "heading": "0. T H E P R O O F",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_INPUTSREQUIRED",
+      "file": "docs/07-storefront.md",
+      "heading": "I N P U T S R E Q U I R E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_OUTPUTSPRODUCED",
+      "file": "docs/07-storefront.md",
+      "heading": "O U T P U T S P R O D U C E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_IDENTITY",
+      "file": "docs/07-storefront.md",
+      "heading": "I. I D E N T I T Y",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_TASK",
+      "file": "docs/07-storefront.md",
+      "heading": "II. T A S K",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_CONSTRAINTS",
+      "file": "docs/07-storefront.md",
+      "heading": "III. C O N S T R A I N T S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_REQUIREDATOMS",
+      "file": "docs/07-storefront.md",
+      "heading": "IV. R E Q U I R E D A T O M S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_ARTIFACTARCHITECTURE",
+      "file": "docs/07-storefront.md",
+      "heading": "1. A R T I F A C T A R C H I T E C T U R E",
+      "level": 3
+    },
+    {
+      "id": "SECTION_STOREFRONT_TYPE_SPECIFICATION",
+      "file": "docs/07-storefront.md",
+      "heading": "Type Specification",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_PAGE_SECTION_INVENTORY",
+      "file": "docs/07-storefront.md",
+      "heading": "Page/Section Inventory",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_COMPONENT_ARCHITECTURE",
+      "file": "docs/07-storefront.md",
+      "heading": "Component Architecture",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_THEVALUELADDERBUILD",
+      "file": "docs/07-storefront.md",
+      "heading": "2. T H E V A L U E L A D D E R B U I L D",
+      "level": 3
+    },
+    {
+      "id": "SECTION_STOREFRONT_RUNG_1_BAIT_FREE_VERY_LOW",
+      "file": "docs/07-storefront.md",
+      "heading": "Rung 1: B A I T (Free/Very Low)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_RUNG_2_FRONTEND_ENTRY_PRICE",
+      "file": "docs/07-storefront.md",
+      "heading": "Rung 2: F R O N T E N D (Entry Price)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_RUNG_3_MIDDLE_CORE_OFFER",
+      "file": "docs/07-storefront.md",
+      "heading": "Rung 3: M I D D L E (Core Offer)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_RUNG_4_BACKEND_PREMIUM",
+      "file": "docs/07-storefront.md",
+      "heading": "Rung 4: B A C K E N D (Premium)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_RUNG_5_CONTINUITY_RECURRING",
+      "file": "docs/07-storefront.md",
+      "heading": "Rung 5: C O N T I N U I T Y (Recurring)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_FUNNELIMPLEMENTATION",
+      "file": "docs/07-storefront.md",
+      "heading": "3. F U N N E L I M P L E M E N T A T I O N",
+      "level": 3
+    },
+    {
+      "id": "SECTION_STOREFRONT_THE_10_DRRULESCOMPLIANCE",
+      "file": "docs/07-storefront.md",
+      "heading": "4. T H E 10 D R R U L E S C O M P L I A N C E",
+      "level": 3
+    },
+    {
+      "id": "SECTION_STOREFRONT_DR_PERMISSION_MATRIX_TRUST_RESPONSE",
+      "file": "docs/07-storefront.md",
+      "heading": "DR Permission Matrix (Trust + Response)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_TOKENAPPLICATION",
+      "file": "docs/07-storefront.md",
+      "heading": "5. T O K E N A P P L I C A T I O N",
+      "level": 3
+    },
+    {
+      "id": "SECTION_STOREFRONT_SPACING_SYSTEM_MA",
+      "file": "docs/07-storefront.md",
+      "heading": "Spacing System (Ma)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_COLOR_IMPLEMENTATION",
+      "file": "docs/07-storefront.md",
+      "heading": "Color Implementation",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_TYPOGRAPHY_SCALE",
+      "file": "docs/07-storefront.md",
+      "heading": "Typography Scale",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_MOTION_SYSTEM",
+      "file": "docs/07-storefront.md",
+      "heading": "Motion System",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_COPY_RHYTHM_BREATH",
+      "file": "docs/07-storefront.md",
+      "heading": "Copy Rhythm (Breath)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_VOICEAPPLICATION",
+      "file": "docs/07-storefront.md",
+      "heading": "6. V O I C E A P P L I C A T I O N",
+      "level": 3
+    },
+    {
+      "id": "SECTION_STOREFRONT_PAGE_COPY_AUDIT",
+      "file": "docs/07-storefront.md",
+      "heading": "Page Copy Audit",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_MICROCOPY_LEXICON_AUDIT",
+      "file": "docs/07-storefront.md",
+      "heading": "Microcopy Lexicon Audit",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_ERROR_STATES_RECOVERY_LANGUAGE",
+      "file": "docs/07-storefront.md",
+      "heading": "Error States (Recovery Language)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_STOREFRONT_THESUGARMAN_23_ELEMENTSAUDIT",
+      "file": "docs/07-storefront.md",
+      "heading": "7. T H E S U G A R M A N 23 E L E M E N T S A U D I T",
+      "level": 3
+    },
+    {
+      "id": "SECTION_STOREFRONT_MOMENTIMPLEMENTATION",
+      "file": "docs/07-storefront.md",
+      "heading": "8. M O M E N T I M P L E M E N T A T I O N",
+      "level": 3
+    },
+    {
+      "id": "SECTION_STOREFRONT_ANTIPATTERNCOMPLIANCE",
+      "file": "docs/07-storefront.md",
+      "heading": "9. A N T I - P A T T E R N C O M P L I A N C E",
+      "level": 3
+    },
+    {
+      "id": "SECTION_STOREFRONT_THEPARADOXVERIFICATION",
+      "file": "docs/07-storefront.md",
+      "heading": "10. T H E P A R A D O X V E R I F I C A T I O N",
+      "level": 3
+    },
+    {
+      "id": "SECTION_STOREFRONT_STYLE",
+      "file": "docs/07-storefront.md",
+      "heading": "V. S T Y L E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_VALIDATIONCHECKLIST",
+      "file": "docs/07-storefront.md",
+      "heading": "VI. V A L I D A T I O N C H E C K L I S T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_THEFINALTEST",
+      "file": "docs/07-storefront.md",
+      "heading": "VII. T H E F I N A L T E S T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_STOREFRONT_THECLOSING",
+      "file": "docs/07-storefront.md",
+      "heading": "T H E C L O S I N G",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_SUMIBREATH",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "S U M I B R E A T H",
+      "level": 1
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_VISUAL_DOCTRINE_OF_ATTENTION_ENTROPY",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Visual Doctrine of Attention Entropy",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_INPUTSREQUIRED",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "I N P U T S R E Q U I R E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_OUTPUTSPRODUCED",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "O U T P U T S P R O D U C E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THEPREMISE",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "0. T H E P R E M I S E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THENEUROAESTHETICAXIOM",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "I. T H E N E U R O A E S T H E T I C A X I O M",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THEMETHOD",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "II. T H E M E T H O D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_KNIFE_THAT_MAKES_MASTERPIECES",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Knife That Makes Masterpieces",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THEVISUALPARADOX",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "III. T H E V I S U A L P A R A D O X",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THEFIVELAWSBECOMEFIVECRAFTRITUALS",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "IV. T H E F I V E L A W S B E C O M E F I V E C R A F T R I T U A L S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_1_EARNEDENTRY",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "1) E A R N E D E N T R Y",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_ADMISSION_RITUAL",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Admission Ritual",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_2_PREGNANTVOID",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "2) P R E G N A N T V O I D",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_MA_COMPOSITION_RITUAL",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Ma Composition Ritual",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_3_LIVINGMATERIALS",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "3) L I V I N G M A T E R I A L S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_PATINA_RITUAL",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Patina Ritual",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_4_SACREDFRICTION",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "4) S A C R E D F R I C T I O N",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_INTENTION_RITUAL",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Intention Ritual",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_5_THETHRESHOLD",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "5) T H E T H R E S H O L D",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_RITUAL_OF_CROSSING",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Ritual of Crossing",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THEFIVESUBSTANCES",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "V. T H E F I V E S U B S T A N C E S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_A_COGNITIVE_MATERIAL_LEXICON",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "A Cognitive-Material Lexicon",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_1_MA_SPACE_AS_IMMUNE_SYSTEM",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "1) M A \u2014 Space as Immune System",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_2_SUMI_INK_AS_TRUTH",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "2) S U M I \u2014 Ink as Truth",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_3_GRAIN_THE_EVIDENCE_OF_REALITY",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "3) G R A I N \u2014 The Evidence of Reality",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_4_KAKEMONO_VERTICAL_DESCENT",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "4) K A K E M O N O \u2014 Vertical Descent",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_5_YUGEN_THE_GRACE_OF_SHADOW",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "5) Y \u016a G E N \u2014 The Grace of Shadow",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THEGEOMETRYOFSILENCE",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "VI. T H E G E O M E T R Y O F S I L E N C E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_PIXEL_PERFECT_NOT_PIXEL_NOISY",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "Pixel-Perfect, Not Pixel-Noisy",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_MA_UNIT",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Ma Unit",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_BASELINE_RHYTHM",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Baseline Rhythm",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_OPTICAL_TRUTH",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "Optical Truth",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_TYPOGRAPHYASRITUAL",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "VII. T Y P O G R A P H Y A S R I T U A L",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_QUIET_HIERARCHY_STRONG_BREATH",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "Quiet Hierarchy, Strong Breath",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_COLORASEVENT",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "VIII. C O L O R A S E V E N T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_SEASONAL_ACCENT_DOCTRINE",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "Seasonal Accent Doctrine",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_IMAGERYARTDIRECTION",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "IX. I M A G E R Y & A R T D I R E C T I O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_ONE_OBJECT_ONE_LIGHT_ONE_SILENCE",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "\"One Object, One Light, One Silence\"",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THESEVENROOMS",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "X. T H E S E V E N R O O M S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_A_JAPANESE_INSPIRED_INTERFACE_LAYOUT_ARCHITECTURE",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "A Japanese-Inspired Interface & Layout Architecture",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_TOKONOMA_THE_HONORED_ALCOVE",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "1. **Tokonoma \u2014 The Honored Alcove**",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_SHOJI_DIFFUSED_CLARITY",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "2. **Shoji \u2014 Diffused Clarity**",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_ENGAWA_THE_THRESHOLD_WALK",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "3. **Engawa \u2014 The Threshold Walk**",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_SUMI_CUT_THE_DECISIVE_STROKE",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "4. **Sumi Cut \u2014 The Decisive Stroke**",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_WABI_SURFACE_CHOSEN_IMPERFECTION",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "5. **Wabi Surface \u2014 Chosen Imperfection**",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_KINTSUGI_STATES_REPAIR_AS_BEAUTY",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "6. **Kintsugi States \u2014 Repair as Beauty**",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_SEASONAL_ACCENT_RARE_COLOR",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "7. **Seasonal Accent \u2014 Rare Color**",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_MOTIONASBREATH",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "XI. M O T I O N A S B R E A T H",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_BOW_BEFORE_MOVEMENT",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Bow Before Movement",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THETOKENCANON",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "XII. T H E T O K E N C A N O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_TECHNICAL_SPECIFICATION_AS_ETHICAL_VOWS",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "Technical Specification as Ethical Vows",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_INDUCTION",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Induction",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_MAASBOUNDARYKEEPER",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "I. M A A S B O U N D A R Y K E E P E R",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_VOW_OF_GENEROUS_SPACING",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Vow of Generous Spacing",
+      "level": 5
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_SUMIASTRUTHSIGNAL",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "II. S U M I A S T R U T H S I G N A L",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_VOW_OF_COMMITTED_CONTRAST",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Vow of Committed Contrast",
+      "level": 5
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_ACCENTASSACREDEVENT",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "III. A C C E N T A S S A C R E D E V E N T",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_VOW_OF_EARNED_COLOR",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Vow of Earned Color",
+      "level": 5
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_TYPEASQUIETAUTHORITY",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "IV. T Y P E A S Q U I E T A U T H O R I T Y",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_VOW_OF_READABLE_CONFIDENCE",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Vow of Readable Confidence",
+      "level": 5
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_MOTIONASREVERENCE",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "V. M O T I O N A S R E V E R E N C E",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_VOW_OF_THE_80MS_BOW",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Vow of the 80ms Bow",
+      "level": 5
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_FIVE_VOWS_SUMMARY",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Five Vows: Summary",
+      "level": 4
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THEDECISIONPROTOCOL",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "XIII. T H E D E C I S I O N P R O T O C O L",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_AUDIT_THAT_PREVENTS_EGO",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Audit That Prevents Ego",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THEVISUALSLIPPERYSLIDE",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "XIV. T H E V I S U A L S L I P P E R Y S L I D E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THE_ARCHITECTURE_OF_IRRESISTIBLE_DESCENT",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "The Architecture of Irresistible Descent",
+      "level": 3
+    },
+    {
+      "id": "SECTION_SUMI_BREATH_THEOATH",
+      "file": "docs/03-sumi-breath.md",
+      "heading": "XV. T H E O A T H",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_THEEXPERIENCECHOREOGRAPHY",
+      "file": "docs/06-choreography.md",
+      "heading": "T H E E X P E R I E N C E C H O R E O G R A P H Y",
+      "level": 1
+    },
+    {
+      "id": "SECTION_CHOREO_THE_SCORE_FOR_TRANSFORMATION",
+      "file": "docs/06-choreography.md",
+      "heading": "The Score for Transformation",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_THEGOLDENTHREAD",
+      "file": "docs/06-choreography.md",
+      "heading": "0. T H E G O L D E N T H R E A D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_INPUTSREQUIRED",
+      "file": "docs/06-choreography.md",
+      "heading": "I N P U T S R E Q U I R E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_OUTPUTSPRODUCED",
+      "file": "docs/06-choreography.md",
+      "heading": "O U T P U T S P R O D U C E D",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_IDENTITY",
+      "file": "docs/06-choreography.md",
+      "heading": "I. I D E N T I T Y",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_TASK",
+      "file": "docs/06-choreography.md",
+      "heading": "II. T A S K",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_CONSTRAINTS",
+      "file": "docs/06-choreography.md",
+      "heading": "III. C O N S T R A I N T S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_REQUIREDATOMS",
+      "file": "docs/06-choreography.md",
+      "heading": "IV. R E Q U I R E D A T O M S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_THEMOMENTSOFTRUTH_5_12",
+      "file": "docs/06-choreography.md",
+      "heading": "1. T H E M O M E N T S O F T R U T H (5-12)",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_AWARENESSTRANSITIONMAP",
+      "file": "docs/06-choreography.md",
+      "heading": "2. A W A R E N E S S T R A N S I T I O N M A P",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_THEFIVEPSYCHOLOGICALENHANCERS",
+      "file": "docs/06-choreography.md",
+      "heading": "3. T H E F I V E P S Y C H O L O G I C A L E N H A N C E R S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_ENHANCER_1_SCARCITY",
+      "file": "docs/06-choreography.md",
+      "heading": "Enhancer 1: S C A R C I T Y",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_ENHANCER_2_URGENCY",
+      "file": "docs/06-choreography.md",
+      "heading": "Enhancer 2: U R G E N C Y",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_ENHANCER_3_BONUSES",
+      "file": "docs/06-choreography.md",
+      "heading": "Enhancer 3: B O N U S E S",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_ENHANCER_4_GUARANTEES",
+      "file": "docs/06-choreography.md",
+      "heading": "Enhancer 4: G U A R A N T E E S",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_ENHANCER_5_NAMING",
+      "file": "docs/06-choreography.md",
+      "heading": "Enhancer 5: N A M I N G",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_THESEVENMANANAANTIDOTES",
+      "file": "docs/06-choreography.md",
+      "heading": "4. T H E S E V E N M A \u00d1 A N A A N T I D O T E S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_TRAFFICTEMPERATUREADAPTATION",
+      "file": "docs/06-choreography.md",
+      "heading": "5. T R A F F I C T E M P E R A T U R E A D A P T A T I O N",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_HOT_TRAFFIC_KNOWS_YOU_WANTS_YOU",
+      "file": "docs/06-choreography.md",
+      "heading": "Hot Traffic (Knows You, Wants You)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_WARM_TRAFFIC_KNOWS_YOU_SOMEWHAT",
+      "file": "docs/06-choreography.md",
+      "heading": "Warm Traffic (Knows You Somewhat)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_COLD_TRAFFIC_STRANGERS",
+      "file": "docs/06-choreography.md",
+      "heading": "Cold Traffic (Strangers)",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_THEHIERARCHYOFMOMENTS",
+      "file": "docs/06-choreography.md",
+      "heading": "6. T H E H I E R A R C H Y O F M O M E N T S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_TIER_1_CRITICAL",
+      "file": "docs/06-choreography.md",
+      "heading": "Tier 1: C R I T I C A L",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_TIER_2_IMPORTANT",
+      "file": "docs/06-choreography.md",
+      "heading": "Tier 2: I M P O R T A N T",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_TIER_3_TOLERABLE",
+      "file": "docs/06-choreography.md",
+      "heading": "Tier 3: T O L E R A B L E",
+      "level": 4
+    },
+    {
+      "id": "SECTION_CHOREO_THEANTIPATTERNS",
+      "file": "docs/06-choreography.md",
+      "heading": "7. T H E A N T I - P A T T E R N S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_RECOVERYRITUALS",
+      "file": "docs/06-choreography.md",
+      "heading": "8. R E C O V E R Y R I T U A L S",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_FRICTIONVSCONVERSION",
+      "file": "docs/06-choreography.md",
+      "heading": "V. F R I C T I O N V S C O N V E R S I O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_THE_CORE_TENSION",
+      "file": "docs/06-choreography.md",
+      "heading": "The Core Tension",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_THE_FRICTION_PROTOCOL",
+      "file": "docs/06-choreography.md",
+      "heading": "The Friction Protocol",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_FRICTION_AT_EACH_MOMENT_TYPE",
+      "file": "docs/06-choreography.md",
+      "heading": "Friction at Each Moment Type",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_THE_FRICTION_BUDGET_REFERENCE",
+      "file": "docs/06-choreography.md",
+      "heading": "The Friction Budget Reference",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_THE_DR_RULES_CONNECTION",
+      "file": "docs/06-choreography.md",
+      "heading": "The DR Rules Connection",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_ANTI_PATTERN_FRICTIONLESS_MANIPULATION",
+      "file": "docs/06-choreography.md",
+      "heading": "Anti-Pattern: Frictionless Manipulation",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_CROSS_REFERENCES",
+      "file": "docs/06-choreography.md",
+      "heading": "Cross-References",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_STYLE",
+      "file": "docs/06-choreography.md",
+      "heading": "VI. S T Y L E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_EXAMPLEAPPLICATION",
+      "file": "docs/06-choreography.md",
+      "heading": "VI-B. E X A M P L E A P P L I C A T I O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_EXAMPLE_BRAND_MERIDIAN_PREMIUM_SLEEP_SYSTEM",
+      "file": "docs/06-choreography.md",
+      "heading": "Example Brand: \"Meridian\" (Premium Sleep System)",
+      "level": 3
+    },
+    {
+      "id": "SECTION_CHOREO_VALIDATIONCHECKLIST",
+      "file": "docs/06-choreography.md",
+      "heading": "VII. V A L I D A T I O N C H E C K L I S T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_CHOREO_THECLOSING",
+      "file": "docs/06-choreography.md",
+      "heading": "T H E C L O S I N G",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_THEMANIFESTO",
+      "file": "docs/01-manifesto.md",
+      "heading": "T H E M A N I F E S T O",
+      "level": 1
+    },
+    {
+      "id": "SECTION_MANIFESTO_ATTENTION_ENTROPY_A_COVENANT_FOR_THE_AGE_OF_INFINITE_CONTENT",
+      "file": "docs/01-manifesto.md",
+      "heading": "Attention Entropy: A Covenant for the Age of Infinite Content",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_THECONDITION",
+      "file": "docs/01-manifesto.md",
+      "heading": "0. T H E C O N D I T I O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_THEBIOLOGICALFOUNDATION",
+      "file": "docs/01-manifesto.md",
+      "heading": "I. T H E B I O L O G I C A L F O U N D A T I O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_EIGHT_PRIMAL_VOICES",
+      "file": "docs/01-manifesto.md",
+      "heading": "The Eight Primal Voices",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THEAXIOM",
+      "file": "docs/01-manifesto.md",
+      "heading": "II. T H E A X I O M",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_THELINEAGE",
+      "file": "docs/01-manifesto.md",
+      "heading": "III. T H E L I N E A G E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_TADAO_ANDO_THE_ARCHITECTURE_OF_SILENCE",
+      "file": "docs/01-manifesto.md",
+      "heading": "Tadao Ando \u2014 The Architecture of Silence",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_KENYA_HARA_THE_ECONOMICS_OF_EMPTINESS",
+      "file": "docs/01-manifesto.md",
+      "heading": "Kenya Hara \u2014 The Economics of Emptiness",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_SYNTHESIS_MA_MARROW",
+      "file": "docs/01-manifesto.md",
+      "heading": "The Synthesis \u2014 Ma & Marrow",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THEPARADOX",
+      "file": "docs/01-manifesto.md",
+      "heading": "IV. T H E P A R A D O X",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_AUDIT_AND_THE_PRAYER",
+      "file": "docs/01-manifesto.md",
+      "heading": "The Audit and the Prayer",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_TEST",
+      "file": "docs/01-manifesto.md",
+      "heading": "The Test",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THEFIVELAWS",
+      "file": "docs/01-manifesto.md",
+      "heading": "V. T H E F I V E L A W S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_LAW_OF_EARNED_ENTRY",
+      "file": "docs/01-manifesto.md",
+      "heading": "I. The Law of Earned Entry",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_LAW_OF_PREGNANT_VOID",
+      "file": "docs/01-manifesto.md",
+      "heading": "II. The Law of Pregnant Void",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_LAW_OF_LIVING_MATERIALS",
+      "file": "docs/01-manifesto.md",
+      "heading": "III. The Law of Living Materials",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_LAW_OF_SACRED_FRICTION",
+      "file": "docs/01-manifesto.md",
+      "heading": "IV. The Law of Sacred Friction",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_LAW_OF_THE_THRESHOLD",
+      "file": "docs/01-manifesto.md",
+      "heading": "V. The Law of the Threshold",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THEVISUALDOCTRINE",
+      "file": "docs/01-manifesto.md",
+      "heading": "VI. T H E V I S U A L D O C T R I N E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_SUMI_BREATH",
+      "file": "docs/01-manifesto.md",
+      "heading": "Sumi Breath",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_1_MA_SPACE_AS_IMMUNE_SYSTEM",
+      "file": "docs/01-manifesto.md",
+      "heading": "1) Ma \u2014 Space as Immune System",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_2_SUMI_INK_AS_TRUTH",
+      "file": "docs/01-manifesto.md",
+      "heading": "2) Sumi \u2014 Ink as Truth",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_3_GRAIN_THE_EVIDENCE_OF_REALITY",
+      "file": "docs/01-manifesto.md",
+      "heading": "3) Grain \u2014 The Evidence of Reality",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_4_KAKEMONO_VERTICAL_DESCENT",
+      "file": "docs/01-manifesto.md",
+      "heading": "4) Kakemono \u2014 Vertical Descent",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_5_YUGEN_THE_GRACE_OF_SHADOW",
+      "file": "docs/01-manifesto.md",
+      "heading": "5) Y\u016bgen \u2014 The Grace of Shadow",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_6_LIVING_TENSION",
+      "file": "docs/01-manifesto.md",
+      "heading": "6) Living Tension",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THEDECISIONPROTOCOL",
+      "file": "docs/01-manifesto.md",
+      "heading": "VII. T H E D E C I S I O N P R O T O C O L",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_KNIFE",
+      "file": "docs/01-manifesto.md",
+      "heading": "The Knife",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THE_DERIVATION_CHAIN",
+      "file": "docs/01-manifesto.md",
+      "heading": "The Derivation Chain",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THEPOSTURE",
+      "file": "docs/01-manifesto.md",
+      "heading": "VIII. T H E P O S T U R E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_CONVICTION_CONCERN_FOCUS",
+      "file": "docs/01-manifesto.md",
+      "heading": "Conviction, Concern, Focus",
+      "level": 3
+    },
+    {
+      "id": "SECTION_MANIFESTO_THEVISION",
+      "file": "docs/01-manifesto.md",
+      "heading": "IX. T H E V I S I O N",
+      "level": 2
+    },
+    {
+      "id": "SECTION_MANIFESTO_THECLOSING",
+      "file": "docs/01-manifesto.md",
+      "heading": "X. T H E C L O S I N G",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_UNIVERSALBRANDSYSTEM",
+      "file": "docs/00-orchestration.md",
+      "heading": "U N I V E R S A L B R A N D S Y S T E M",
+      "level": 1
+    },
+    {
+      "id": "SECTION_ORCH_THE_ORCHESTRATION_PROTOCOL",
+      "file": "docs/00-orchestration.md",
+      "heading": "The Orchestration Protocol",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_THECONDUCTORSSCORE",
+      "file": "docs/00-orchestration.md",
+      "heading": "0. T H E C O N D U C T O R ' S S C O R E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_THEPERSUASIONOPERATINGSYSTEM",
+      "file": "docs/00-orchestration.md",
+      "heading": "I. T H E P E R S U A S I O N O P E R A T I N G S Y S T E M",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_THE_BIOLOGICAL_FOUNDATION",
+      "file": "docs/00-orchestration.md",
+      "heading": "The Biological Foundation",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THE_AWARENESS_SPECTRUM",
+      "file": "docs/00-orchestration.md",
+      "heading": "The Awareness Spectrum",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THE_VOICE_MATRIX",
+      "file": "docs/00-orchestration.md",
+      "heading": "The Voice Matrix",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THE_PARADOX",
+      "file": "docs/00-orchestration.md",
+      "heading": "The Paradox",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THESEVENLAYERS",
+      "file": "docs/00-orchestration.md",
+      "heading": "II. T H E S E V E N L A Y E R S",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_LAYER_0_THE_MANIFESTO",
+      "file": "docs/00-orchestration.md",
+      "heading": "LAYER 0: THE MANIFESTO",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_LAYER_1_THE_COVENANT",
+      "file": "docs/00-orchestration.md",
+      "heading": "LAYER 1: THE COVENANT",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_LAYER_2_SUMI_BREATH_VISUAL_DOCTRINE",
+      "file": "docs/00-orchestration.md",
+      "heading": "LAYER 2: SUMI BREATH (Visual Doctrine)",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_LAYER_3_THE_TRADEOFF_LADDER",
+      "file": "docs/00-orchestration.md",
+      "heading": "LAYER 3: THE TRADEOFF LADDER",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_LAYER_4_THE_CANON_OF_EXPRESSION",
+      "file": "docs/00-orchestration.md",
+      "heading": "LAYER 4: THE CANON OF EXPRESSION",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_LAYER_5_THE_EXPERIENCE_CHOREOGRAPHY",
+      "file": "docs/00-orchestration.md",
+      "heading": "LAYER 5: THE EXPERIENCE CHOREOGRAPHY",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_LAYER_6_THE_STOREFRONT",
+      "file": "docs/00-orchestration.md",
+      "heading": "LAYER 6: THE STOREFRONT",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THEEXECUTIONPROTOCOL",
+      "file": "docs/00-orchestration.md",
+      "heading": "III. T H E E X E C U T I O N P R O T O C O L",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_THE_SYMPHONY",
+      "file": "docs/00-orchestration.md",
+      "heading": "The Symphony",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_PARALLEL_EXECUTION_WHEN_APPLICABLE",
+      "file": "docs/00-orchestration.md",
+      "heading": "Parallel Execution (When Applicable)",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THEDECISIONMATRIX",
+      "file": "docs/00-orchestration.md",
+      "heading": "IV. T H E D E C I S I O N M A T R I X",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_WHEN_AN_AGI_ENCOUNTERS_A_DECISION",
+      "file": "docs/00-orchestration.md",
+      "heading": "When an AGI Encounters a Decision",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_DECISION_ALGORITHM",
+      "file": "docs/00-orchestration.md",
+      "heading": "Decision Algorithm",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THE_RULE_OF_ONE_APPLIED",
+      "file": "docs/00-orchestration.md",
+      "heading": "The Rule of One Applied",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THEVALIDATIONPROTOCOL",
+      "file": "docs/00-orchestration.md",
+      "heading": "V. T H E V A L I D A T I O N P R O T O C O L",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_PER_LAYER_VALIDATION",
+      "file": "docs/00-orchestration.md",
+      "heading": "Per-Layer Validation",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_SYSTEM_WIDE_VALIDATION",
+      "file": "docs/00-orchestration.md",
+      "heading": "System-Wide Validation",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THE_PARADOX_VERIFICATION_SYSTEM_LEVEL",
+      "file": "docs/00-orchestration.md",
+      "heading": "The Paradox Verification (System Level)",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THECHAININGCONTRACT",
+      "file": "docs/00-orchestration.md",
+      "heading": "VI. T H E C H A I N I N G C O N T R A C T",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_INPUT_CONTRACT",
+      "file": "docs/00-orchestration.md",
+      "heading": "Input Contract",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_OUTPUT_CONTRACT",
+      "file": "docs/00-orchestration.md",
+      "heading": "Output Contract",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_DEPENDENCY_GRAPH",
+      "file": "docs/00-orchestration.md",
+      "heading": "Dependency Graph",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_VOCABULARY_CALLBACKS",
+      "file": "docs/00-orchestration.md",
+      "heading": "Vocabulary Callbacks",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_ERRORHANDLING",
+      "file": "docs/00-orchestration.md",
+      "heading": "VII. E R R O R H A N D L I N G",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_LAYER_VALIDATION_FAILURE",
+      "file": "docs/00-orchestration.md",
+      "heading": "Layer Validation Failure",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_CROSS_LAYER_INCONSISTENCY",
+      "file": "docs/00-orchestration.md",
+      "heading": "Cross-Layer Inconsistency",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_MISSING_INFORMATION",
+      "file": "docs/00-orchestration.md",
+      "heading": "Missing Information",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_PARADOX_VIOLATION_RECOVERY",
+      "file": "docs/00-orchestration.md",
+      "heading": "Paradox Violation Recovery",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THEGUARANTEE",
+      "file": "docs/00-orchestration.md",
+      "heading": "VIII. T H E G U A R A N T E E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_THE_CHAINING_PROMISE",
+      "file": "docs/00-orchestration.md",
+      "heading": "The Chaining Promise",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THE_TEST",
+      "file": "docs/00-orchestration.md",
+      "heading": "The Test",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_QUICKREFERENCE",
+      "file": "docs/00-orchestration.md",
+      "heading": "IX. Q U I C K R E F E R E N C E",
+      "level": 2
+    },
+    {
+      "id": "SECTION_ORCH_DOCUMENT_LOCATIONS",
+      "file": "docs/00-orchestration.md",
+      "heading": "Document Locations",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_FRAMEWORK_QUICK_REFERENCE",
+      "file": "docs/00-orchestration.md",
+      "heading": "Framework Quick Reference",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_EXECUTION_COMMAND_FOR_AGI",
+      "file": "docs/00-orchestration.md",
+      "heading": "Execution Command (For AGI)",
+      "level": 3
+    },
+    {
+      "id": "SECTION_ORCH_THECLOSING",
+      "file": "docs/00-orchestration.md",
+      "heading": "X. T H E C L O S I N G",
+      "level": 2
+    }
+  ]
+}

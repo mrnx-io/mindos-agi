@@ -1,0 +1,224 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Sugarman 23 Copy Elements - Single Source of Truth for the Universal Brand System",
+  "core_principle": {
+    "axiom": "Copy = Slippery Slide. Every sentence exists to get the next sentence read.",
+    "mechanism": "Sentence n gets sentence n+1. First sentence pulls reader in. Momentum builds. Reader slides down like child on playground slide. Cannot stop until bottom (purchase)."
+  },
+  "elements": [
+    {
+      "id": "SUGAR_TYPEFACE",
+      "number": 1,
+      "name": "Typeface",
+      "purpose": "Readability",
+      "application": "Use the Sumi Breath type tokens. Prefer a highly legible humanist serif in print and a humanist sans on screens; verify readability for the medium.",
+      "layer": "visual"
+    },
+    {
+      "id": "SUGAR_FIRST_SENTENCE",
+      "number": 2,
+      "name": "First Sentence",
+      "purpose": "Entry point to the slide",
+      "application": "Short, simple, compelling. Its only job is to get the second sentence read.",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_SECOND_SENTENCE",
+      "number": 3,
+      "name": "Second Sentence",
+      "purpose": "Momentum continuation",
+      "application": "Continue the pull. Build the slide's incline.",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_PARAGRAPH_HEADINGS",
+      "number": 4,
+      "name": "Paragraph Headings",
+      "purpose": "Scanners and section tease",
+      "application": "Break text visually. Each heading should pull skimmers back into copy.",
+      "layer": "visual"
+    },
+    {
+      "id": "SUGAR_PRODUCT_EXPLANATION",
+      "number": 5,
+      "name": "Product Explanation",
+      "purpose": "Clarity",
+      "application": "Match complexity to product. Simple products = simple explanation. Complex products = patient education.",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_NEW_FEATURES",
+      "number": 6,
+      "name": "New Features",
+      "purpose": "Differentiation",
+      "application": "Highlight what's unique. Features become news when framed as innovation.",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_TECHNICAL_EXPLANATION",
+      "number": 7,
+      "name": "Technical Explanation",
+      "purpose": "Credibility",
+      "application": "Include even if most won't read. Technical details = implied expertise.",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_ANTICIPATE_OBJECTIONS",
+      "number": 8,
+      "name": "Anticipate Objections",
+      "purpose": "Preemption",
+      "application": "Raise objections before reader thinks them. Inoculation theory.",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_RESOLVE_OBJECTIONS",
+      "number": 9,
+      "name": "Resolve Objections",
+      "purpose": "Proof",
+      "application": "Answer every objection with evidence. Testimonials, data, guarantees.",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_GENDER",
+      "number": 10,
+      "name": "Gender",
+      "purpose": "Targeting",
+      "application": "Tailor language, examples, and concerns to audience demographics.",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_CLARITY",
+      "number": 11,
+      "name": "Clarity",
+      "purpose": "Understanding",
+      "application": "No jargon. No clichés. Flesch score 60-70 (6th-8th grade level).",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_RHYTHM",
+      "number": 12,
+      "name": "Rhythm",
+      "purpose": "Flow",
+      "application": "Vary sentence lengths. Long. Short. Medium. The music of prose.",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_SERVICE",
+      "number": 13,
+      "name": "Service",
+      "purpose": "Confidence",
+      "application": "Address repairs, returns, support. Remove post-purchase anxiety.",
+      "layer": "offer"
+    },
+    {
+      "id": "SUGAR_PHYSICAL_DIMENSIONS",
+      "number": 14,
+      "name": "Physical Dimensions",
+      "purpose": "Concreteness",
+      "application": "Always include specs. Size, weight, materials. Concrete beats abstract.",
+      "layer": "offer"
+    },
+    {
+      "id": "SUGAR_TRIAL_PERIOD",
+      "number": 15,
+      "name": "Trial Period",
+      "purpose": "Risk reversal",
+      "application": "Longer trial = fewer returns. Counterintuitive but proven.",
+      "layer": "offer"
+    },
+    {
+      "id": "SUGAR_PRICE_COMPARISON",
+      "number": 16,
+      "name": "Price Comparison",
+      "purpose": "Value framing",
+      "application": "Compare to expensive alternative. Anchor high, then reveal actual price.",
+      "layer": "offer"
+    },
+    {
+      "id": "SUGAR_TESTIMONIALS",
+      "number": 17,
+      "name": "Testimonials",
+      "purpose": "Social proof",
+      "application": "Credible sources. Specific results. Photos increase trust.",
+      "layer": "proof"
+    },
+    {
+      "id": "SUGAR_PRICE",
+      "number": 18,
+      "name": "Price",
+      "purpose": "Presentation",
+      "application": "Large if low (value!), small if high (premium). Odd pricing ($97 vs $100).",
+      "layer": "offer"
+    },
+    {
+      "id": "SUGAR_OFFER_SUMMARY",
+      "number": 19,
+      "name": "Offer Summary",
+      "purpose": "Clarity",
+      "application": "Clear statement of what they get for their money. Stack the value.",
+      "layer": "offer"
+    },
+    {
+      "id": "SUGAR_AVOID_TOO_MUCH",
+      "number": 20,
+      "name": "Avoid Too Much",
+      "purpose": "Focus",
+      "application": "Ruthless editing. Cut everything that doesn't serve the slide.",
+      "layer": "copy"
+    },
+    {
+      "id": "SUGAR_EASE_OF_ORDERING",
+      "number": 21,
+      "name": "Ease of Ordering",
+      "purpose": "Friction removal",
+      "application": "Dotted coupon lines. Large buttons. Simple forms. Reduce cognitive load.",
+      "layer": "conversion"
+    },
+    {
+      "id": "SUGAR_ASK_FOR_ORDER",
+      "number": 22,
+      "name": "Ask for Order",
+      "purpose": "Explicit CTA",
+      "application": "Always close. Tell them exactly what to do. 'Order Now.'",
+      "layer": "conversion"
+    },
+    {
+      "id": "SUGAR_GRAPHIC_ELEMENTS",
+      "number": 23,
+      "name": "Graphic Elements",
+      "purpose": "Design",
+      "application": "10 elements from headline through layout. Visual hierarchy serves the slide.",
+      "layer": "visual"
+    }
+  ],
+  "fifteen_axioms": [
+    { "number": 1, "axiom": "Copy should feel like conversation" },
+    { "number": 2, "axiom": "First sentence = ad for second sentence" },
+    { "number": 3, "axiom": "Make environment invite reading" },
+    { "number": 4, "axiom": "Engage reader in process" },
+    { "number": 5, "axiom": "Create flow without resistance" },
+    { "number": 6, "axiom": "Short sentences/paragraphs" },
+    { "number": 7, "axiom": "Complex products need simple explanations" },
+    { "number": 8, "axiom": "Anticipate questions and answer them" },
+    { "number": 9, "axiom": "Sell the concept, not the product" },
+    { "number": 10, "axiom": "Incubate good ideas" },
+    { "number": 11, "axiom": "Copy is never finished, only abandoned" },
+    { "number": 12, "axiom": "Test where possible" },
+    { "number": 13, "axiom": "Curiosity is most powerful motivator" },
+    { "number": 14, "axiom": "Each element should reinforce the others" },
+    { "number": 15, "axiom": "Selling cure is easier than prevention" }
+  ],
+  "usage_rules": {
+    "reference_by": "Use semantic ID (e.g., SUGAR_FIRST_SENTENCE) not number in all documents",
+    "audit_method": "Run every piece of copy through all 23 elements as checklist",
+    "layer_priority": "copy > offer > proof > conversion > visual (but all required)",
+    "slippery_slide_test": "Read copy aloud. If you can stop anywhere naturally, the slide is broken."
+  },
+  "cross_references": {
+    "storefront": "SECTION_STOREFRONT_THESUGARMAN_23_ELEMENTSAUDIT",
+    "canon": "SECTION_CANON_THEVOICERULES",
+    "sumi_breath": "SECTION_SUMI_BREATH_TYPOGRAPHYASRITUAL",
+    "choreography": "SECTION_CHOREO_THEMOMENTSOFTRUTH_5_12"
+  }
+}

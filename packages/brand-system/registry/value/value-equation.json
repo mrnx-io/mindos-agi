@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Value Equation factors (canonical IDs) for the Universal Brand System",
+  "source_section": "SECTION_COVENANT_THEOFFERARCHITECTURE",
+  "factors": [
+    {
+      "id": "VE_DREAM_OUTCOME",
+      "name": "Dream Outcome",
+      "direction": "maximize",
+      "definition": "The desired end state the customer wants."
+    },
+    {
+      "id": "VE_PERCEIVED_LIKELIHOOD",
+      "name": "Perceived Likelihood",
+      "direction": "maximize",
+      "definition": "Belief that the outcome will occur."
+    },
+    {
+      "id": "VE_TIME_DELAY",
+      "name": "Time Delay",
+      "direction": "minimize",
+      "definition": "Time between purchase and result."
+    },
+    {
+      "id": "VE_EFFORT_SACRIFICE",
+      "name": "Effort & Sacrifice",
+      "direction": "minimize",
+      "definition": "Work or cost required by the customer."
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "4 Brand Archetypes - Single Source of Truth for brand persona in the Universal Brand System",
+  "archetypes": [
+    {
+      "id": "ARCHETYPE_LEADER",
+      "name": "Leader",
+      "voice": "Follow me, I've been there",
+      "best_for": "Clear path, proven success, high authority positioning",
+      "strength": "Certainty and direction"
+    },
+    {
+      "id": "ARCHETYPE_ADVENTURER",
+      "name": "Adventurer",
+      "voice": "I tested everything so you don't have to",
+      "best_for": "Discovery, experimentation, emerging categories",
+      "strength": "Exploration and credibility through lived testing"
+    },
+    {
+      "id": "ARCHETYPE_REPORTER",
+      "name": "Reporter",
+      "voice": "I asked the experts",
+      "best_for": "Research-led authority, expert synthesis, trust transfer",
+      "strength": "Evidence and objectivity"
+    },
+    {
+      "id": "ARCHETYPE_RELUCTANT_HERO",
+      "name": "Reluctant Hero",
+      "voice": "I didn't want to share this, but...",
+      "best_for": "Duty-bound revelation, humble expertise, high-trust audiences",
+      "strength": "Integrity and sacrifice"
+    }
+  ],
+  "usage_rules": {
+    "reference_by": "Use semantic ID (e.g., ARCHETYPE_LEADER) not position in all documents",
+    "selection_protocol": "Select one primary archetype per brand; secondary archetypes may appear only in specific campaigns when justified by the Tradeoff Ladder"
+  },
+  "cross_references": {
+    "covenant": "SECTION_COVENANT_THEATTRACTIVECHARACTER",
+    "canon": "SECTION_CANON_THESIXVOICEMODES",
+    "orchestration": "SECTION_ORCH_THEPERSUASIONOPERATINGSYSTEM"
+  }
+}

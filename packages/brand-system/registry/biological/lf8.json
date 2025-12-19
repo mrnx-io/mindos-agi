@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical Life-Force 8 Registry - Single Source of Truth for the Universal Brand System",
+  "lf8": [
+    {
+      "id": "LF8_SURVIVAL",
+      "rank": 1,
+      "name": "Survival",
+      "demand": "Keep me alive",
+      "seeks": "Health, longevity, vitality",
+      "overrides": "All others",
+      "strategic_implication": "Health, longevity, safety messaging"
+    },
+    {
+      "id": "LF8_PAIN_FREEDOM",
+      "rank": 2,
+      "name": "Freedom from Pain",
+      "demand": "Remove my threats",
+      "seeks": "Relief, security, protection",
+      "overrides": "Most others",
+      "strategic_implication": "Relief promises, fear resolution"
+    },
+    {
+      "id": "LF8_PROTECTION",
+      "rank": 3,
+      "name": "Protection of Loved Ones",
+      "demand": "Guard my tribe",
+      "seeks": "Family safety, care, provision",
+      "overrides": "Personal comfort",
+      "strategic_implication": "Family safety, provision, care"
+    },
+    {
+      "id": "LF8_COMPANIONSHIP",
+      "rank": 4,
+      "name": "Sexual Companionship",
+      "demand": "Help me connect",
+      "seeks": "Intimacy, attraction, belonging",
+      "overrides": "Status, comfort",
+      "strategic_implication": "Belonging, intimacy, attraction"
+    },
+    {
+      "id": "LF8_COMFORT",
+      "rank": 5,
+      "name": "Comfortable Living",
+      "demand": "Make it easy",
+      "seeks": "Convenience, ease, modern grace",
+      "overrides": "Status, approval",
+      "strategic_implication": "Convenience, ease, modern grace"
+    },
+    {
+      "id": "LF8_NOURISHMENT",
+      "rank": 6,
+      "name": "Nourishment",
+      "demand": "Give me pleasure",
+      "seeks": "Sensory satisfaction, comfort",
+      "overrides": "Status, approval",
+      "strategic_implication": "Sensory experience, comfort positioning"
+    },
+    {
+      "id": "LF8_SUPERIORITY",
+      "rank": 7,
+      "name": "Superiority",
+      "demand": "Help me win",
+      "seeks": "Status, achievement, edge",
+      "overrides": "Approval",
+      "strategic_implication": "Status, achievement, premium positioning"
+    },
+    {
+      "id": "LF8_APPROVAL",
+      "rank": 8,
+      "name": "Social Approval",
+      "demand": "Help me belong",
+      "seeks": "Acceptance, praise, fitting in",
+      "overrides": "None",
+      "strategic_implication": "Acceptance, fitting in, group identity"
+    }
+  ],
+  "usage_rules": {
+    "reference_by": "Use semantic ID (e.g., LF8_SURVIVAL) not rank number in all documents",
+    "hierarchy_resolution": "Lower rank wins when drivers conflict (1 > 2 > 3 > ... > 8)",
+    "master_override": "LF8_SURVIVAL overrides ALL other considerations when genuinely at stake",
+    "validation": "All documents in the Universal Brand System must reference LF8 by id field",
+    "forbidden": "Do not use bare numbers (#2, #6) to reference LF8 drivers - numbers drift across documents"
+  },
+  "cross_references": {
+    "manifesto": "SECTION_MANIFESTO_THEBIOLOGICALFOUNDATION",
+    "orchestration": "SECTION_ORCH_THEPERSUASIONOPERATINGSYSTEM",
+    "covenant": "SECTION_COVENANT_THEFOUNDATIONALTRUTH",
+    "tradeoff_ladder": "SECTION_TRADEOFF_THEBIOLOGICALHIERARCHY",
+    "canon": "SECTION_CANON_THETWELVEHEADLINEFORMULAS"
+  }
+}

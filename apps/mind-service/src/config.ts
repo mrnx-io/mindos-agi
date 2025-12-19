@@ -114,7 +114,18 @@ export type Env = z.infer<typeof EnvSchema>
 
 // Parse and validate environment
 function loadEnv(): Env {
-  const result = EnvSchema.safeParse(process.env)
+  const envInput = {
+    ...process.env,
+    GOOGLE_AI_API_KEY: process.env.GOOGLE_AI_API_KEY ?? process.env.GOOGLE_API_KEY,
+    RISK_THRESHOLD_AUTO: process.env.RISK_THRESHOLD_AUTO ?? process.env.RISK_AUTO_EXECUTE_MAX,
+    RISK_THRESHOLD_APPROVAL:
+      process.env.RISK_THRESHOLD_APPROVAL ?? process.env.RISK_REQUIRE_APPROVAL_MIN,
+    ENABLE_GROUNDING:
+      process.env.ENABLE_GROUNDING ?? process.env.ENABLE_GROUNDING_VERIFICATION,
+    MAX_SWARM_SIZE: process.env.MAX_SWARM_SIZE ?? process.env.SWARM_MAX_AGENTS,
+  }
+
+  const result = EnvSchema.safeParse(envInput)
   if (!result.success) {
     console.error("Invalid environment configuration:")
     console.error(result.error.format())

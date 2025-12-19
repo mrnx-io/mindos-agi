@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Manifesto output schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["manifesto"],
+  "properties": {
+    "manifesto": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["axiom", "lf8_grounding", "laws", "paradox", "vision", "derivation_log"],
+      "properties": {
+        "axiom": { "type": "string", "minLength": 1 },
+        "lf8_grounding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["primary", "secondary"],
+          "properties": {
+            "primary": { "$ref": "./_defs.json#/definitions/lf8_id" },
+            "secondary": { "$ref": "./_defs.json#/definitions/lf8_id" },
+            "tertiary": {
+              "anyOf": [
+                { "$ref": "./_defs.json#/definitions/lf8_id" },
+                { "type": "null" }
+              ]
+            }
+          }
+        },
+        "laws": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "statement", "derivation", "psychological_truth"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "statement": { "type": "string", "minLength": 1 },
+              "derivation": { "type": "string", "minLength": 1 },
+              "psychological_truth": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "paradox": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["logical_requirement", "mysterious_requirement"],
+          "properties": {
+            "logical_requirement": { "type": "string", "minLength": 1 },
+            "mysterious_requirement": { "type": "string", "minLength": 1 }
+          }
+        },
+        "vision": { "type": "string", "minLength": 1 },
+        "derivation_log": { "$ref": "./_defs.json#/definitions/derivation_log" }
+      }
+    }
+  }
+}

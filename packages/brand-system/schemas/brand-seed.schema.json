@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.1.0",
+  "description": "Brand Seed input schema for the Universal Brand System",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "metadata",
+    "product_service",
+    "founder_assets",
+    "market_evidence",
+    "economic_constraints",
+    "operational_constraints",
+    "existing_traction",
+    "non_negotiables"
+  ],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["brand_name", "created_at"],
+      "properties": {
+        "brand_name": { "type": "string", "minLength": 1 },
+        "created_at": { "type": "string", "minLength": 1 },
+        "last_updated": { "type": "string" },
+        "seed_version": { "type": "string" }
+      }
+    },
+    "product_service": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category", "core_offering", "delivery_model", "current_stage"],
+      "properties": {
+        "category": { "type": "string", "minLength": 1 },
+        "core_offering": { "type": "string", "minLength": 1 },
+        "delivery_model": { "type": "string", "minLength": 1 },
+        "current_stage": { "type": "string", "minLength": 1 }
+      }
+    },
+    "founder_assets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["backstory", "authority_proof", "character_flaws", "strong_opinions"],
+      "properties": {
+        "backstory": { "type": "string", "minLength": 1 },
+        "authority_proof": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 },
+        "character_flaws": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 },
+        "strong_opinions": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 }
+      }
+    },
+    "market_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pain_statement", "watering_holes", "wallet_evidence", "failed_alternatives"],
+      "properties": {
+        "pain_statement": { "type": "string", "minLength": 1 },
+        "watering_holes": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 },
+        "wallet_evidence": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 },
+        "failed_alternatives": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 }
+      }
+    },
+    "economic_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["price_corridor", "cost_structure", "cac_budget", "runway_months", "unit_economics_inputs"],
+      "properties": {
+        "price_corridor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min", "max", "currency"],
+          "properties": {
+            "min": { "type": "number", "minimum": 0 },
+            "max": { "type": "number", "minimum": 0 },
+            "currency": { "type": "string", "minLength": 1 }
+          }
+        },
+        "cost_structure": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fixed_monthly_costs", "variable_cost_per_unit", "notes"],
+          "properties": {
+            "fixed_monthly_costs": { "type": "number", "minimum": 0 },
+            "variable_cost_per_unit": { "type": "number", "minimum": 0 },
+            "notes": { "type": "string", "minLength": 1 }
+          }
+        },
+        "cac_budget": { "type": "number", "minimum": 0 },
+        "runway_months": { "type": "number", "minimum": 0 },
+        "unit_economics_inputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "average_order_value",
+            "gross_margin_percent",
+            "purchase_frequency_per_year",
+            "average_retention_months",
+            "contribution_margin_percent",
+            "target_ltv_cac_ratio",
+            "target_payback_period_months"
+          ],
+          "properties": {
+            "average_order_value": { "type": "number", "minimum": 0 },
+            "gross_margin_percent": { "type": "number", "minimum": 0 },
+            "purchase_frequency_per_year": { "type": "number", "minimum": 0 },
+            "average_retention_months": { "type": "number", "minimum": 0 },
+            "refund_rate_percent": { "type": "number", "minimum": 0 },
+            "churn_rate_percent": { "type": "number", "minimum": 0 },
+            "contribution_margin_percent": { "type": "number", "minimum": 0 },
+            "target_ltv_cac_ratio": { "type": "number", "minimum": 0 },
+            "target_payback_period_months": { "type": "number", "minimum": 0 },
+            "target_lifetime_value": { "type": "number", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "operational_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["team_size", "technical_capability", "time_to_market", "geographic_focus"],
+      "properties": {
+        "team_size": { "type": "number", "minimum": 0 },
+        "technical_capability": { "type": "string", "minLength": 1 },
+        "time_to_market": { "type": "string", "minLength": 1 },
+        "geographic_focus": { "type": "string", "minLength": 1 }
+      }
+    },
+    "existing_traction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["current_customers", "conversion_data", "testimonials", "failures"],
+      "properties": {
+        "current_customers": { "type": "string" },
+        "conversion_data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["available", "notes"],
+          "properties": {
+            "available": { "type": "boolean" },
+            "notes": { "type": "string", "minLength": 1 },
+            "window": { "type": "string" },
+            "average_order_value": { "type": "number", "minimum": 0 },
+            "funnel": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["visits", "opt_in_rate_percent", "checkout_rate_percent", "close_rate_percent"],
+              "properties": {
+                "visits": { "type": "number", "minimum": 0 },
+                "opt_in_rate_percent": { "type": "number", "minimum": 0 },
+                "checkout_rate_percent": { "type": "number", "minimum": 0 },
+                "close_rate_percent": { "type": "number", "minimum": 0 }
+              }
+            }
+          }
+        },
+        "testimonials": { "$ref": "./_defs.json#/definitions/string_list" },
+        "failures": { "$ref": "./_defs.json#/definitions/string_list" }
+      }
+    },
+    "non_negotiables": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ethical_boundaries", "brand_constraints", "regulatory_requirements"],
+      "properties": {
+        "ethical_boundaries": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 },
+        "brand_constraints": { "$ref": "./_defs.json#/definitions/string_list" },
+        "regulatory_requirements": { "$ref": "./_defs.json#/definitions/string_list" }
+      }
+    }
+  }
+}

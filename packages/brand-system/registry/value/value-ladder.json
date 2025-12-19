@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Value Ladder rungs (canonical IDs) for the Universal Brand System",
+  "source_section": "SECTION_COVENANT_THEVALUELADDER",
+  "rungs": [
+    {
+      "id": "LADDER_BAIT",
+      "name": "Bait",
+      "purpose": "Lead generation with minimal commitment"
+    },
+    {
+      "id": "LADDER_FRONTEND",
+      "name": "Frontend",
+      "purpose": "First purchase, self-liquidating offer"
+    },
+    {
+      "id": "LADDER_MIDDLE",
+      "name": "Middle",
+      "purpose": "Core offer where profit lives"
+    },
+    {
+      "id": "LADDER_BACKEND",
+      "name": "Backend",
+      "purpose": "Premium offer for best customers"
+    },
+    {
+      "id": "LADDER_CONTINUITY",
+      "name": "Continuity",
+      "purpose": "Recurring value and predictable revenue"
+    }
+  ]
+}

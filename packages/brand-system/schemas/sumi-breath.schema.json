@@ -1,0 +1,274 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "version": "1.1.0",
+    "description": "Sumi Breath output schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "sumi_breath"
+    ],
+    "properties": {
+        "sumi_breath": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "five_substances",
+                "craft_rituals",
+                "tokens",
+                "verbal_rhythm_mapping",
+                "visual_slippery_slide",
+                "rule_of_one_visual",
+                "derivation_log"
+            ],
+            "properties": {
+                "five_substances": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "name",
+                            "visual_function",
+                            "psychological_function"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "visual_function": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "psychological_function": {
+                                "type": "string",
+                                "minLength": 1
+                            }
+                        }
+                    }
+                },
+                "craft_rituals": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "name",
+                            "principle",
+                            "token_requirement"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "principle": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "token_requirement": {
+                                "type": "string",
+                                "minLength": 1
+                            }
+                        }
+                    }
+                },
+                "tokens": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "spacing",
+                        "color",
+                        "typography",
+                        "motion"
+                    ],
+                    "properties": {
+                        "spacing": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                                "ma_breath",
+                                "ma_rest",
+                                "ma_void"
+                            ],
+                            "properties": {
+                                "ma_breath": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "ma_rest": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "ma_void": {
+                                    "type": "string",
+                                    "minLength": 1
+                                }
+                            }
+                        },
+                        "color": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                                "washi",
+                                "sumi",
+                                "stone",
+                                "persimmon"
+                            ],
+                            "properties": {
+                                "washi": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "sumi": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "stone": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "persimmon": {
+                                    "type": "string",
+                                    "minLength": 1
+                                }
+                            }
+                        },
+                        "typography": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                                "display",
+                                "body",
+                                "mono"
+                            ],
+                            "properties": {
+                                "display": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "body": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "mono": {
+                                    "type": "string",
+                                    "minLength": 1
+                                }
+                            }
+                        },
+                        "motion": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                                "bowDelay",
+                                "whisper",
+                                "breath",
+                                "room",
+                                "easing"
+                            ],
+                            "properties": {
+                                "bowDelay": {
+                                    "type": "number"
+                                },
+                                "whisper": {
+                                    "type": "number"
+                                },
+                                "breath": {
+                                    "type": "number"
+                                },
+                                "room": {
+                                    "type": "number"
+                                },
+                                "easing": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "enter",
+                                        "exit"
+                                    ],
+                                    "properties": {
+                                        "enter": {
+                                            "type": "string",
+                                            "minLength": 1
+                                        },
+                                        "exit": {
+                                            "type": "string",
+                                            "minLength": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "verbal_rhythm_mapping": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "token",
+                            "copy_pattern",
+                            "purpose"
+                        ],
+                        "properties": {
+                            "token": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "copy_pattern": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "purpose": {
+                                "type": "string",
+                                "minLength": 1
+                            }
+                        }
+                    }
+                },
+                "visual_slippery_slide": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "principle",
+                        "curiosity_mechanisms"
+                    ],
+                    "properties": {
+                        "principle": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "curiosity_mechanisms": {
+                            "$ref": "./_defs.json#/definitions/string_list",
+                            "minItems": 1
+                        }
+                    }
+                },
+                "rule_of_one_visual": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "statement"
+                    ],
+                    "properties": {
+                        "statement": {
+                            "type": "string",
+                            "minLength": 1
+                        }
+                    }
+                },
+                "derivation_log": {
+                    "$ref": "./_defs.json#/definitions/derivation_log"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Five Psychological Enhancers (canonical IDs) for the Universal Brand System",
+  "source_section": "SECTION_CHOREO_THEFIVEPSYCHOLOGICALENHANCERS",
+  "enhancers": [
+    {
+      "id": "ENH_SCARCITY",
+      "name": "Scarcity",
+      "definition": "Genuine limitation of availability to compress time delay.",
+      "serves": ["LF8_PAIN_FREEDOM", "LF8_COMFORT"],
+      "permitted_when": "Supply is actually limited or capacity is real.",
+      "forbidden_when": "Scarcity is manufactured or evergreen.",
+      "source_section": "SECTION_CHOREO_ENHANCER_1_SCARCITY"
+    },
+    {
+      "id": "ENH_URGENCY",
+      "name": "Urgency",
+      "definition": "Real deadlines that change outcome if missed.",
+      "serves": ["LF8_PAIN_FREEDOM"],
+      "permitted_when": "There is a genuine deadline or time-based consequence.",
+      "forbidden_when": "Countdowns or deadlines are fake.",
+      "source_section": "SECTION_CHOREO_ENHANCER_2_URGENCY"
+    },
+    {
+      "id": "ENH_BONUSES",
+      "name": "Bonuses",
+      "definition": "Additions that increase dream outcome without adding effort.",
+      "serves": ["LF8_NOURISHMENT", "LF8_COMFORT"],
+      "permitted_when": "Bonuses are real and remove friction or risk.",
+      "forbidden_when": "Bonuses are filler or inflate complexity.",
+      "source_section": "SECTION_CHOREO_ENHANCER_3_BONUSES"
+    },
+    {
+      "id": "ENH_GUARANTEES",
+      "name": "Guarantees",
+      "definition": "Risk reversal that increases perceived likelihood.",
+      "serves": ["LF8_PAIN_FREEDOM"],
+      "permitted_when": "Guarantee is honored and sustainable.",
+      "forbidden_when": "Guarantee is vague or unenforceable.",
+      "source_section": "SECTION_CHOREO_ENHANCER_4_GUARANTEES"
+    },
+    {
+      "id": "ENH_NAMING",
+      "name": "Naming",
+      "definition": "Strategic naming that clarifies and positions the offer.",
+      "serves": ["LF8_APPROVAL", "LF8_SUPERIORITY"],
+      "permitted_when": "Name is clear, ownable, and true.",
+      "forbidden_when": "Name is generic or deceptive.",
+      "source_section": "SECTION_CHOREO_ENHANCER_5_NAMING"
+    }
+  ]
+}

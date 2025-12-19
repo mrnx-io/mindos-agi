@@ -1,0 +1,258 @@
+{
+  "canon_of_expression": {
+    "lexicon": {
+      "key_terms": [
+        "alignment",
+        "relief",
+        "grounded",
+        "precision",
+        "quiet strength"
+      ],
+      "sacred_words": [
+        "relief",
+        "trusted",
+        "measured",
+        "earned",
+        "steady"
+      ],
+      "forbidden_words": [
+        "miracle",
+        "instant",
+        "cure",
+        "no-effort",
+        "magic"
+      ],
+      "callbacks": [
+        "the first calm step",
+        "support that feels honest",
+        "alignment over softness"
+      ]
+    },
+    "six_voice_modes": [
+      {
+        "mode": "Diagnostic",
+        "awareness_fit": "AWARE_PROBLEM",
+        "approach": "Name the pain with precision and empathy.",
+        "when_to_use": "Quizzes, first-touch pages, cold traffic."
+      },
+      {
+        "mode": "Mechanism",
+        "awareness_fit": "AWARE_SOLUTION",
+        "approach": "Explain the alignment mechanism without hype.",
+        "when_to_use": "Explainer sections, comparison blocks."
+      },
+      {
+        "mode": "Proof",
+        "awareness_fit": "AWARE_SOLUTION",
+        "approach": "Show evidence, outcomes, and validation.",
+        "when_to_use": "Testimonials, clinical references."
+      },
+      {
+        "mode": "Invitation",
+        "awareness_fit": "AWARE_PRODUCT",
+        "approach": "Offer a clear next step with calm urgency.",
+        "when_to_use": "Offer sections, checkout."
+      },
+      {
+        "mode": "Threshold",
+        "awareness_fit": "AWARE_MOST",
+        "approach": "Honor the crossing into action.",
+        "when_to_use": "Final CTAs, guarantee blocks."
+      },
+      {
+        "mode": "Aftercare",
+        "awareness_fit": "AWARE_MOST",
+        "approach": "Reinforce belief and guide first use.",
+        "when_to_use": "Thank-you pages, onboarding."
+      }
+    ],
+    "twelve_headlines": [
+      {
+        "formula": "Who else wants to walk pain-free by the end of the day?",
+        "lf8_alignment": "LF8_PAIN_FREEDOM",
+        "brand_example": "Who else wants to end the burning heel by sunset?"
+      },
+      {
+        "formula": "How to relieve [pain] without bulky orthotics",
+        "lf8_alignment": "LF8_COMFORT",
+        "brand_example": "How to relieve arch pain without rigid inserts"
+      },
+      {
+        "formula": "The mistake almost everyone makes with foot pain",
+        "lf8_alignment": "LF8_PAIN_FREEDOM",
+        "brand_example": "The mistake almost everyone makes with plantar fasciitis"
+      },
+      {
+        "formula": "Discover the alignment test that reveals your pain pattern",
+        "lf8_alignment": "LF8_PROTECTION",
+        "brand_example": "Discover the 60-second alignment test that shows why it hurts"
+      },
+      {
+        "formula": "Warning: softness without support can prolong pain",
+        "lf8_alignment": "LF8_PAIN_FREEDOM",
+        "brand_example": "Warning: soft insoles can keep your heel inflamed"
+      },
+      {
+        "formula": "At last, support that feels invisible but works all day",
+        "lf8_alignment": "LF8_COMFORT",
+        "brand_example": "At last, support that feels light but holds your arch"
+      },
+      {
+        "formula": "Give me 14 days and I will show you relief",
+        "lf8_alignment": "LF8_PAIN_FREEDOM",
+        "brand_example": "Give me 14 days and I will show you the calm step"
+      },
+      {
+        "formula": "What every standing worker should know about foot alignment",
+        "lf8_alignment": "LF8_PROTECTION",
+        "brand_example": "What every nurse should know about foot alignment"
+      },
+      {
+        "formula": "Here are 5 ways to reduce end-of-day foot pain",
+        "lf8_alignment": "LF8_PAIN_FREEDOM",
+        "brand_example": "5 ways to reduce end-of-day heel pain"
+      },
+      {
+        "formula": "The quiet insole that outperforms the loudest claims",
+        "lf8_alignment": "LF8_SUPERIORITY",
+        "brand_example": "The quiet insole that outperforms the flashy brands"
+      },
+      {
+        "formula": "If you can stand, you can fix this",
+        "lf8_alignment": "LF8_COMFORT",
+        "brand_example": "If you can stand, you can retrain your foot"
+      },
+      {
+        "formula": "The truth about arch support no one explains",
+        "lf8_alignment": "LF8_PROTECTION",
+        "brand_example": "The truth about arch support no one explains"
+      }
+    ],
+    "six_storylines": [
+      {
+        "name": "The Hidden Cause",
+        "structure": "Name the pain, reveal the overlooked mechanism, show proof."
+      },
+      {
+        "name": "The Quiet Fix",
+        "structure": "Contrast loud claims with calm evidence, then offer the fix."
+      },
+      {
+        "name": "The First Morning",
+        "structure": "Describe the first pain-free step, then explain how it is achieved."
+      },
+      {
+        "name": "The Return to Work",
+        "structure": "Show fatigue, remove fear, restore endurance."
+      },
+      {
+        "name": "The Skeptic Turned Believer",
+        "structure": "Founder doubt, test, proof, conversion."
+      },
+      {
+        "name": "The Clinic Standard",
+        "structure": "Borrow clinical rituals to increase trust."
+      }
+    ],
+    "soap_opera_sequence": {
+      "email_1": {
+        "subject": "The pain you feel has a pattern",
+        "purpose": "Name the pain and open a loop."
+      },
+      "email_2": {
+        "subject": "Why soft insoles fail",
+        "purpose": "Explain mechanism and build authority."
+      },
+      "email_3": {
+        "subject": "The 14-day relief protocol",
+        "purpose": "Describe the path and reduce effort."
+      },
+      "email_4": {
+        "subject": "Proof from real standing workers",
+        "purpose": "Add credibility and resolve objections."
+      },
+      "email_5": {
+        "subject": "The calm step starts here",
+        "purpose": "Close the loop with a clear offer."
+      }
+    },
+    "voice_rules": {
+      "syntax": {
+        "sentence_length": "Short openings, then longer clarity, then short again.",
+        "paragraphs": "1-3 sentences; one idea per paragraph."
+      },
+      "pace": {
+        "headlines": "Staccato",
+        "body": "Flowing",
+        "transitions": "Breath",
+        "ctas": "Direct"
+      },
+      "posture": {
+        "primary": "Concerned expert",
+        "tone": "Calm, precise, never hype."
+      },
+      "taboo_moves": [
+        "No exaggerated claims",
+        "No fake urgency",
+        "No medical absolutes"
+      ],
+      "damaging_admission": {
+        "statement": "We are not the cheapest, and we do not fit every foot. We are the most precise for daily standing pain.",
+        "purpose": "Build trust by limiting the promise to what is true."
+      }
+    },
+    "form_invariants": {
+      "space_doctrine": {
+        "grid": "Use ma_breath for micro spacing, ma_rest for sections, ma_void for pauses.",
+        "rule": "One dominant element per view."
+      },
+      "typographic_posture": {
+        "hierarchy": "Display for headlines, body for narrative, mono for specs.",
+        "weights": "Regular for body, semibold for headings."
+      },
+      "chroma_discipline": {
+        "palette": "Washi background, sumi text, persimmon accent.",
+        "rule": "One accent per view."
+      },
+      "motion_doctrine": {
+        "timing": "Bow, whisper, breath, room only.",
+        "rule": "Motion must signal thresholds, not decorate."
+      }
+    },
+    "slippery_slide_checklist": [
+      "Every headline earns the next line.",
+      "Each paragraph ends with a question or implication.",
+      "Proof appears before price.",
+      "CTAs appear only after relief is established.",
+      "No section exceeds one idea."
+    ],
+    "derivation_log": {
+      "axiom": "Attention is sacred. Every demand on consciousness must be earned.",
+      "laws": [
+        "Earned Entry",
+        "Pregnant Void",
+        "Living Materials",
+        "Sacred Friction",
+        "The Threshold"
+      ],
+      "source_sections": [
+        "SECTION_CANON_THESLIPPERYSLIDE",
+        "SECTION_CANON_THEVOICERULES",
+        "SECTION_CANON_FORMINVARIANTS",
+        "SECTION_COVENANT_THESTARVINGCROWD"
+      ],
+      "chain": [
+        {
+          "decision": "Set voice to calm, precise, and non-hyped.",
+          "derived_from": ["SECTION_CANON_THEVOICERULES"],
+          "rationale": "Trust is built through restraint and clarity."
+        },
+        {
+          "decision": "Tie pacing to Bow/Whisper/Breath/Room tokens.",
+          "derived_from": ["SECTION_CANON_PACE"],
+          "rationale": "Copy must honor the same thresholds as motion."
+        }
+      ]
+    }
+  }
+}

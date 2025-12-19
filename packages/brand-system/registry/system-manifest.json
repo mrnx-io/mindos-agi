@@ -1,0 +1,249 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "System manifest for the Universal Brand System",
+  "required_files": [
+    {
+      "path": "docs/00-gate.md",
+      "type": "markdown",
+      "role": "gate"
+    },
+    {
+      "path": "docs/00-orchestration.md",
+      "type": "markdown",
+      "role": "orchestration"
+    },
+    {
+      "path": "docs/01-manifesto.md",
+      "type": "markdown",
+      "role": "manifesto"
+    },
+    {
+      "path": "docs/02-covenant.md",
+      "type": "markdown",
+      "role": "covenant"
+    },
+    {
+      "path": "docs/03-sumi-breath.md",
+      "type": "markdown",
+      "role": "sumi_breath"
+    },
+    {
+      "path": "docs/04-tradeoff-ladder.md",
+      "type": "markdown",
+      "role": "tradeoff_ladder"
+    },
+    {
+      "path": "docs/05-canon.md",
+      "type": "markdown",
+      "role": "canon"
+    },
+    {
+      "path": "docs/06-choreography.md",
+      "type": "markdown",
+      "role": "choreography"
+    },
+    {
+      "path": "docs/07-storefront.md",
+      "type": "markdown",
+      "role": "storefront"
+    },
+    {
+      "path": "registry/sections.json",
+      "type": "json",
+      "role": "section_registry"
+    },
+    {
+      "path": "registry/copywriting-registry.json",
+      "type": "json",
+      "role": "registry_index"
+    },
+    {
+      "path": "registry/biological/lf8.json",
+      "type": "json",
+      "role": "biological_registry"
+    },
+    {
+      "path": "registry/biological/emotional-bonds.json",
+      "type": "json",
+      "role": "biological_registry"
+    },
+    {
+      "path": "registry/awareness/schwartz-awareness.json",
+      "type": "json",
+      "role": "awareness_registry"
+    },
+    {
+      "path": "registry/awareness/lead-archetypes.json",
+      "type": "json",
+      "role": "awareness_registry"
+    },
+    {
+      "path": "registry/awareness/brand-archetypes.json",
+      "type": "json",
+      "role": "awareness_registry"
+    },
+    {
+      "path": "registry/copywriting/sugarman-elements.json",
+      "type": "json",
+      "role": "copywriting_registry"
+    },
+    {
+      "path": "registry/copywriting/headline-formulas.json",
+      "type": "json",
+      "role": "copywriting_registry"
+    },
+    {
+      "path": "registry/copywriting/dr-rules.json",
+      "type": "json",
+      "role": "copywriting_registry"
+    },
+    {
+      "path": "registry/choreography/enhancers.json",
+      "type": "json",
+      "role": "choreography_registry"
+    },
+    {
+      "path": "registry/choreography/manana-antidotes.json",
+      "type": "json",
+      "role": "choreography_registry"
+    },
+    {
+      "path": "registry/value/value-equation.json",
+      "type": "json",
+      "role": "value_registry"
+    },
+    {
+      "path": "registry/value/value-ladder.json",
+      "type": "json",
+      "role": "value_registry"
+    },
+    {
+      "path": "registry/seed-sufficiency-map.json",
+      "type": "json",
+      "role": "seed_sufficiency"
+    },
+    {
+      "path": "schemas/_defs.json",
+      "type": "json-schema",
+      "role": "schema_defs"
+    },
+    {
+      "path": "schemas/brand-seed.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/manifesto.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/covenant.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/sumi-breath.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/tradeoff-ladder.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/canon.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/choreography.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/storefront.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "templates/brand-seed.template.md",
+      "type": "markdown",
+      "role": "brand_seed_template_human"
+    },
+    {
+      "path": "templates/brand-seed.template.json",
+      "type": "json",
+      "role": "brand_seed_template",
+      "schema": "schemas/brand-seed.schema.json",
+      "validate": false
+    },
+    {
+      "path": "brand-seed.json",
+      "type": "json",
+      "role": "brand_seed_input",
+      "schema": "schemas/brand-seed.schema.json",
+      "validate": true
+    }
+  ],
+  "optional_files": [],
+  "expected_outputs": [
+    {
+      "path": "outputs/manifesto.json",
+      "schema": "schemas/manifesto.schema.json",
+      "layer": 0,
+      "required": true
+    },
+    {
+      "path": "outputs/covenant.json",
+      "schema": "schemas/covenant.schema.json",
+      "layer": 1,
+      "required": true
+    },
+    {
+      "path": "outputs/sumi-breath.json",
+      "schema": "schemas/sumi-breath.schema.json",
+      "layer": 2,
+      "required": true
+    },
+    {
+      "path": "outputs/tradeoff-ladder.json",
+      "schema": "schemas/tradeoff-ladder.schema.json",
+      "layer": 3,
+      "required": true
+    },
+    {
+      "path": "outputs/canon.json",
+      "schema": "schemas/canon.schema.json",
+      "layer": 4,
+      "required": true
+    },
+    {
+      "path": "outputs/choreography.json",
+      "schema": "schemas/choreography.schema.json",
+      "layer": 5,
+      "required": true
+    },
+    {
+      "path": "outputs/storefront.json",
+      "schema": "schemas/storefront.schema.json",
+      "layer": 6,
+      "required": true
+    }
+  ],
+  "scripts": {
+    "generate_sections": "bin/generate-sections.py",
+    "validate_sections": "bin/validate-sections.py",
+    "validate_seed": "bin/validate-seed.py",
+    "validate_system": "bin/validate-system.py",
+    "seed_sufficiency": "bin/seed-sufficiency.py",
+    "sync_defs": "bin/sync-defs.py"
+  },
+  "usage": {
+    "canonical_input": "brand-seed.json",
+    "section_registry": "registry/sections.json",
+    "schema_defs": "schemas/_defs.json"
+  }
+}
