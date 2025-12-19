@@ -47,6 +47,7 @@ Thumbs.db
 tmp/
 temp/
 *.tmp
+*.bak
 
 # Secrets (never commit)
 *.pem
