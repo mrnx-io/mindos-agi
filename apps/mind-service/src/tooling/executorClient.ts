@@ -123,7 +123,7 @@ export async function executeCode(
       language: request.language,
       context: request.context ?? {},
       permissions: request.permissions ?? getDefaultPermissions(),
-      timeout_ms: request.timeout_ms ?? 30000,
+      timeout_ms: request.timeout_ms ?? env.EXECUTOR_TIMEOUT_MS,
       memory_limit_mb: request.memory_limit_mb ?? 128,
     },
     context

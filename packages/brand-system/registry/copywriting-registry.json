@@ -62,7 +62,7 @@
         },
         "dr_rules": {
           "file": "registry/copywriting/dr-rules.json",
-          "purpose": "10 Direct Response rules (every dollar must return ≥2×)",
+          "purpose": "10 Direct Response rules (every dollar must return \u22652\u00d7)",
           "structure": "Numbered rules with verification questions",
           "count": 10
         }
@@ -80,7 +80,7 @@
         },
         "manana_antidotes": {
           "file": "registry/choreography/manana-antidotes.json",
-          "purpose": "7 Mañana Antidotes with canonical IDs",
+          "purpose": "7 Ma\u00f1ana Antidotes with canonical IDs",
           "structure": "Named set with mechanisms and alignment rules",
           "count": 7
         }
@@ -104,6 +104,18 @@
         }
       },
       "relationship": "Value Equation informs the offer; Value Ladder sequences offers."
+    },
+    "stack": {
+      "description": "Canonical technology stack constraints for storefront execution",
+      "files": {
+        "headless_commerce": {
+          "file": "registry/stack/headless-commerce-stack.json",
+          "purpose": "Single source of truth for the approved headless commerce stack",
+          "structure": "Named stack with components and scope",
+          "count": 1
+        }
+      },
+      "relationship": "Stack constraints enforce execution fidelity in the Storefront layer."
     }
   },
   "cross_references": {
@@ -124,7 +136,7 @@
     },
     "sugarman_to_dr": {
       "description": "23 elements build copy that passes 10 DR rules",
-      "implementation": "registry/copywriting/sugarman-elements.json layer field → registry/copywriting/dr-rules.json verification",
+      "implementation": "registry/copywriting/sugarman-elements.json layer field \u2192 registry/copywriting/dr-rules.json verification",
       "usage": "Build with Sugarman, validate with DR Rules"
     },
     "enhancers_to_choreography": {
@@ -133,7 +145,7 @@
       "usage": "Select enhancer IDs, then document application and permission"
     },
     "manana_to_choreography": {
-      "description": "Seven Mañana Antidotes are referenced by canonical ID",
+      "description": "Seven Ma\u00f1ana Antidotes are referenced by canonical ID",
       "implementation": "registry/choreography/manana-antidotes.json IDs referenced in choreography/storefront outputs",
       "usage": "Select antidote IDs, then document application and law alignment"
     },
@@ -179,23 +191,46 @@
       "Load registry/copywriting-registry.json as index",
       "Load registry/sections.json for canonical section IDs",
       "Load registry/system-manifest.json for canonical file map, schemas, and scripts",
+      "Load registry/stack/headless-commerce-stack.json for canonical storefront stack",
       "Load specific JSON files based on task type",
       "Reference by semantic ID, never by position number"
     ],
     "task_mapping": {
-      "emotional_appeal": ["registry/biological/lf8.json", "registry/biological/emotional-bonds.json"],
-      "copy_audit": ["registry/copywriting/sugarman-elements.json", "registry/copywriting/dr-rules.json"],
-      "lead_selection": ["registry/awareness/schwartz-awareness.json", "registry/awareness/lead-archetypes.json"],
-      "headline_writing": ["registry/copywriting/headline-formulas.json", "registry/biological/lf8.json"],
-      "conversion_enhancement": ["registry/choreography/enhancers.json"],
-      "antidote_selection": ["registry/choreography/manana-antidotes.json"],
-      "value_architecture": ["registry/value/value-equation.json", "registry/value/value-ladder.json"],
-      "full_campaign": "Load all files via registry"
+      "emotional_appeal": [
+        "registry/biological/lf8.json",
+        "registry/biological/emotional-bonds.json"
+      ],
+      "copy_audit": [
+        "registry/copywriting/sugarman-elements.json",
+        "registry/copywriting/dr-rules.json"
+      ],
+      "lead_selection": [
+        "registry/awareness/schwartz-awareness.json",
+        "registry/awareness/lead-archetypes.json"
+      ],
+      "headline_writing": [
+        "registry/copywriting/headline-formulas.json",
+        "registry/biological/lf8.json"
+      ],
+      "conversion_enhancement": [
+        "registry/choreography/enhancers.json"
+      ],
+      "antidote_selection": [
+        "registry/choreography/manana-antidotes.json"
+      ],
+      "value_architecture": [
+        "registry/value/value-equation.json",
+        "registry/value/value-ladder.json"
+      ],
+      "full_campaign": "Load all files via registry",
+      "storefront_execution": [
+        "registry/stack/headless-commerce-stack.json"
+      ]
     }
   },
   "validation_rules": {
     "semantic_ids": "All documents must reference frameworks by semantic ID (e.g., LF8_SURVIVAL, SUGAR_FIRST_SENTENCE)",
-    "no_bare_numbers": "Never use bare numbers (#2, #6) to reference framework elements — numbers drift",
+    "no_bare_numbers": "Never use bare numbers (#2, #6) to reference framework elements \u2014 numbers drift",
     "source_of_truth": "JSON files are canonical. If markdown disagrees, JSON wins.",
     "system_manifest": "registry/system-manifest.json defines required files and schema bindings; validate against it before execution.",
     "brand_seed_canonical": "Canonical input is brand-seed.json; brand-seed.md is a human-readable mirror only.",
@@ -209,30 +244,77 @@
     "description": "Machine-checkable rules to prevent future violations",
     "lf8_references": {
       "valid_pattern": "LF8_[A-Z_]+",
-      "valid_ids": ["LF8_SURVIVAL", "LF8_PAIN_FREEDOM", "LF8_PROTECTION", "LF8_COMPANIONSHIP", "LF8_COMFORT", "LF8_NOURISHMENT", "LF8_SUPERIORITY", "LF8_APPROVAL"],
-      "forbidden_patterns": ["#[1-8]", "rank [1-8]", "LF8 [1-8]", "integer[1-8]"],
+      "valid_ids": [
+        "LF8_SURVIVAL",
+        "LF8_PAIN_FREEDOM",
+        "LF8_PROTECTION",
+        "LF8_COMPANIONSHIP",
+        "LF8_COMFORT",
+        "LF8_NOURISHMENT",
+        "LF8_SUPERIORITY",
+        "LF8_APPROVAL"
+      ],
+      "forbidden_patterns": [
+        "#[1-8]",
+        "rank [1-8]",
+        "LF8 [1-8]",
+        "integer[1-8]"
+      ],
       "enforcement_rule": "All LF8 references must use semantic IDs from registry/biological/lf8.json. Bare numbers will drift.",
       "validation_command": "rg '#[1-8]' docs -g '*.md' should return zero LF8 references"
     },
     "dr_rule_references": {
       "valid_pattern": "DR_[A-Z_]+",
-      "valid_ids": ["DR_ALWAYS_OFFER", "DR_REASON_NOW", "DR_CLEAR_INSTRUCTIONS", "DR_TRACK_MEASURE", "DR_NO_COST_BRAND", "DR_FOLLOW_UP", "DR_STRONG_COPY", "DR_MAIL_ORDER_FORMAT", "DR_RESULTS_RULE", "DR_DISCIPLINE"],
-      "forbidden_patterns": ["Rule #[0-9]", "DR Rule [0-9]"],
+      "valid_ids": [
+        "DR_ALWAYS_OFFER",
+        "DR_REASON_NOW",
+        "DR_CLEAR_INSTRUCTIONS",
+        "DR_TRACK_MEASURE",
+        "DR_NO_COST_BRAND",
+        "DR_FOLLOW_UP",
+        "DR_STRONG_COPY",
+        "DR_MAIL_ORDER_FORMAT",
+        "DR_RESULTS_RULE",
+        "DR_DISCIPLINE"
+      ],
+      "forbidden_patterns": [
+        "Rule #[0-9]",
+        "DR Rule [0-9]"
+      ],
       "enforcement_rule": "All DR Rule references must use semantic IDs from registry/copywriting/dr-rules.json"
     },
     "awareness_references": {
       "valid_pattern": "AWARE_[A-Z]+",
-      "valid_ids": ["AWARE_MOST", "AWARE_PRODUCT", "AWARE_SOLUTION", "AWARE_PROBLEM", "AWARE_UNAWARE"],
+      "valid_ids": [
+        "AWARE_MOST",
+        "AWARE_PRODUCT",
+        "AWARE_SOLUTION",
+        "AWARE_PROBLEM",
+        "AWARE_UNAWARE"
+      ],
       "enforcement_rule": "All awareness level references must use semantic IDs from registry/awareness/schwartz-awareness.json"
     },
     "lead_archetype_references": {
       "valid_pattern": "LEAD_[A-Z_]+",
-      "valid_ids": ["LEAD_OFFER", "LEAD_PROMISE", "LEAD_PROBLEM_SOLUTION", "LEAD_SECRET", "LEAD_PROCLAMATION", "LEAD_STORY"],
+      "valid_ids": [
+        "LEAD_OFFER",
+        "LEAD_PROMISE",
+        "LEAD_PROBLEM_SOLUTION",
+        "LEAD_SECRET",
+        "LEAD_PROCLAMATION",
+        "LEAD_STORY"
+      ],
       "enforcement_rule": "All lead archetype references must use semantic IDs from registry/awareness/lead-archetypes.json"
     },
     "enhancer_references": {
       "valid_pattern": "ENH_[A-Z_]+",
-      "valid_ids": ["ENH_SCARCITY", "ENH_URGENCY", "ENH_BONUSES", "ENH_GUARANTEES", "ENH_NAMING"],
+      "valid_ids": [
+        "ENH_SCARCITY",
+        "ENH_URGENCY",
+        "ENH_BONUSES",
+        "ENH_GUARANTEES",
+        "ENH_NAMING"
+      ],
       "enforcement_rule": "All enhancer references must use semantic IDs from registry/choreography/enhancers.json"
     },
     "manana_antidote_references": {
@@ -246,11 +328,17 @@
         "ANTI_SWEEPSTAKES",
         "ANTI_EXTREME_EASE"
       ],
-      "enforcement_rule": "All Mañana Antidote references must use semantic IDs from registry/choreography/manana-antidotes.json"
+      "enforcement_rule": "All Ma\u00f1ana Antidote references must use semantic IDs from registry/choreography/manana-antidotes.json"
     },
     "value_ladder_references": {
       "valid_pattern": "LADDER_[A-Z_]+",
-      "valid_ids": ["LADDER_BAIT", "LADDER_FRONTEND", "LADDER_MIDDLE", "LADDER_BACKEND", "LADDER_CONTINUITY"],
+      "valid_ids": [
+        "LADDER_BAIT",
+        "LADDER_FRONTEND",
+        "LADDER_MIDDLE",
+        "LADDER_BACKEND",
+        "LADDER_CONTINUITY"
+      ],
       "enforcement_rule": "All Value Ladder references must use semantic IDs from registry/value/value-ladder.json"
     },
     "headline_formula_references": {
@@ -305,11 +393,23 @@
       "format": "SECTION_* (canonical IDs from registry/sections.json)",
       "broken_reference_check": "rg 'SECTION_[A-Z0-9_]+' docs registry -g '*.md' -g '*.json' and verify IDs exist in registry/sections.json",
       "known_valid_sections": {
-        "docs/06-choreography.md": ["SECTION_CHOREO_CONSTRAINTS", "SECTION_CHOREO_FRICTIONVSCONVERSION", "SECTION_CHOREO_STYLE"],
-        "docs/04-tradeoff-ladder.md": ["SECTION_TRADEOFF_THEFRICTIONBUDGET"],
-        "docs/07-storefront.md": ["SECTION_STOREFRONT_VALIDATIONCHECKLIST"],
-        "docs/02-covenant.md": ["SECTION_COVENANT_THEOFFERARCHITECTURE"],
-        "docs/00-orchestration.md": ["SECTION_ORCH_THEPERSUASIONOPERATINGSYSTEM"]
+        "docs/06-choreography.md": [
+          "SECTION_CHOREO_CONSTRAINTS",
+          "SECTION_CHOREO_FRICTIONVSCONVERSION",
+          "SECTION_CHOREO_STYLE"
+        ],
+        "docs/04-tradeoff-ladder.md": [
+          "SECTION_TRADEOFF_THEFRICTIONBUDGET"
+        ],
+        "docs/07-storefront.md": [
+          "SECTION_STOREFRONT_VALIDATIONCHECKLIST"
+        ],
+        "docs/02-covenant.md": [
+          "SECTION_COVENANT_THEOFFERARCHITECTURE"
+        ],
+        "docs/00-orchestration.md": [
+          "SECTION_ORCH_THEPERSUASIONOPERATINGSYSTEM"
+        ]
       }
     },
     "schema_compliance": {
@@ -321,9 +421,9 @@
   },
   "files_not_included": {
     "note": "The following frameworks exist in markdown but not as separate JSON files (lower priority)",
-      "frameworks": [
-        "Rule of One (embedded in persuasion-architecture reference)"
-      ],
+    "frameworks": [
+      "Rule of One (embedded in persuasion-architecture reference)"
+    ],
     "rationale": "These frameworks are well-documented in markdown and don't require separate JSON for AGI executability"
   }
 }

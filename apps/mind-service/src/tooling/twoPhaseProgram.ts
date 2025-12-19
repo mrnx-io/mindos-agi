@@ -2,6 +2,7 @@
 // MindOS - Two-Phase Program Execution
 // =============================================================================
 
+import { env } from "../config.js"
 import { createLogger } from "../logger.js"
 import { evaluatePolicy } from "../policy.js"
 import type { Action, PolicyDecision, ToolProgramStep } from "../types.js"
@@ -320,7 +321,7 @@ async function executeCodeStep(
     language,
     context: resolvedParams.context as Record<string, unknown>,
     permissions,
-    timeout_ms: 30000,
+    timeout_ms: env.EXECUTOR_TIMEOUT_MS,
   })
 
   if (!result.success) {

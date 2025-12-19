@@ -1,0 +1,161 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Schema for canonical headless commerce stack registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "stacks"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "stacks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "principle",
+          "frontend",
+          "payments",
+          "email",
+          "fulfillment"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "principle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "frontend": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "framework",
+              "react",
+              "typescript",
+              "tailwind"
+            ],
+            "properties": {
+              "framework": {
+                "type": "string",
+                "minLength": 1
+              },
+              "react": {
+                "type": "string",
+                "minLength": 1
+              },
+              "typescript": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tailwind": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "payments": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "mode"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string",
+                "minLength": 1
+              },
+              "mode": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "email": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "fulfillment": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "scope"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scope": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "analytics": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "primary"
+            ],
+            "properties": {
+              "primary": {
+                "type": "string",
+                "minLength": 1
+              },
+              "optional": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "hosting": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "recommended"
+            ],
+            "properties": {
+              "recommended": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "$schema": {
+      "type": "string"
+    }
+  }
+}

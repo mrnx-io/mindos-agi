@@ -200,6 +200,9 @@ You must answer: _What does this brand look like when it actually exists in the 
 
 Without constraints, the artifact becomes a different project than the one the system designed. These laws ensure the proof actually proves what six layers built:
 
+**Execution substrate is fixed.**
+The storefront must be built on `STACK_HEADLESS_COMMERCE_V1` (Next.js App Router + Whop embedded checkout + Resend + Shopify Admin API for fulfillment only). This is non‑negotiable to preserve system integrity and performance guarantees.
+
 **Every decision traces upstream.**
 No arbitrary choices. If a color is used, it comes from Sumi Breath tokens. If a word is used, it comes from the Canon lexicon. If an interaction exists, it serves a Moment of Truth.
 
@@ -250,7 +253,7 @@ The Storefront must contain:
 #### Type Specification
 
 - **Artifact type** (website, app, physical space, etc.)
-- **Technical stack** (justified by constraints, not preference)
+- **Technical stack** (fixed variable: `STACK_HEADLESS_COMMERCE_V1` in `registry/stack/headless-commerce-stack.json` — Next.js 16.x App Router, React 19, TypeScript, Tailwind CSS 4.1.18, Whop embedded checkout, Resend, Shopify Admin API for fulfillment only)
 - **Performance requirements** (page load, interaction latency — tied to Sumi Breath motion tokens)
 
 <a id="SECTION_STOREFRONT_PAGE_SECTION_INVENTORY"></a>

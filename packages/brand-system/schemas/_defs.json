@@ -248,6 +248,12 @@
           "type": "string"
         }
       }
+    },
+    "stack_id": {
+      "type": "string",
+      "enum": [
+        "STACK_HEADLESS_COMMERCE_V1"
+      ]
     }
   }
 }

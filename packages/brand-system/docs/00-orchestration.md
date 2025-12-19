@@ -648,6 +648,9 @@ storefront:
 <a id="SECTION_ORCH_THEEXECUTIONPROTOCOL"></a>
 ## III. T H E E X E C U T I O N P R O T O C O L
 
+**Execution substrate is fixed.**
+All storefront execution must target `STACK_HEADLESS_COMMERCE_V1` in `registry/stack/headless-commerce-stack.json` (Next.js App Router, Whop embedded checkout, Resend, Shopify Admin API for fulfillment only). This preserves deterministic translation from strategy to implementation.
+
 <a id="SECTION_ORCH_THE_SYMPHONY"></a>
 ### The Symphony
 
@@ -1063,6 +1066,7 @@ The system succeeds when:
 | Schwartz 5           | Covenant/Canon | Awareness levels           |
 | Grand Slam Offer     | Covenant       | Value Equation             |
 | Value Ladder         | Covenant       | 5-rung ascension           |
+| Headless Commerce Stack | Storefront/Registry | STACK_HEADLESS_COMMERCE_V1 |
 | Attractive Character | Covenant       | 4 archetypes               |
 | Six Voice Modes      | Canon          | Awareness-mapped voice     |
 | 12 Headlines         | Canon          | LF8-aligned formulas       |

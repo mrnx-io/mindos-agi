@@ -119,6 +119,13 @@
       "role": "value_registry"
     },
     {
+      "path": "registry/stack/headless-commerce-stack.json",
+      "type": "json",
+      "role": "stack_registry",
+      "schema": "schemas/stack.schema.json",
+      "validate": true
+    },
+    {
       "path": "registry/seed-sufficiency-map.json",
       "type": "json",
       "role": "seed_sufficiency"
@@ -165,6 +172,11 @@
     },
     {
       "path": "schemas/storefront.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/stack.schema.json",
       "type": "json-schema",
       "role": "schema"
     },

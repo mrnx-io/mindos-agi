@@ -15,6 +15,70 @@ PLACEHOLDER_VALUES = {
 }
 
 
+DEFS_REGISTRY_MAP = {
+    "lf8_id": ("registry/biological/lf8.json", "lf8"),
+    "awareness_id": ("registry/awareness/schwartz-awareness.json", "levels"),
+    "lead_archetype_id": ("registry/awareness/lead-archetypes.json", "archetypes"),
+    "brand_archetype_id": ("registry/awareness/brand-archetypes.json", "archetypes"),
+    "dr_rule_id": ("registry/copywriting/dr-rules.json", "dr_rules"),
+    "sugarman_element_id": ("registry/copywriting/sugarman-elements.json", "elements"),
+    "headline_formula_id": ("registry/copywriting/headline-formulas.json", "formulas"),
+    "enhancer_id": ("registry/choreography/enhancers.json", "enhancers"),
+    "manana_antidote_id": ("registry/choreography/manana-antidotes.json", "antidotes"),
+    "value_equation_factor_id": ("registry/value/value-equation.json", "factors"),
+    "value_ladder_id": ("registry/value/value-ladder.json", "rungs"),
+    "stack_id": ("registry/stack/headless-commerce-stack.json", "stacks"),
+}
+
+
+
+def extract_registry_ids(registry_path, list_key, errors):
+    if not os.path.exists(registry_path):
+        errors.append(f"Missing registry for defs sync: {registry_path}")
+        return []
+    data = load_json(registry_path)
+    items = data.get(list_key, [])
+    ids = [item.get("id") for item in items if isinstance(item, dict) and item.get("id")]
+    if not ids:
+        errors.append(f"No IDs found in {registry_path} for key '{list_key}'")
+        return []
+    if len(ids) != len(set(ids)):
+        duplicates = sorted({item for item in ids if ids.count(item) > 1})
+        errors.append(f"Duplicate IDs in {registry_path}: {', '.join(duplicates)}")
+    return ids
+
+
+def validate_defs_sync(errors):
+    defs_path = resolve_path("schemas/_defs.json")
+    if not os.path.exists(defs_path):
+        errors.append("Missing schemas/_defs.json for defs sync")
+        return
+    defs = load_json(defs_path)
+    definitions = defs.get("definitions", {})
+    for def_name, (registry_rel, list_key) in DEFS_REGISTRY_MAP.items():
+        registry_path = resolve_path(registry_rel)
+        registry_ids = extract_registry_ids(registry_path, list_key, errors)
+        definition = definitions.get(def_name)
+        if not definition:
+            errors.append(f"schemas/_defs.json missing definition '{def_name}'")
+            continue
+        enum = definition.get("enum")
+        if not isinstance(enum, list):
+            errors.append(f"schemas/_defs.json definition '{def_name}' missing enum list")
+            continue
+        if enum != registry_ids:
+            missing_in_defs = sorted(set(registry_ids) - set(enum))
+            missing_in_registry = sorted(set(enum) - set(registry_ids))
+            details = []
+            if missing_in_defs:
+                details.append(f"missing_in_defs={missing_in_defs}")
+            if missing_in_registry:
+                details.append(f"missing_in_registry={missing_in_registry}")
+            if not details:
+                details.append("order_mismatch")
+            errors.append(
+                f"schemas/_defs.json '{def_name}' out of sync with {registry_rel} ({', '.join(details)})"
+            )
 def resolve_path(path):
     return os.path.join(ROOT_DIR, path)
 

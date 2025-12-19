@@ -35,6 +35,7 @@ const EnvSchema = z.object({
   EXECUTOR_URL: z.string().url().default("http://localhost:3002"),
   GROUNDING_SERVICE_URL: z.string().url().default("http://localhost:3003"),
   SWARM_COORDINATOR_URL: z.string().url().default("http://localhost:3005"),
+  EXECUTOR_TIMEOUT_MS: z.coerce.number().default(86400000),
 
   // Service Tokens (for inter-service authentication)
   TOOLMESH_TOKEN: z.string().optional(),

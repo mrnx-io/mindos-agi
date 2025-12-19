@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical headless commerce stack for the Universal Brand System",
+  "stacks": [
+    {
+      "id": "STACK_HEADLESS_COMMERCE_V1",
+      "name": "Headless Commerce Stack (Next.js 16.x)",
+      "principle": "Headless storefront + embedded checkout + API-only fulfillment.",
+      "frontend": {
+        "framework": "Next.js 16.x (App Router)",
+        "react": "React 19.x",
+        "typescript": "TypeScript",
+        "tailwind": "Tailwind CSS 4.1.18"
+      },
+      "payments": {
+        "provider": "Whop",
+        "mode": "Embedded checkout form"
+      },
+      "email": {
+        "provider": "Resend"
+      },
+      "fulfillment": {
+        "provider": "Shopify Admin API",
+        "scope": "Fulfillment only (no storefront)"
+      },
+      "analytics": {
+        "primary": "First-party event tracking",
+        "optional": ["GA4"]
+      },
+      "hosting": {
+        "recommended": "Vercel or equivalent edge-capable platform"
+      }
+    }
+  ]
+}

@@ -818,7 +818,7 @@ async function executeWithMindOS(
     {
       code,
       language: language as "typescript" | "javascript",
-      timeout_ms: options.timeout_ms ?? 30000,
+      timeout_ms: options.timeout_ms ?? env.EXECUTOR_TIMEOUT_MS,
     },
     options.context
   )

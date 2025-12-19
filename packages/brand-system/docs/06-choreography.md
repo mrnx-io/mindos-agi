@@ -195,6 +195,9 @@ Each moment must specify the emotion that must be produced. "The user completes 
 **Awareness is the arc.**
 Every moment must specify which Schwartz level the customer enters at, and which level they should exit at. The choreography is an awareness advancement engine.
 
+**Execution substrate is fixed.**
+All moments must be implementable inside `STACK_HEADLESS_COMMERCE_V1` (Next.js App Router, Whop embedded checkout, Resend, Shopify Admin API for fulfillment only). This prevents choreography from drifting into incompatible platforms.
+
 **LF8 is the foundation.**
 Each moment must specify which Life-Force driver it serves. Moments that serve no biological imperative will feel hollow.
 

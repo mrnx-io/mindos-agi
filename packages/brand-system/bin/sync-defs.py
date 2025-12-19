@@ -17,6 +17,7 @@ MAPPINGS = {
     "manana_antidote_id": ("registry/choreography/manana-antidotes.json", "antidotes"),
     "value_equation_factor_id": ("registry/value/value-equation.json", "factors"),
     "value_ladder_id": ("registry/value/value-ladder.json", "rungs"),
+    "stack_id": ("registry/stack/headless-commerce-stack.json", "stacks"),
 }
 
 

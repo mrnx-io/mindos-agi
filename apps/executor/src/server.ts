@@ -9,11 +9,12 @@
 const PORT = Number.parseInt(Deno.env.get("PORT") ?? "3002")
 const HOST = Deno.env.get("HOST") ?? "0.0.0.0"
 const MAX_EXECUTION_TIME_MS = Number.parseInt(
-  Deno.env.get("EXECUTOR_TIMEOUT_MS") ?? Deno.env.get("MAX_EXECUTION_TIME_MS") ?? "30000"
+  Deno.env.get("EXECUTOR_TIMEOUT_MS") ?? Deno.env.get("MAX_EXECUTION_TIME_MS") ?? "86400000"
 )
 const MAX_MEMORY_MB = Number.parseInt(
   Deno.env.get("EXECUTOR_MAX_MEMORY_MB") ?? Deno.env.get("MAX_MEMORY_MB") ?? "128"
 )
+const DEFAULT_ALLOW_ALL = parseBool(Deno.env.get("EXECUTOR_ALLOW_ALL"))
 
 // -----------------------------------------------------------------------------
 // Types
@@ -275,7 +276,21 @@ function buildPermissionFlags(permissions: ExecutionPermissions): string[] {
   return flags
 }
 
+function parseBool(value?: string): boolean {
+  if (!value) return false
+  return ["1", "true", "yes", "y", "on"].includes(value.toLowerCase())
+}
+
 function getDefaultPermissions(): ExecutionPermissions {
+  if (DEFAULT_ALLOW_ALL) {
+    return {
+      net: true,
+      read: true,
+      write: true,
+      env: true,
+      run: true,
+    }
+  }
   return {
     net: false,
     read: false,

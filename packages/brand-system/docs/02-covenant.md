@@ -176,6 +176,9 @@ A mediocre offer to a ravenous crowd outsells a perfect offer to the unintereste
 **The crowd comes first.**
 Every other decision flows from who you serve. Get the crowd wrong and the best offer fails. Get the crowd right and even a mediocre offer succeeds. Start with hunger.
 
+
+**Execution substrate is fixed.**
+All downstream execution must remain compatible with `STACK_HEADLESS_COMMERCE_V1` (Next.js App Router, Whop embedded checkout, Resend, Shopify Admin API for fulfillment only). This prevents strategy from drifting into incompatible implementation stacks.
 ---
 
 Vagueness feels safe. It seems like it maximizes reach. It actually guarantees failure to everyone:

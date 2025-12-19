@@ -74,7 +74,7 @@
   },
   "operational_constraints": {
     "team_size": 6,
-    "technical_capability": "Shopify, email automation, and lightweight custom frontend",
+    "technical_capability": "Headless Next.js storefront (React + TypeScript + Tailwind), Resend for email, Whop embedded checkout, Shopify Admin API for fulfillment only",
     "time_to_market": "8 weeks",
     "geographic_focus": "US and Canada"
   },
@@ -82,7 +82,7 @@
     "current_customers": "450 customers, 52000 USD lifetime revenue",
     "conversion_data": {
       "available": true,
-      "notes": "Last 90 days from Shopify and GA4",
+      "notes": "Last 90 days from headless storefront analytics, Whop checkout data, and fulfillment logs",
       "window": "2024-07-01 to 2024-09-30",
       "average_order_value": 104,
       "funnel": {
