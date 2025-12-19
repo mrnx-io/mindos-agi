@@ -53,6 +53,7 @@ COPY --from=builder /app/apps/toolmesh/dist ./dist
 COPY --from=builder /app/apps/toolmesh/package.json ./
 COPY --from=builder /app/apps/toolmesh/mcp.servers.json ./mcp.servers.json
 COPY --from=builder /app/apps/toolmesh/node_modules ./node_modules
+COPY --from=builder /app/node_modules/.bun ./node_modules/.bun
 COPY --from=builder /app/packages/shared-types/dist ./node_modules/@mindos/shared-types/dist
 COPY --from=builder /app/packages/shared-types/package.json ./node_modules/@mindos/shared-types/
 
