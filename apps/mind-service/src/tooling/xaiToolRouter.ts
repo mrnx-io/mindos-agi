@@ -403,11 +403,12 @@ export async function executeXSearch(
     )
 
     if (posts.length > 0 && options.identityId) {
+      const identityId = options.identityId
       // Create evidence records for each post
       const evidencePromises = posts.slice(0, 10).map(async (post, index) => {
         try {
           const evidence = await createEvidence({
-            identity_id: options.identityId,
+            identity_id: identityId,
             kind: "external_doc",
             ref: `x_search:${post.postId}`,
             payload: {
@@ -782,7 +783,7 @@ async function executeWithXai(
       executionTime,
       validation,
       "xai",
-      xaiResult.content
+      xaiResult.content ?? undefined
     )
   }
 

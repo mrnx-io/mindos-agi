@@ -26,8 +26,8 @@ export const identityService = restate.service({
       const identityId = await ctx.run("create-identity", () =>
         createIdentity({
           displayName: params.display_name,
-          coreSelf: params.core_self,
-          policyProfile: params.policy_profile,
+          ...(params.core_self ? { coreSelf: params.core_self } : {}),
+          ...(params.policy_profile ? { policyProfile: params.policy_profile } : {}),
         })
       )
 
