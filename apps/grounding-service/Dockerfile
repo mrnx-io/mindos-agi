@@ -11,7 +11,7 @@ FROM oven/bun:1.3.5-alpine AS builder
 WORKDIR /app
 
 # Copy package files for dependency caching
-COPY package.json bun.lockb* ./
+COPY package.json bun.lock* ./
 COPY apps/grounding-service/package.json ./apps/grounding-service/
 COPY packages/shared-types/package.json ./packages/shared-types/
 
