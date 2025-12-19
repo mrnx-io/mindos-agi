@@ -51,7 +51,7 @@ RUN addgroup -g 1001 mindos && \
 # Copy built artifacts
 COPY --from=builder /app/apps/swarm-coordinator/dist ./dist
 COPY --from=builder /app/apps/swarm-coordinator/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/apps/swarm-coordinator/node_modules ./node_modules
 COPY --from=builder /app/packages/shared-types/dist ./node_modules/@mindos/shared-types/dist
 COPY --from=builder /app/packages/shared-types/package.json ./node_modules/@mindos/shared-types/
 

@@ -25,12 +25,14 @@ const env = {
   HEARTBEAT_INTERVAL_MS: Number.parseInt(process.env.HEARTBEAT_INTERVAL_MS ?? "5000"),
 }
 
+const devTransport =
+  process.env.NODE_ENV !== "production"
+    ? { target: "pino-pretty", options: { colorize: true } }
+    : undefined
+
 const logger = pino({
   level: env.LOG_LEVEL,
-  transport:
-    process.env.NODE_ENV !== "production"
-      ? { target: "pino-pretty", options: { colorize: true } }
-      : undefined,
+  ...(devTransport ? { transport: devTransport } : {}),
 })
 
 // -----------------------------------------------------------------------------
@@ -104,6 +106,7 @@ interface TaskDelegation {
   constraints: Record<string, unknown>
   status: "pending" | "accepted" | "in_progress" | "completed" | "failed"
   created_at: string
+  completed_at?: string
 }
 
 interface EmergentBehavior {
@@ -529,7 +532,8 @@ async function updateDelegationStatus(
     if (agent) {
       if (status === "completed" || status === "failed") {
         agent.status = "active"
-        agent.current_task = undefined
+        delete agent.current_task
+        delegation.completed_at = new Date().toISOString()
       }
     }
   }
@@ -631,7 +635,9 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
   const behaviors: EmergentBehavior[] = []
 
   // Get completed delegations for this swarm
-  const delegations = swarmDelegations.get(swarm.swarm_id) ?? []
+  const delegations = Array.from(activeDelegations.values()).filter(
+    (delegation) => delegation.swarm_id === swarm.swarm_id
+  )
   const completedDelegations = delegations.filter(
     (d) => d.status === "completed" || d.status === "failed"
   )
@@ -646,15 +652,19 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
   for (let i = 1; i < completedDelegations.length; i++) {
     const prev = completedDelegations[i - 1]
     const curr = completedDelegations[i]
+    if (!prev || !curr) continue
 
     // Check if they're close in time (within 5 minutes)
     const timeDiff = Math.abs(
-      new Date(curr.delegated_at).getTime() -
-        new Date(prev.completed_at ?? prev.delegated_at).getTime()
+      new Date(curr.created_at).getTime() -
+        new Date(prev.completed_at ?? prev.created_at).getTime()
     )
 
-    if (timeDiff < 5 * 60 * 1000 && prev.assigned_agent !== curr.assigned_agent) {
-      const handoffKey = `${prev.assigned_agent}→${curr.assigned_agent}`
+    if (
+      timeDiff < 5 * 60 * 1000 &&
+      prev.assigned_agent_id !== curr.assigned_agent_id
+    ) {
+      const handoffKey = `${prev.assigned_agent_id}→${curr.assigned_agent_id}`
       const existing = handoffCounts.get(handoffKey) ?? { count: 0, success_rate: 0 }
       existing.count++
       existing.success_rate =
@@ -671,7 +681,7 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
       behaviors.push({
         behavior_id: crypto.randomUUID(),
         swarm_id: swarm.swarm_id,
-        type: "handoff_pattern",
+        type: "collaboration_pattern",
         description: `Effective handoff pattern detected: ${from} → ${to} (${Math.round(stats.success_rate * 100)}% success)`,
         evidence: [{ handoff, count: stats.count, success_rate: stats.success_rate }],
         significance: 0.7 + stats.count * 0.02,
@@ -685,7 +695,7 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
   for (const delegation of completedDelegations) {
     if (delegation.completed_at) {
       const duration =
-        new Date(delegation.completed_at).getTime() - new Date(delegation.delegated_at).getTime()
+        new Date(delegation.completed_at).getTime() - new Date(delegation.created_at).getTime()
       executionTimes.push(duration)
     }
   }
@@ -724,12 +734,12 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
   const capabilityCombinations = new Map<string, { count: number; success: number }>()
 
   for (const delegation of completedDelegations) {
-    const agent = swarm.agents.find((a) => a.agent_id === delegation.assigned_agent)
+    const agent = swarm.agents.find((a) => a.agent_id === delegation.assigned_agent_id)
     if (!agent) continue
 
     // Create a capability signature
     const capSig = [...agent.capabilities].sort().join(",")
-    const taskType = delegation.task_type ?? "general"
+    const taskType = "general"
     const key = `${taskType}:${capSig}`
 
     const existing = capabilityCombinations.get(key) ?? { count: 0, success: 0 }
@@ -741,7 +751,9 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
   // Find novel successful combinations (low count but high success)
   for (const [combo, stats] of capabilityCombinations) {
     if (stats.count >= 2 && stats.count <= 5 && stats.success / stats.count > 0.8) {
-      const [taskType, capabilities] = combo.split(":")
+      const [comboTaskType, capabilitiesRaw] = combo.split(":")
+      const taskType = comboTaskType ?? "general"
+      const capabilities = capabilitiesRaw ? capabilitiesRaw.split(",") : []
       behaviors.push({
         behavior_id: crypto.randomUUID(),
         swarm_id: swarm.swarm_id,
@@ -750,7 +762,7 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
         evidence: [
           {
             task_type: taskType,
-            capabilities: capabilities.split(","),
+            capabilities,
             success_rate: stats.success / stats.count,
             occurrences: stats.count,
           },
@@ -764,8 +776,8 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
   // 4. Detect load balancing emergence
   const agentTaskCounts = new Map<string, number>()
   for (const delegation of completedDelegations) {
-    const count = agentTaskCounts.get(delegation.assigned_agent) ?? 0
-    agentTaskCounts.set(delegation.assigned_agent, count + 1)
+    const count = agentTaskCounts.get(delegation.assigned_agent_id) ?? 0
+    agentTaskCounts.set(delegation.assigned_agent_id, count + 1)
   }
 
   if (agentTaskCounts.size >= 3) {
@@ -780,7 +792,7 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
       behaviors.push({
         behavior_id: crypto.randomUUID(),
         swarm_id: swarm.swarm_id,
-        type: "load_balance",
+        type: "collaboration_pattern",
         description: `Effective load balancing emerged (CV: ${(coefficientOfVariation * 100).toFixed(1)}%)`,
         evidence: [
           {
@@ -803,17 +815,18 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
     for (let j = i + 1; j < completedDelegations.length; j++) {
       const d1 = completedDelegations[i]
       const d2 = completedDelegations[j]
+      if (!d1 || !d2) continue
 
       // Check if they worked on overlapping timeframes
       const overlap = checkTimeOverlap(
-        d1.delegated_at,
-        d1.completed_at ?? d1.delegated_at,
-        d2.delegated_at,
-        d2.completed_at ?? d2.delegated_at
+        d1.created_at,
+        d1.completed_at ?? d1.created_at,
+        d2.created_at,
+        d2.completed_at ?? d2.created_at
       )
 
-      if (overlap && d1.assigned_agent !== d2.assigned_agent) {
-        const pairKey = [d1.assigned_agent, d2.assigned_agent].sort().join(":")
+      if (overlap && d1.assigned_agent_id !== d2.assigned_agent_id) {
+        const pairKey = [d1.assigned_agent_id, d2.assigned_agent_id].sort().join(":")
         const count = collaborationPairs.get(pairKey) ?? 0
         collaborationPairs.set(pairKey, count + 1)
       }
@@ -827,7 +840,7 @@ async function analyzeCollaborationPatterns(swarm: SwarmInstance): Promise<Emerg
       behaviors.push({
         behavior_id: crypto.randomUUID(),
         swarm_id: swarm.swarm_id,
-        type: "collaboration_cluster",
+        type: "collaboration_pattern",
         description: `Agents ${agent1} and ${agent2} frequently collaborate (${count} overlapping tasks)`,
         evidence: [{ agents: [agent1, agent2], overlap_count: count }],
         significance: Math.min(0.9, 0.5 + count * 0.1),
@@ -1222,7 +1235,7 @@ app.register(async (fastify) => {
     socket.on("close", () => {
       const agent = agentConnections.get(agentId)
       if (agent) {
-        agent.socket = undefined
+        delete agent.socket
         agent.status = "offline"
       }
     })

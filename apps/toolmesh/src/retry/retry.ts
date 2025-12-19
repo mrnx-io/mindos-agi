@@ -113,7 +113,15 @@ async function getRetryBudget(serverName: string): Promise<RetryBudget> {
        RETURNING *`,
       [serverName, DEFAULT_CONFIG.maxAttempts]
     )
-    budget = result.rows[0]
+    const created = result.rows[0]
+    if (!created) {
+      throw new Error(`Failed to initialize retry budget for ${serverName}`)
+    }
+    budget = created
+  }
+
+  if (!budget) {
+    throw new Error(`Retry budget missing for ${serverName}`)
   }
 
   // Check if budget should reset

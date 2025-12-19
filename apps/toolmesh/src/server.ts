@@ -128,12 +128,22 @@ app.get("/tools/:name/status", async (request, reply) => {
 
 app.post("/tools/search", async (request, _reply) => {
   const body = ToolSearchRequestSchema.parse(request.body)
-  const results = await searchToolsSemantic(body.query, {
+  const searchOptions: {
+    limit: number
+    minSimilarity: number
+    serverName?: string
+    tags?: string[]
+  } = {
     limit: body.limit,
     minSimilarity: body.min_similarity,
-    serverName: body.server_name,
-    tags: body.tags,
-  })
+  }
+  if (body.server_name) {
+    searchOptions.serverName = body.server_name
+  }
+  if (body.tags?.length) {
+    searchOptions.tags = body.tags
+  }
+  const results = await searchToolsSemantic(body.query, searchOptions)
 
   return {
     success: true,
@@ -143,12 +153,22 @@ app.post("/tools/search", async (request, _reply) => {
 
 app.post("/tools/search/semantic", async (request, _reply) => {
   const body = ToolSearchRequestSchema.parse(request.body)
-  const results = await searchToolsSemantic(body.query, {
+  const searchOptions: {
+    limit: number
+    minSimilarity: number
+    serverName?: string
+    tags?: string[]
+  } = {
     limit: body.limit,
     minSimilarity: body.min_similarity,
-    serverName: body.server_name,
-    tags: body.tags,
-  })
+  }
+  if (body.server_name) {
+    searchOptions.serverName = body.server_name
+  }
+  if (body.tags?.length) {
+    searchOptions.tags = body.tags
+  }
+  const results = await searchToolsSemantic(body.query, searchOptions)
 
   return {
     success: true,

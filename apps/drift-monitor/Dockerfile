@@ -51,7 +51,7 @@ RUN addgroup -g 1001 mindos && \
 # Copy built artifacts
 COPY --from=builder /app/apps/drift-monitor/dist ./dist
 COPY --from=builder /app/apps/drift-monitor/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/apps/drift-monitor/node_modules ./node_modules
 COPY --from=builder /app/packages/shared-types/dist ./node_modules/@mindos/shared-types/dist
 COPY --from=builder /app/packages/shared-types/package.json ./node_modules/@mindos/shared-types/
 

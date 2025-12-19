@@ -28,12 +28,14 @@ const env = {
   LOG_LEVEL: process.env.LOG_LEVEL ?? "info",
 }
 
+const devTransport =
+  process.env.NODE_ENV !== "production"
+    ? { target: "pino-pretty", options: { colorize: true } }
+    : undefined
+
 const logger = pino({
   level: env.LOG_LEVEL,
-  transport:
-    process.env.NODE_ENV !== "production"
-      ? { target: "pino-pretty", options: { colorize: true } }
-      : undefined,
+  ...(devTransport ? { transport: devTransport } : {}),
 })
 
 // -----------------------------------------------------------------------------
@@ -119,12 +121,19 @@ async function verifyWithWikipedia(claim: string): Promise<{
       content_urls?: { desktop?: { page?: string } }
     }
 
-    return {
+    const excerpt = data.extract?.slice(0, 500)
+    const url = data.content_urls?.desktop?.page
+    const result: { found: true; relevance: number; excerpt?: string; url?: string } = {
       found: true,
-      excerpt: data.extract?.slice(0, 500),
-      url: data.content_urls?.desktop?.page,
       relevance: 0.7, // Would calculate based on content match
     }
+    if (excerpt !== undefined) {
+      result.excerpt = excerpt
+    }
+    if (url) {
+      result.url = url
+    }
+    return result
   } catch {
     return { found: false, relevance: 0 }
   }
@@ -208,7 +217,8 @@ Analyze whether the claim is supported or contradicted by these sources.`,
   })
 
   try {
-    const result = JSON.parse(response.choices[0].message.content ?? "{}")
+    const content = response.choices[0]?.message?.content
+    const result = JSON.parse(content ?? "{}")
     return {
       status: result.status ?? "uncertain",
       confidence: result.confidence ?? 0.5,
@@ -230,13 +240,16 @@ async function verifyClaim(req: VerificationRequest): Promise<VerificationResult
   // Check Wikipedia
   const wikiResult = await verifyWithWikipedia(req.claim)
   if (wikiResult.found) {
-    sources.push({
+    const wikiSource: VerificationResult["sources"][number] = {
       name: "Wikipedia",
-      url: wikiResult.url,
       relevance: wikiResult.relevance,
       supports: true, // Will be refined by LLM
       excerpt: wikiResult.excerpt ?? "",
-    })
+    }
+    if (wikiResult.url) {
+      wikiSource.url = wikiResult.url
+    }
+    sources.push(wikiSource)
   }
 
   // Check Brave Search
@@ -329,7 +342,18 @@ app.post("/verify", async (request, _reply) => {
 
   logger.info({ claim: body.claim }, "Verification request received")
 
-  const result = await verifyClaim(body)
+  const requestData: VerificationRequest = {
+    claim: body.claim,
+    min_confidence: body.min_confidence,
+  }
+  if (body.context) {
+    requestData.context = body.context
+  }
+  if (body.sources) {
+    requestData.sources = body.sources
+  }
+
+  const result = await verifyClaim(requestData)
 
   logger.info(
     {

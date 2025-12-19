@@ -106,8 +106,8 @@ async function connectServer(config: McpServerConfig): Promise<void> {
 
       transport = new StdioClientTransport({
         command: config.command,
-        args: config.args,
-        env: config.env,
+        args: config.args ?? [],
+        env: config.env ?? {},
       })
       break
     }
@@ -132,7 +132,8 @@ async function connectServer(config: McpServerConfig): Promise<void> {
       throw new Error(`Unknown transport: ${config.transport}`)
   }
 
-  await client.connect(transport)
+  type ClientConnectTransport = Parameters<Client["connect"]>[0]
+  await client.connect(transport as ClientConnectTransport)
 
   // Discover tools
   const toolsResult = await client.listTools()
@@ -150,16 +151,20 @@ async function connectServer(config: McpServerConfig): Promise<void> {
     })
   }
 
-  // Store connection
-  connections.set(config.name, {
+  const connection: McpConnection = {
     config,
     client,
     transport,
-    process: childProcess,
     healthy: true,
     lastHealthCheck: Date.now(),
     tools,
-  })
+  }
+  if (childProcess) {
+    connection.process = childProcess
+  }
+
+  // Store connection
+  connections.set(config.name, connection)
 }
 
 // -----------------------------------------------------------------------------
@@ -196,14 +201,17 @@ export async function callTool(
     })
 
     // Check if result indicates error
-    const isError = result.isError ?? false
+    const isError = result.isError === true
 
-    return {
+    const response: ToolCallResult = {
       success: !isError,
       output: result.content,
       isError,
-      error: isError ? extractErrorMessage(result.content) : undefined,
     }
+    if (isError) {
+      response.error = extractErrorMessage(result.content)
+    }
+    return response
   } catch (err) {
     log.error({ tool: toolName, server: connection.config.name, error: err }, "Tool call failed")
     return {

@@ -30,12 +30,14 @@ const env = {
   ).split(","),
 }
 
+const devTransport =
+  process.env.NODE_ENV !== "production"
+    ? { target: "pino-pretty", options: { colorize: true } }
+    : undefined
+
 const logger = pino({
   level: env.LOG_LEVEL,
-  transport:
-    process.env.NODE_ENV !== "production"
-      ? { target: "pino-pretty", options: { colorize: true } }
-      : undefined,
+  ...(devTransport ? { transport: devTransport } : {}),
 })
 
 // -----------------------------------------------------------------------------
@@ -176,7 +178,7 @@ async function runProbe(probe: QualityProbe, modelId: string): Promise<ProbeResu
     })
 
     const latency = performance.now() - startTime
-    const content = response.choices[0].message.content ?? ""
+    const content = response.choices[0]?.message?.content ?? ""
     const tokens = response.usage?.completion_tokens ?? 0
 
     // Score based on expected patterns
@@ -333,7 +335,7 @@ async function createBaseline(
 ): Promise<void> {
   const fingerprint: ModelFingerprint = {
     model_id: modelId,
-    version: new Date().toISOString().split("T")[0],
+    version: new Date().toISOString().slice(0, 10),
     capabilities: {
       math: results.find((r) => r.probe_id.includes("capability"))?.score ?? 0,
       instruction_following: results.find((r) => r.probe_id.includes("instruction"))?.score ?? 0,

@@ -92,15 +92,22 @@ export function loadMcpServers(): McpServerConfig[] {
 }
 
 function expandEnvVars(servers: McpServerConfig[]): McpServerConfig[] {
-  return servers.map((server) => ({
-    ...server,
-    command: expandString(server.command),
-    args: server.args?.map(expandString),
-    url: expandString(server.url),
-    env: server.env
+  return servers.map((server) => {
+    const command = expandString(server.command)
+    const args = server.args?.map((arg) => expandString(arg) ?? "")
+    const url = expandString(server.url)
+    const envVars = server.env
       ? Object.fromEntries(Object.entries(server.env).map(([k, v]) => [k, expandString(v) ?? ""]))
-      : undefined,
-  }))
+      : undefined
+
+    return {
+      ...server,
+      ...(command ? { command } : {}),
+      ...(args ? { args } : {}),
+      ...(url ? { url } : {}),
+      ...(envVars ? { env: envVars } : {}),
+    }
+  })
 }
 
 function expandString(value?: string): string | undefined {

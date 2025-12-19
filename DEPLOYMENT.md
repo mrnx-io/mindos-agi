@@ -44,12 +44,12 @@ Deploy MindOS to production using Restate Cloud + Supabase + Fly.io.
 
 2. Create all apps:
    ```bash
-   cd apps/mind-service && flyctl apps create mindos-mind-service
-   cd ../toolmesh && flyctl apps create mindos-toolmesh
-   cd ../executor && flyctl apps create mindos-executor
-   cd ../grounding-service && flyctl apps create mindos-grounding-service
-   cd ../drift-monitor && flyctl apps create mindos-drift-monitor
-   cd ../swarm-coordinator && flyctl apps create mindos-swarm-coordinator
+   cd apps/mind-service && flyctl apps create mindos-agi-mind-service
+   cd ../toolmesh && flyctl apps create mindos-agi-toolmesh
+   cd ../executor && flyctl apps create mindos-agi-executor
+   cd ../grounding-service && flyctl apps create mindos-agi-grounding-service
+   cd ../drift-monitor && flyctl apps create mindos-agi-drift-monitor
+   cd ../swarm-coordinator && flyctl apps create mindos-agi-swarm-coordinator
    ```
 
 3. Set secrets for each app:
@@ -63,9 +63,8 @@ Deploy MindOS to production using Restate Cloud + Supabase + Fly.io.
      ANTHROPIC_API_KEY="sk-ant-..." \
      GOOGLE_AI_API_KEY="..." \
      XAI_API_KEY="xai-..." \
-     TOOLMESH_URL="http://mindos-toolmesh.internal:9000" \
-     EXECUTOR_URL="http://mindos-executor.internal:9100" \
-     JWT_SECRET="$(openssl rand -hex 32)"
+     TOOLMESH_URL="http://mindos-agi-toolmesh.internal:9000" \
+     EXECUTOR_URL="http://mindos-agi-executor.internal:9100"
 
    # Repeat for other services with relevant secrets
    ```
@@ -96,7 +95,7 @@ After deploying mind-service, register it with Restate:
 curl -X POST \
   -H "Authorization: Bearer $RESTATE_CLOUD_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"uri": "https://mindos-mind-service.fly.dev"}' \
+  -d '{"uri": "https://mindos-agi-mind-service.fly.dev"}' \
   https://[env].env.us.restate.cloud:9070/deployments
 ```
 
@@ -161,7 +160,7 @@ flyctl apps list
 
 **Service not starting:**
 ```bash
-flyctl logs -a mindos-[service-name]
+flyctl logs -a mindos-agi-[service-name]
 ```
 
 **Database connection issues:**

@@ -51,8 +51,11 @@ export interface RequestContext {
 }
 
 export function extractContext(request: FastifyRequest): RequestContext {
-  return {
-    identityId: request.headers["x-identity-id"] as string | undefined,
-    correlationId: (request.headers["x-correlation-id"] as string) ?? crypto.randomUUID(),
+  const identityId = request.headers["x-identity-id"] as string | undefined
+  const correlationId = (request.headers["x-correlation-id"] as string) ?? crypto.randomUUID()
+  const context: RequestContext = { correlationId }
+  if (identityId) {
+    context.identityId = identityId
   }
+  return context
 }

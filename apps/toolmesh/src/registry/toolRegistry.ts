@@ -82,8 +82,12 @@ export async function registerTool(tool: {
     ]
   )
 
-  log.info({ toolId: result.rows[0].tool_id, name: tool.name }, "Tool registered")
-  return result.rows[0].tool_id
+  const inserted = result.rows[0]
+  if (!inserted) {
+    throw new Error(`Failed to register tool: ${tool.name}`)
+  }
+  log.info({ toolId: inserted.tool_id, name: tool.name }, "Tool registered")
+  return inserted.tool_id
 }
 
 export async function getTool(name: string): Promise<Tool | null> {
@@ -231,16 +235,23 @@ export async function getToolStats(toolName: string): Promise<{
 // -----------------------------------------------------------------------------
 
 function rowToTool(row: ToolRow): Tool {
-  return {
+  const tool: Tool = {
     tool_id: row.tool_id,
     name: row.name,
     description: row.description,
     parameters: row.parameters as Record<string, unknown>,
     server_name: row.server_name,
-    risk_level: row.risk_level as Tool["risk_level"],
-    tags: row.tags ?? undefined,
-    estimated_duration_ms: row.estimated_duration_ms ?? undefined,
     created_at: row.created_at.toISOString(),
     updated_at: row.updated_at.toISOString(),
   }
+  if (row.risk_level) {
+    tool.risk_level = row.risk_level as NonNullable<Tool["risk_level"]>
+  }
+  if (row.tags) {
+    tool.tags = row.tags
+  }
+  if (row.estimated_duration_ms !== null) {
+    tool.estimated_duration_ms = row.estimated_duration_ms
+  }
+  return tool
 }

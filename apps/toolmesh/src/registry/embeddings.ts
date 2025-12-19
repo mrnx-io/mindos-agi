@@ -6,7 +6,7 @@ import OpenAI from "openai"
 import { env } from "../config.js"
 import { createLogger } from "../logger.js"
 
-const _log = createLogger("embeddings")
+const log = createLogger("embeddings")
 
 // -----------------------------------------------------------------------------
 // OpenAI Client
@@ -37,7 +37,12 @@ export async function generateEmbedding(text: string): Promise<number[]> {
     dimensions: env.EMBEDDING_DIMENSIONS,
   })
 
-  return response.data[0].embedding
+  const first = response.data[0]
+  if (!first) {
+    log.error({ model: env.EMBEDDING_MODEL }, "Embedding response was empty")
+    throw new Error("Embedding response was empty")
+  }
+  return first.embedding
 }
 
 export async function generateEmbeddings(texts: string[]): Promise<number[][]> {
@@ -119,9 +124,14 @@ export function cosineSimilarity(a: number[], b: number[]): number {
   let normB = 0
 
   for (let i = 0; i < a.length; i++) {
-    dotProduct += a[i] * b[i]
-    normA += a[i] * a[i]
-    normB += b[i] * b[i]
+    const aVal = a[i]
+    const bVal = b[i]
+    if (aVal === undefined || bVal === undefined) {
+      throw new Error("Vector index out of bounds during similarity calculation")
+    }
+    dotProduct += aVal * bVal
+    normA += aVal * aVal
+    normB += bVal * bVal
   }
 
   return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB))

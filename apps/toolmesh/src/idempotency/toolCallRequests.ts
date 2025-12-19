@@ -63,6 +63,9 @@ export async function acquireOrWait(
   )
 
   const row = result.rows[0]
+  if (!row) {
+    throw new Error(`Failed to upsert tool call request for ${idempotencyKey}`)
+  }
 
   // Check if this was an existing request
   if (row.status === "completed") {
@@ -214,16 +217,23 @@ export async function resetStuckRequests(olderThanMinutes = 5): Promise<number> 
 // -----------------------------------------------------------------------------
 
 function rowToRequest(row: RequestRow): ToolCallRequest {
-  return {
+  const request: ToolCallRequest = {
     requestId: row.request_id,
     idempotencyKey: row.idempotency_key,
     toolName: row.tool_name,
     parameters: row.parameters as Record<string, unknown>,
     identityId: row.identity_id,
     status: row.status as ToolCallRequest["status"],
-    result: row.result,
-    error: row.error ?? undefined,
     createdAt: row.created_at.toISOString(),
-    completedAt: row.completed_at?.toISOString(),
   }
+  if (row.result !== null) {
+    request.result = row.result
+  }
+  if (row.error !== null) {
+    request.error = row.error
+  }
+  if (row.completed_at) {
+    request.completedAt = row.completed_at.toISOString()
+  }
+  return request
 }
