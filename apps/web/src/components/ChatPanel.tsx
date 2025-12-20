@@ -132,7 +132,9 @@ export default function ChatPanel() {
       <form className="chat-form" onSubmit={handleSubmit}>
         <input
           value={input}
-          onChange={(event) => setInput(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setInput(event.target.value)
+          }
           placeholder="Describe your next mission…"
         />
         <button type="submit" disabled={isBusy || !identityId}>
