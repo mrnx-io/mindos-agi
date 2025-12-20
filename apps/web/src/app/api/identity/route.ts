@@ -3,7 +3,7 @@ import { invokeService } from "@/lib/restate"
 
 export const runtime = "nodejs"
 
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<Response> {
   try {
     const body = (await request.json().catch(() => ({}))) as {
       display_name?: string

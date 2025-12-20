@@ -69,7 +69,7 @@ async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<Response> {
   const body = (await request.json().catch(() => ({}))) as {
     message?: UIMessage
     identityId?: string
