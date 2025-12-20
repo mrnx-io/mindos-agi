@@ -8,6 +8,9 @@
     "sections:generate": "python3 bin/generate-sections.py",
     "seed:validate": "python3 bin/validate-seed.py",
     "seed:sufficiency": "python3 bin/seed-sufficiency.py",
-    "defs:sync": "python3 bin/sync-defs.py"
+    "defs:sync": "python3 bin/sync-defs.py",
+    "compile": "python3 bin/compile-system.py",
+    "validate:consistency": "python3 bin/validate-consistency.py",
+    "audit": "python3 bin/audit-system.py"
   }
 }

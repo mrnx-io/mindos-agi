@@ -212,6 +212,20 @@ def run_section_validation(errors):
             errors.append(output)
 
 
+
+
+def run_consistency_validation(errors):
+    result = subprocess.run(
+        [sys.executable, os.path.join(os.path.dirname(__file__), "validate-consistency.py")],
+        capture_output=True,
+        text=True,
+        cwd=ROOT_DIR,
+    )
+    if result.returncode != 0:
+        errors.append("Consistency validation failed")
+        output = (result.stdout + result.stderr).strip()
+        if output:
+            errors.append(output)
 def run_seed_sufficiency(errors):
     result = subprocess.run(
         [sys.executable, os.path.join(os.path.dirname(__file__), "seed-sufficiency.py")],

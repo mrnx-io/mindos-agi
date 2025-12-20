@@ -700,8 +700,7 @@
                     "$ref": "./_defs.json#/definitions/headline_formula_id"
                   },
                   "voice_mode": {
-                    "type": "string",
-                    "minLength": 1
+                    "$ref": "./_defs.json#/definitions/voice_mode_id"
                   },
                   "lf8": {
                     "$ref": "./_defs.json#/definitions/lf8_id"

@@ -5,7 +5,7 @@
   "usage_rules": {
     "reference_by": "Use SECTION_* IDs in all cross-references",
     "resolution": "Resolve SECTION_* IDs via this registry to file + anchor",
-    "stability": "IDs are derived from headings; changing headings requires regenerating this registry"
+    "stability": "IDs are anchored explicitly in docs; headings may change without renaming IDs"
   },
   "sections": [
     {

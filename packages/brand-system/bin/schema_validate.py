@@ -3,6 +3,14 @@ import json
 import os
 import re
 import sys
+from pathlib import Path
+
+try:
+    import jsonschema
+    from jsonschema import Draft7Validator, RefResolver
+except Exception:
+    jsonschema = None
+    Draft7Validator = None
 
 SCHEMA_CACHE = {}
 
@@ -139,6 +147,19 @@ def validate(instance, schema, base_dir, root_schema, path="$"):
 def validate_file(schema_path, data_path):
     schema = load_json(schema_path)
     data = load_json(data_path)
+
+    if Draft7Validator is not None:
+        base_uri = Path(schema_path).resolve().as_uri()
+        resolver = RefResolver(base_uri=base_uri, referrer=schema)
+        validator = Draft7Validator(schema, resolver=resolver)
+        errors = []
+        for error in sorted(validator.iter_errors(data), key=str):
+            path = "$"
+            if error.path:
+                path = "$" + "".join([f"[{repr(p)}]" if isinstance(p, int) else f".{p}" for p in error.path])
+            errors.append(f"{path}: {error.message}")
+        return errors
+
     base_dir = os.path.dirname(schema_path)
     errors = validate(data, schema, base_dir, schema)
     return errors
