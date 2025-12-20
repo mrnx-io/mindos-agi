@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical Sumi Breath room taxonomy",
+  "source_section": "SECTION_SUMI_THESEVENROOMS",
+  "rooms": [
+    {
+      "id": "ROOM_TOKONOMA",
+      "name": "Tokonoma",
+      "purpose": "The honored alcove for the primary element"
+    },
+    {
+      "id": "ROOM_SHOJI",
+      "name": "Shoji",
+      "purpose": "Diffused clarity and gentle disclosure"
+    },
+    {
+      "id": "ROOM_ENGAWA",
+      "name": "Engawa",
+      "purpose": "Threshold walk between states"
+    },
+    {
+      "id": "ROOM_SUMI_CUT",
+      "name": "Sumi Cut",
+      "purpose": "Decisive stroke that clarifies intent"
+    },
+    {
+      "id": "ROOM_WABI_SURFACE",
+      "name": "Wabi Surface",
+      "purpose": "Chosen imperfection as evidence of truth"
+    },
+    {
+      "id": "ROOM_KINTSUGI_STATES",
+      "name": "Kintsugi States",
+      "purpose": "Repair as visible value"
+    },
+    {
+      "id": "ROOM_SEASONAL_ACCENT",
+      "name": "Seasonal Accent",
+      "purpose": "Rare color as earned emphasis"
+    }
+  ]
+}

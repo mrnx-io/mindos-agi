@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical Form Invariants for the Universal Brand System",
+  "source_section": "SECTION_CANON_FORMINVARIANTS",
+  "invariants": [
+    {
+      "id": "FORM_SPACE_DOCTRINE",
+      "name": "Space Doctrine (Ma)",
+      "purpose": "Space signals safety and premium restraint"
+    },
+    {
+      "id": "FORM_TYPOGRAPHIC_POSTURE",
+      "name": "Typographic Posture",
+      "purpose": "Hierarchy and rhythm transmit authority"
+    },
+    {
+      "id": "FORM_CHROMA_DISCIPLINE",
+      "name": "Chroma Discipline",
+      "purpose": "Color is an earned signal, not decoration"
+    },
+    {
+      "id": "FORM_MOTION_DOCTRINE",
+      "name": "Motion Doctrine",
+      "purpose": "Motion marks thresholds, never distracts"
+    }
+  ]
+}

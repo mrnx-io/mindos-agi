@@ -4,7 +4,10 @@
   "description": "Tradeoff Ladder output schema",
   "type": "object",
   "additionalProperties": false,
-  "required": ["tradeoff_ladder"],
+  "required": [
+    "metadata",
+    "tradeoff_ladder"
+  ],
   "properties": {
     "tradeoff_ladder": {
       "type": "object",
@@ -21,11 +24,24 @@
         "lf8_conflict_resolution": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["primary_vs_secondary", "biological_override_rule", "example_conflicts"],
+          "required": [
+            "primary_vs_secondary",
+            "biological_override_rule",
+            "example_conflicts"
+          ],
           "properties": {
-            "primary_vs_secondary": { "type": "string", "minLength": 1 },
-            "biological_override_rule": { "type": "string", "minLength": 1 },
-            "example_conflicts": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 }
+            "primary_vs_secondary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "biological_override_rule": {
+              "type": "string",
+              "minLength": 1
+            },
+            "example_conflicts": {
+              "$ref": "./_defs.json#/definitions/string_list",
+              "minItems": 1
+            }
           }
         },
         "ranked_principles": {
@@ -45,13 +61,35 @@
               "unlosable_frame"
             ],
             "properties": {
-              "rank": { "type": "integer" },
-              "principle": { "type": "string", "minLength": 1 },
-              "source": { "type": "string", "enum": ["manifesto", "covenant", "sumi_breath"] },
-              "permits": { "$ref": "./_defs.json#/definitions/string_list" },
-              "forbids": { "$ref": "./_defs.json#/definitions/string_list" },
-              "failure_signature": { "type": "string", "minLength": 1 },
-              "unlosable_frame": { "type": "string", "minLength": 1 }
+              "rank": {
+                "type": "integer"
+              },
+              "principle": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "manifesto",
+                  "covenant",
+                  "sumi_breath"
+                ]
+              },
+              "permits": {
+                "$ref": "./_defs.json#/definitions/string_list"
+              },
+              "forbids": {
+                "$ref": "./_defs.json#/definitions/string_list"
+              },
+              "failure_signature": {
+                "type": "string",
+                "minLength": 1
+              },
+              "unlosable_frame": {
+                "type": "string",
+                "minLength": 1
+              }
             }
           }
         },
@@ -73,26 +111,65 @@
               "precedent_established"
             ],
             "properties": {
-              "name": { "type": "string", "minLength": 1 },
-              "conflict": { "type": "string", "minLength": 1 },
-              "principle_a": { "type": "object" },
-              "principle_b": { "type": "object" },
-              "resolution": { "type": "string", "minLength": 1 },
-              "cost_accepted": { "type": "string", "minLength": 1 },
-              "unlosable_frame": { "type": "string", "minLength": 1 },
-              "precedent_established": { "type": "string", "minLength": 1 }
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "conflict": {
+                "type": "string",
+                "minLength": 1
+              },
+              "principle_a": {
+                "type": "object"
+              },
+              "principle_b": {
+                "type": "object"
+              },
+              "resolution": {
+                "type": "string",
+                "minLength": 1
+              },
+              "cost_accepted": {
+                "type": "string",
+                "minLength": 1
+              },
+              "unlosable_frame": {
+                "type": "string",
+                "minLength": 1
+              },
+              "precedent_established": {
+                "type": "string",
+                "minLength": 1
+              }
             }
           }
         },
         "override_clause": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["condition", "when_applies", "authority", "return_criteria"],
+          "required": [
+            "condition",
+            "when_applies",
+            "authority",
+            "return_criteria"
+          ],
           "properties": {
-            "condition": { "type": "string", "minLength": 1 },
-            "when_applies": { "$ref": "./_defs.json#/definitions/string_list", "minItems": 1 },
-            "authority": { "type": "string", "minLength": 1 },
-            "return_criteria": { "type": "string", "minLength": 1 }
+            "condition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "when_applies": {
+              "$ref": "./_defs.json#/definitions/string_list",
+              "minItems": 1
+            },
+            "authority": {
+              "type": "string",
+              "minLength": 1
+            },
+            "return_criteria": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         },
         "unlosable_frames": {
@@ -101,15 +178,29 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["sacrifice", "gain"],
+            "required": [
+              "sacrifice",
+              "gain"
+            ],
             "properties": {
-              "sacrifice": { "type": "string", "minLength": 1 },
-              "gain": { "type": "string", "minLength": 1 }
+              "sacrifice": {
+                "type": "string",
+                "minLength": 1
+              },
+              "gain": {
+                "type": "string",
+                "minLength": 1
+              }
             }
           }
         },
-        "derivation_log": { "$ref": "./_defs.json#/definitions/derivation_log" }
+        "derivation_log": {
+          "$ref": "./_defs.json#/definitions/derivation_log"
+        }
       }
+    },
+    "metadata": {
+      "$ref": "./provenance.schema.json"
     }
   }
 }

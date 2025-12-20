@@ -28,6 +28,16 @@ DEFS_REGISTRY_MAP = {
     "value_equation_factor_id": ("registry/value/value-equation.json", "factors"),
     "value_ladder_id": ("registry/value/value-ladder.json", "rungs"),
     "stack_id": ("registry/stack/headless-commerce-stack.json", "stacks"),
+    "voice_mode_id": ("registry/voice/voice-modes.json", "modes"),
+    "storyline_id": ("registry/voice/storylines.json", "storylines"),
+    "form_invariant_id": ("registry/form/form-invariants.json", "invariants"),
+    "motion_token_id": ("registry/motion/motion-tokens.json", "tokens"),
+    "funnel_phase_id": ("registry/funnel/funnel-phases.json", "phases"),
+    "moment_type_id": ("registry/choreography/moment-types.json", "types"),
+    "room_id": ("registry/sumi/rooms.json", "rooms"),
+    "artifact_component_id": ("registry/storefront/artifacts.json", "components"),
+    "evidence_type_id": ("registry/proof/evidence-types.json", "evidence_types"),
+    "offer_primitive_id": ("registry/offer/offer-primitives.json", "primitives"),
 }
 
 

@@ -33,37 +33,43 @@
         "mode": "Diagnostic",
         "awareness_fit": "AWARE_PROBLEM",
         "approach": "Name the pain with precision and empathy.",
-        "when_to_use": "Quizzes, first-touch pages, cold traffic."
+        "when_to_use": "Quizzes, first-touch pages, cold traffic.",
+        "mode_id": "VOICE_DIAGNOSTIC"
       },
       {
         "mode": "Mechanism",
         "awareness_fit": "AWARE_SOLUTION",
         "approach": "Explain the alignment mechanism without hype.",
-        "when_to_use": "Explainer sections, comparison blocks."
+        "when_to_use": "Explainer sections, comparison blocks.",
+        "mode_id": "VOICE_MECHANISM"
       },
       {
         "mode": "Proof",
         "awareness_fit": "AWARE_SOLUTION",
         "approach": "Show evidence, outcomes, and validation.",
-        "when_to_use": "Testimonials, clinical references."
+        "when_to_use": "Testimonials, clinical references.",
+        "mode_id": "VOICE_PROOF"
       },
       {
         "mode": "Invitation",
         "awareness_fit": "AWARE_PRODUCT",
         "approach": "Offer a clear next step with calm urgency.",
-        "when_to_use": "Offer sections, checkout."
+        "when_to_use": "Offer sections, checkout.",
+        "mode_id": "VOICE_INVITATION"
       },
       {
         "mode": "Threshold",
         "awareness_fit": "AWARE_MOST",
         "approach": "Honor the crossing into action.",
-        "when_to_use": "Final CTAs, guarantee blocks."
+        "when_to_use": "Final CTAs, guarantee blocks.",
+        "mode_id": "VOICE_THRESHOLD"
       },
       {
         "mode": "Aftercare",
         "awareness_fit": "AWARE_MOST",
         "approach": "Reinforce belief and guide first use.",
-        "when_to_use": "Thank-you pages, onboarding."
+        "when_to_use": "Thank-you pages, onboarding.",
+        "mode_id": "VOICE_AFTERCARE"
       }
     ],
     "twelve_headlines": [
@@ -131,27 +137,33 @@
     "six_storylines": [
       {
         "name": "The Hidden Cause",
-        "structure": "Name the pain, reveal the overlooked mechanism, show proof."
+        "structure": "Name the pain, reveal the overlooked mechanism, show proof.",
+        "storyline_id": "STORY_HIDDEN_CAUSE"
       },
       {
         "name": "The Quiet Fix",
-        "structure": "Contrast loud claims with calm evidence, then offer the fix."
+        "structure": "Contrast loud claims with calm evidence, then offer the fix.",
+        "storyline_id": "STORY_QUIET_FIX"
       },
       {
         "name": "The First Morning",
-        "structure": "Describe the first pain-free step, then explain how it is achieved."
+        "structure": "Describe the first pain-free step, then explain how it is achieved.",
+        "storyline_id": "STORY_FIRST_MORNING"
       },
       {
         "name": "The Return to Work",
-        "structure": "Show fatigue, remove fear, restore endurance."
+        "structure": "Show fatigue, remove fear, restore endurance.",
+        "storyline_id": "STORY_RETURN_TO_WORK"
       },
       {
         "name": "The Skeptic Turned Believer",
-        "structure": "Founder doubt, test, proof, conversion."
+        "structure": "Founder doubt, test, proof, conversion.",
+        "storyline_id": "STORY_SKEPTIC_BELIEVER"
       },
       {
         "name": "The Clinic Standard",
-        "structure": "Borrow clinical rituals to increase trust."
+        "structure": "Borrow clinical rituals to increase trust.",
+        "storyline_id": "STORY_CLINIC_STANDARD"
       }
     ],
     "soap_opera_sequence": {
@@ -217,7 +229,13 @@
       "motion_doctrine": {
         "timing": "Bow, whisper, breath, room only.",
         "rule": "Motion must signal thresholds, not decorate."
-      }
+      },
+      "invariant_ids": [
+        "FORM_SPACE_DOCTRINE",
+        "FORM_TYPOGRAPHIC_POSTURE",
+        "FORM_CHROMA_DISCIPLINE",
+        "FORM_MOTION_DOCTRINE"
+      ]
     },
     "slippery_slide_checklist": [
       "Every headline earns the next line.",
@@ -244,12 +262,16 @@
       "chain": [
         {
           "decision": "Set voice to calm, precise, and non-hyped.",
-          "derived_from": ["SECTION_CANON_THEVOICERULES"],
+          "derived_from": [
+            "SECTION_CANON_THEVOICERULES"
+          ],
           "rationale": "Trust is built through restraint and clarity."
         },
         {
           "decision": "Tie pacing to Bow/Whisper/Breath/Room tokens.",
-          "derived_from": ["SECTION_CANON_PACE"],
+          "derived_from": [
+            "SECTION_CANON_PACE"
+          ],
           "rationale": "Copy must honor the same thresholds as motion."
         }
       ]

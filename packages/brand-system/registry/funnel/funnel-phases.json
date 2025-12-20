@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical funnel phases for the Universal Brand System",
+  "source_section": "SECTION_COVENANT_THEFUNNELARCHITECTURE",
+  "phases": [
+    {
+      "id": "FUNNEL_DIAGNOSE",
+      "name": "Diagnose",
+      "purpose": "Identify pain type and build relevance"
+    },
+    {
+      "id": "FUNNEL_EXPLAIN",
+      "name": "Explain",
+      "purpose": "Teach mechanism and establish authority"
+    },
+    {
+      "id": "FUNNEL_OFFER",
+      "name": "Offer",
+      "purpose": "Present the offer and guarantee"
+    },
+    {
+      "id": "FUNNEL_ASCEND",
+      "name": "Ascend",
+      "purpose": "Move to coaching, renewal, and retention"
+    }
+  ]
+}

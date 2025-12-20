@@ -5,6 +5,7 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "metadata",
     "experience_choreography"
   ],
   "properties": {
@@ -52,7 +53,7 @@
               "from",
               "to",
               "mechanism",
-              "moment_type"
+              "moment_type_id"
             ],
             "properties": {
               "from": {
@@ -65,9 +66,8 @@
                 "type": "string",
                 "minLength": 1
               },
-              "moment_type": {
-                "type": "string",
-                "minLength": 1
+              "moment_type_id": {
+                "$ref": "./_defs.json#/definitions/moment_type_id"
               }
             }
           }
@@ -213,6 +213,9 @@
           "$ref": "./_defs.json#/definitions/derivation_log"
         }
       }
+    },
+    "metadata": {
+      "$ref": "./provenance.schema.json"
     }
   }
 }

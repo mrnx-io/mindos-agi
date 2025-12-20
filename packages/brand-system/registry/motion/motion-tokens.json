@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical Motion Tokens for the Universal Brand System",
+  "source_section": "SECTION_SUMI_THETOKENCANON",
+  "tokens": [
+    {
+      "id": "MOTION_BOW",
+      "name": "Bow",
+      "timing_ms": 80,
+      "purpose": "Micro-acknowledgment before movement"
+    },
+    {
+      "id": "MOTION_WHISPER",
+      "name": "Whisper",
+      "timing_ms": 160,
+      "purpose": "Soft reveal that reduces cognitive load"
+    },
+    {
+      "id": "MOTION_BREATH",
+      "name": "Breath",
+      "timing_ms": 240,
+      "purpose": "Primary rhythm for content entry"
+    },
+    {
+      "id": "MOTION_ROOM",
+      "name": "Room",
+      "timing_ms": 360,
+      "purpose": "Long pause to honor threshold crossings"
+    }
+  ]
+}

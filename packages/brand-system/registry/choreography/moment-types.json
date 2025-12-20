@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical moment types for Experience Choreography",
+  "source_section": "SECTION_CHOREO_THEMOMENTSOFTRUTH_5_12",
+  "types": [
+    {
+      "id": "MOMENT_DISCOVERY",
+      "name": "Discovery Moment",
+      "purpose": "The customer recognizes their pain"
+    },
+    {
+      "id": "MOMENT_HOPE",
+      "name": "Hope Moment",
+      "purpose": "The customer sees a viable path"
+    },
+    {
+      "id": "MOMENT_BRIDGE",
+      "name": "Bridge Moment",
+      "purpose": "The customer connects mechanism to product"
+    },
+    {
+      "id": "MOMENT_CONVICTION",
+      "name": "Conviction Moment",
+      "purpose": "The customer believes and is ready to act"
+    }
+  ]
+}

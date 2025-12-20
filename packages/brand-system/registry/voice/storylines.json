@@ -5,34 +5,34 @@
   "source_section": "SECTION_CANON_THESIXSTORYLINES",
   "storylines": [
     {
-      "id": "STORY_LOSS_REDEMPTION",
-      "name": "Loss and Redemption",
-      "structure": "Introduce loss, reveal cause, deliver redemption"
+      "id": "STORY_HIDDEN_CAUSE",
+      "name": "The Hidden Cause",
+      "structure": "Name the pain, reveal the overlooked mechanism, show proof."
     },
     {
-      "id": "STORY_US_VS_THEM",
-      "name": "Us vs. Them",
-      "structure": "Define antagonist, build solidarity, present the solution"
+      "id": "STORY_QUIET_FIX",
+      "name": "The Quiet Fix",
+      "structure": "Contrast loud claims with calm evidence, then offer the fix."
     },
     {
-      "id": "STORY_BEFORE_AFTER",
-      "name": "Before and After",
-      "structure": "Contrast old pain with new reality through proof"
+      "id": "STORY_FIRST_MORNING",
+      "name": "The First Morning",
+      "structure": "Describe the first pain-free step, then explain how it is achieved."
     },
     {
-      "id": "STORY_AMAZING_DISCOVERY",
-      "name": "Amazing Discovery",
-      "structure": "Reveal a hidden mechanism, show why it changes everything"
+      "id": "STORY_RETURN_TO_WORK",
+      "name": "The Return to Work",
+      "structure": "Show fatigue, remove fear, restore endurance."
     },
     {
-      "id": "STORY_SECRET_TELLING",
-      "name": "Secret Telling",
-      "structure": "Tease an insight, withhold, then disclose at the right moment"
+      "id": "STORY_SKEPTIC_BELIEVER",
+      "name": "The Skeptic Turned Believer",
+      "structure": "Founder doubt, test, proof, conversion."
     },
     {
-      "id": "STORY_THIRD_PARTY_PROOF",
-      "name": "Third-Party Proof",
-      "structure": "Borrow outside authority to validate the claim"
+      "id": "STORY_CLINIC_STANDARD",
+      "name": "The Clinic Standard",
+      "structure": "Borrow clinical rituals to increase trust."
     }
   ]
 }

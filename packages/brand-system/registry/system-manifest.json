@@ -198,6 +198,143 @@
       "role": "brand_seed_input",
       "schema": "schemas/brand-seed.schema.json",
       "validate": true
+    },
+    {
+      "path": "registry/compiler-spec.json",
+      "type": "json",
+      "role": "compiler_spec",
+      "schema": "schemas/compiler-spec.schema.json",
+      "validate": true
+    },
+    {
+      "path": "registry/voice/voice-modes.json",
+      "type": "json",
+      "role": "voice_registry",
+      "schema": "schemas/voice-modes.schema.json",
+      "validate": true
+    },
+    {
+      "path": "registry/voice/storylines.json",
+      "type": "json",
+      "role": "voice_registry",
+      "schema": "schemas/storylines.schema.json",
+      "validate": true
+    },
+    {
+      "path": "registry/form/form-invariants.json",
+      "type": "json",
+      "role": "form_registry",
+      "schema": "schemas/form-invariants.schema.json",
+      "validate": true
+    },
+    {
+      "path": "registry/motion/motion-tokens.json",
+      "type": "json",
+      "role": "motion_registry",
+      "schema": "schemas/motion-tokens.schema.json",
+      "validate": true
+    },
+    {
+      "path": "registry/funnel/funnel-phases.json",
+      "type": "json",
+      "role": "funnel_registry",
+      "schema": "schemas/funnel-phases.schema.json",
+      "validate": true
+    },
+    {
+      "path": "registry/choreography/moment-types.json",
+      "type": "json",
+      "role": "choreography_registry",
+      "schema": "schemas/moment-types.schema.json",
+      "validate": true
+    },
+    {
+      "path": "registry/sumi/rooms.json",
+      "type": "json",
+      "role": "sumi_registry",
+      "schema": "schemas/rooms.schema.json",
+      "validate": true
+    },
+    {
+      "path": "registry/storefront/artifacts.json",
+      "type": "json",
+      "role": "storefront_registry",
+      "schema": "schemas/artifacts.schema.json",
+      "validate": true
+    },
+    {
+      "path": "registry/proof/evidence-types.json",
+      "type": "json",
+      "role": "proof_registry",
+      "schema": "schemas/evidence-types.schema.json",
+      "validate": true
+    },
+    {
+      "path": "registry/offer/offer-primitives.json",
+      "type": "json",
+      "role": "offer_registry",
+      "schema": "schemas/offer-primitives.schema.json",
+      "validate": true
+    },
+    {
+      "path": "schemas/compiler-spec.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/voice-modes.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/storylines.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/form-invariants.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/motion-tokens.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/funnel-phases.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/moment-types.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/rooms.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/artifacts.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/evidence-types.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/offer-primitives.schema.json",
+      "type": "json-schema",
+      "role": "schema"
+    },
+    {
+      "path": "schemas/provenance.schema.json",
+      "type": "json-schema",
+      "role": "schema"
     }
   ],
   "optional_files": [],
@@ -251,7 +388,10 @@
     "validate_seed": "bin/validate-seed.py",
     "validate_system": "bin/validate-system.py",
     "seed_sufficiency": "bin/seed-sufficiency.py",
-    "sync_defs": "bin/sync-defs.py"
+    "sync_defs": "bin/sync-defs.py",
+    "compile_system": "bin/compile-system.py",
+    "validate_consistency": "bin/validate-consistency.py",
+    "audit_system": "bin/audit-system.py"
   },
   "usage": {
     "canonical_input": "brand-seed.json",

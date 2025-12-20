@@ -5,6 +5,7 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "metadata",
     "storefront"
   ],
   "properties": {
@@ -81,15 +82,13 @@
                     "minLength": 1
                   },
                   "funnel_stage": {
-                    "type": "string",
-                    "minLength": 1
+                    "$ref": "./_defs.json#/definitions/funnel_phase_id"
                   },
                   "awareness_level": {
                     "$ref": "./_defs.json#/definitions/awareness_id"
                   },
                   "voice_mode": {
-                    "type": "string",
-                    "minLength": 1
+                    "$ref": "./_defs.json#/definitions/voice_mode_id"
                   },
                   "lf8_primary": {
                     "$ref": "./_defs.json#/definitions/lf8_id"
@@ -104,19 +103,14 @@
                 "type": "object",
                 "additionalProperties": false,
                 "required": [
-                  "component",
+                  "component_id",
                   "source_room",
                   "token_references",
                   "usage_contexts"
                 ],
                 "properties": {
-                  "component": {
-                    "type": "string",
-                    "minLength": 1
-                  },
                   "source_room": {
-                    "type": "string",
-                    "minLength": 1
+                    "$ref": "./_defs.json#/definitions/room_id"
                   },
                   "token_references": {
                     "$ref": "./_defs.json#/definitions/string_list",
@@ -125,6 +119,9 @@
                   "usage_contexts": {
                     "$ref": "./_defs.json#/definitions/string_list",
                     "minItems": 1
+                  },
+                  "component_id": {
+                    "$ref": "./_defs.json#/definitions/artifact_component_id"
                   }
                 }
               }
@@ -323,8 +320,7 @@
             ],
             "properties": {
               "stage": {
-                "type": "string",
-                "minLength": 1
+                "$ref": "./_defs.json#/definitions/funnel_phase_id"
               },
               "traffic_temperature": {
                 "type": "string",
@@ -349,8 +345,7 @@
                 "minLength": 1
               },
               "voice_mode": {
-                "type": "string",
-                "minLength": 1
+                "$ref": "./_defs.json#/definitions/voice_mode_id"
               },
               "lf8_primary": {
                 "$ref": "./_defs.json#/definitions/lf8_id"
@@ -1022,6 +1017,9 @@
           "$ref": "./_defs.json#/definitions/derivation_log"
         }
       }
+    },
+    "metadata": {
+      "$ref": "./provenance.schema.json"
     }
   }
 }

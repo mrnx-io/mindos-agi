@@ -4,7 +4,10 @@
   "description": "Canon of Expression output schema",
   "type": "object",
   "additionalProperties": false,
-  "required": ["canon_of_expression"],
+  "required": [
+    "metadata",
+    "canon_of_expression"
+  ],
   "properties": {
     "canon_of_expression": {
       "type": "object",
@@ -24,12 +27,25 @@
         "lexicon": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["key_terms", "sacred_words", "forbidden_words", "callbacks"],
+          "required": [
+            "key_terms",
+            "sacred_words",
+            "forbidden_words",
+            "callbacks"
+          ],
           "properties": {
-            "key_terms": { "$ref": "./_defs.json#/definitions/string_list" },
-            "sacred_words": { "$ref": "./_defs.json#/definitions/string_list" },
-            "forbidden_words": { "$ref": "./_defs.json#/definitions/string_list" },
-            "callbacks": { "$ref": "./_defs.json#/definitions/string_list" }
+            "key_terms": {
+              "$ref": "./_defs.json#/definitions/string_list"
+            },
+            "sacred_words": {
+              "$ref": "./_defs.json#/definitions/string_list"
+            },
+            "forbidden_words": {
+              "$ref": "./_defs.json#/definitions/string_list"
+            },
+            "callbacks": {
+              "$ref": "./_defs.json#/definitions/string_list"
+            }
           }
         },
         "six_voice_modes": {
@@ -39,12 +55,32 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["mode", "awareness_fit", "approach", "when_to_use"],
+            "required": [
+              "mode_id",
+              "mode",
+              "awareness_fit",
+              "approach",
+              "when_to_use"
+            ],
             "properties": {
-              "mode": { "type": "string", "minLength": 1 },
-              "awareness_fit": { "type": "string", "minLength": 1 },
-              "approach": { "type": "string", "minLength": 1 },
-              "when_to_use": { "type": "string", "minLength": 1 }
+              "mode": {
+                "type": "string",
+                "minLength": 1
+              },
+              "awareness_fit": {
+                "$ref": "./_defs.json#/definitions/awareness_id"
+              },
+              "approach": {
+                "type": "string",
+                "minLength": 1
+              },
+              "when_to_use": {
+                "type": "string",
+                "minLength": 1
+              },
+              "mode_id": {
+                "$ref": "./_defs.json#/definitions/voice_mode_id"
+              }
             }
           }
         },
@@ -55,11 +91,23 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["formula", "lf8_alignment", "brand_example"],
+            "required": [
+              "formula",
+              "lf8_alignment",
+              "brand_example"
+            ],
             "properties": {
-              "formula": { "type": "string", "minLength": 1 },
-              "lf8_alignment": { "$ref": "./_defs.json#/definitions/lf8_id" },
-              "brand_example": { "type": "string", "minLength": 1 }
+              "formula": {
+                "type": "string",
+                "minLength": 1
+              },
+              "lf8_alignment": {
+                "$ref": "./_defs.json#/definitions/lf8_id"
+              },
+              "brand_example": {
+                "type": "string",
+                "minLength": 1
+              }
             }
           }
         },
@@ -70,55 +118,128 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "structure"],
+            "required": [
+              "storyline_id",
+              "name",
+              "structure"
+            ],
             "properties": {
-              "name": { "type": "string", "minLength": 1 },
-              "structure": { "type": "string", "minLength": 1 }
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "structure": {
+                "type": "string",
+                "minLength": 1
+              },
+              "storyline_id": {
+                "$ref": "./_defs.json#/definitions/storyline_id"
+              }
             }
           }
         },
         "soap_opera_sequence": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["email_1", "email_2", "email_3", "email_4", "email_5"],
+          "required": [
+            "email_1",
+            "email_2",
+            "email_3",
+            "email_4",
+            "email_5"
+          ],
           "properties": {
-            "email_1": { "type": "object" },
-            "email_2": { "type": "object" },
-            "email_3": { "type": "object" },
-            "email_4": { "type": "object" },
-            "email_5": { "type": "object" }
+            "email_1": {
+              "type": "object"
+            },
+            "email_2": {
+              "type": "object"
+            },
+            "email_3": {
+              "type": "object"
+            },
+            "email_4": {
+              "type": "object"
+            },
+            "email_5": {
+              "type": "object"
+            }
           }
         },
         "voice_rules": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["syntax", "pace", "posture", "taboo_moves", "damaging_admission"],
+          "required": [
+            "syntax",
+            "pace",
+            "posture",
+            "taboo_moves",
+            "damaging_admission"
+          ],
           "properties": {
-            "syntax": { "type": "object" },
-            "pace": { "type": "object" },
-            "posture": { "type": "object" },
-            "taboo_moves": { "$ref": "./_defs.json#/definitions/string_list" },
-            "damaging_admission": { "type": "object" }
+            "syntax": {
+              "type": "object"
+            },
+            "pace": {
+              "type": "object"
+            },
+            "posture": {
+              "type": "object"
+            },
+            "taboo_moves": {
+              "$ref": "./_defs.json#/definitions/string_list"
+            },
+            "damaging_admission": {
+              "type": "object"
+            }
           }
         },
         "form_invariants": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["space_doctrine", "typographic_posture", "chroma_discipline", "motion_doctrine"],
+          "required": [
+            "invariant_ids",
+            "space_doctrine",
+            "typographic_posture",
+            "chroma_discipline",
+            "motion_doctrine"
+          ],
           "properties": {
-            "space_doctrine": { "type": "object" },
-            "typographic_posture": { "type": "object" },
-            "chroma_discipline": { "type": "object" },
-            "motion_doctrine": { "type": "object" }
+            "space_doctrine": {
+              "type": "object"
+            },
+            "typographic_posture": {
+              "type": "object"
+            },
+            "chroma_discipline": {
+              "type": "object"
+            },
+            "motion_doctrine": {
+              "type": "object"
+            },
+            "invariant_ids": {
+              "type": "array",
+              "minItems": 4,
+              "items": {
+                "$ref": "./_defs.json#/definitions/form_invariant_id"
+              }
+            }
           }
         },
         "slippery_slide_checklist": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
-        "derivation_log": { "$ref": "./_defs.json#/definitions/derivation_log" }
+        "derivation_log": {
+          "$ref": "./_defs.json#/definitions/derivation_log"
+        }
       }
+    },
+    "metadata": {
+      "$ref": "./provenance.schema.json"
     }
   }
 }

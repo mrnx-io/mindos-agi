@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Schema for voice modes registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["modes"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "source_section": { "type": "string" },
+    "modes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "awareness_fit", "purpose", "when_to_use"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "awareness_fit": { "$ref": "./_defs.json#/definitions/awareness_id" },
+          "purpose": { "type": "string", "minLength": 1 },
+          "when_to_use": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

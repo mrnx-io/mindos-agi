@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical storefront artifact components",
+  "source_section": "SECTION_STOREFRONT_ARTIFACTARCHITECTURE",
+  "components": [
+    {
+      "id": "ARTIFACT_HERO_PANEL",
+      "name": "Hero Panel",
+      "purpose": "Primary threshold into the funnel"
+    },
+    {
+      "id": "ARTIFACT_MECHANISM_DIAGRAM",
+      "name": "Mechanism Diagram",
+      "purpose": "Explain the mechanism with visual proof"
+    },
+    {
+      "id": "ARTIFACT_GUARANTEE_BLOCK",
+      "name": "Guarantee Block",
+      "purpose": "Risk reversal and trust"
+    }
+  ]
+}

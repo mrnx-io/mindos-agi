@@ -116,6 +116,114 @@
         }
       },
       "relationship": "Stack constraints enforce execution fidelity in the Storefront layer."
+    },
+    "voice": {
+      "description": "Voice modes and storylines for expression",
+      "files": {
+        "voice_modes": {
+          "file": "registry/voice/voice-modes.json",
+          "purpose": "Six canonical voice modes",
+          "structure": "Named set with awareness alignment",
+          "count": 6
+        },
+        "storylines": {
+          "file": "registry/voice/storylines.json",
+          "purpose": "Six canonical storylines",
+          "structure": "Named set with structure",
+          "count": 6
+        }
+      },
+      "relationship": "Voice modes dictate entry; storylines sustain the thread."
+    },
+    "form": {
+      "description": "Form invariants for visual and experiential consistency",
+      "files": {
+        "form_invariants": {
+          "file": "registry/form/form-invariants.json",
+          "purpose": "Non-negotiable form constraints",
+          "structure": "Named set of invariants",
+          "count": 4
+        },
+        "motion_tokens": {
+          "file": "registry/motion/motion-tokens.json",
+          "purpose": "Canonical motion timing tokens",
+          "structure": "Named set with timings",
+          "count": 4
+        },
+        "rooms": {
+          "file": "registry/sumi/rooms.json",
+          "purpose": "Seven-room interface taxonomy",
+          "structure": "Named set with purposes",
+          "count": 7
+        }
+      },
+      "relationship": "Form invariants govern how motion and rooms are applied."
+    },
+    "funnel": {
+      "description": "Funnel phases and moment types",
+      "files": {
+        "funnel_phases": {
+          "file": "registry/funnel/funnel-phases.json",
+          "purpose": "Canonical funnel phases",
+          "structure": "Ordered set",
+          "count": 4
+        },
+        "moment_types": {
+          "file": "registry/choreography/moment-types.json",
+          "purpose": "Canonical moment types",
+          "structure": "Named set",
+          "count": 4
+        }
+      },
+      "relationship": "Moments execute phases; phases govern sequencing."
+    },
+    "proof": {
+      "description": "Evidence types and offer primitives",
+      "files": {
+        "evidence_types": {
+          "file": "registry/proof/evidence-types.json",
+          "purpose": "Canonical proof types",
+          "structure": "Named set",
+          "count": 5
+        },
+        "offer_primitives": {
+          "file": "registry/offer/offer-primitives.json",
+          "purpose": "Offer building blocks",
+          "structure": "Named set",
+          "count": 6
+        }
+      },
+      "relationship": "Offer primitives use evidence types to earn belief."
+    },
+    "storefront": {
+      "description": "Storefront artifacts and execution stack",
+      "files": {
+        "artifacts": {
+          "file": "registry/storefront/artifacts.json",
+          "purpose": "Canonical storefront components",
+          "structure": "Named set",
+          "count": 3
+        },
+        "stack": {
+          "file": "registry/stack/headless-commerce-stack.json",
+          "purpose": "Canonical execution stack",
+          "structure": "Named stack",
+          "count": 1
+        }
+      },
+      "relationship": "Artifacts execute the stack constraints."
+    },
+    "compiler": {
+      "description": "Compiler specification",
+      "files": {
+        "compiler_spec": {
+          "file": "registry/compiler-spec.json",
+          "purpose": "Deterministic execution pipeline",
+          "structure": "Ordered stages",
+          "count": 1
+        }
+      },
+      "relationship": "Compiler spec governs generation and validation."
     }
   },
   "cross_references": {
@@ -193,7 +301,13 @@
       "Load registry/system-manifest.json for canonical file map, schemas, and scripts",
       "Load registry/stack/headless-commerce-stack.json for canonical storefront stack",
       "Load specific JSON files based on task type",
-      "Reference by semantic ID, never by position number"
+      "Reference by semantic ID, never by position number",
+      "Load registry/compiler-spec.json for deterministic pipeline",
+      "Load registry/voice/voice-modes.json and registry/voice/storylines.json for voice selection",
+      "Load registry/form/form-invariants.json and registry/motion/motion-tokens.json for form constraints",
+      "Load registry/funnel/funnel-phases.json and registry/choreography/moment-types.json for funnel sequencing",
+      "Load registry/proof/evidence-types.json and registry/offer/offer-primitives.json for proof and offer building",
+      "Load registry/storefront/artifacts.json for component inventory"
     ],
     "task_mapping": {
       "emotional_appeal": [
@@ -225,6 +339,33 @@
       "full_campaign": "Load all files via registry",
       "storefront_execution": [
         "registry/stack/headless-commerce-stack.json"
+      ],
+      "voice_mode_selection": [
+        "registry/voice/voice-modes.json"
+      ],
+      "storyline_selection": [
+        "registry/voice/storylines.json"
+      ],
+      "form_invariants": [
+        "registry/form/form-invariants.json"
+      ],
+      "motion_tokens": [
+        "registry/motion/motion-tokens.json"
+      ],
+      "funnel_design": [
+        "registry/funnel/funnel-phases.json"
+      ],
+      "moment_design": [
+        "registry/choreography/moment-types.json"
+      ],
+      "evidence_selection": [
+        "registry/proof/evidence-types.json"
+      ],
+      "offer_construction": [
+        "registry/offer/offer-primitives.json"
+      ],
+      "compiler_execution": [
+        "registry/compiler-spec.json"
       ]
     }
   },

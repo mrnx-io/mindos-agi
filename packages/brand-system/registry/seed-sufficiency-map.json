@@ -17,6 +17,57 @@
         "economic_constraints.unit_economics_inputs.target_ltv_cac_ratio",
         "economic_constraints.unit_economics_inputs.target_payback_period_months"
       ]
+    },
+    {
+      "output": "outputs/manifesto.json",
+      "required_seed_paths": [
+        "metadata.brand_name",
+        "founder_assets.backstory",
+        "market_evidence.pain_statement"
+      ],
+      "schema": "schemas/manifesto.schema.json",
+      "purpose": "Axiom and laws must tie to founder truth and customer pain"
+    },
+    {
+      "output": "outputs/sumi-breath.json",
+      "required_seed_paths": [
+        "metadata.brand_name",
+        "non_negotiables.brand_constraints",
+        "product_service.core_offering"
+      ],
+      "schema": "schemas/sumi-breath.schema.json",
+      "purpose": "Visual doctrine must reflect brand constraints"
+    },
+    {
+      "output": "outputs/canon.json",
+      "required_seed_paths": [
+        "founder_assets.strong_opinions",
+        "market_evidence.pain_statement",
+        "non_negotiables.brand_constraints"
+      ],
+      "schema": "schemas/canon.schema.json",
+      "purpose": "Voice and lexicon must be grounded in founder and market truth"
+    },
+    {
+      "output": "outputs/choreography.json",
+      "required_seed_paths": [
+        "market_evidence.pain_statement",
+        "existing_traction.testimonials",
+        "product_service.core_offering"
+      ],
+      "schema": "schemas/choreography.schema.json",
+      "purpose": "Moments of truth require evidence and offer context"
+    },
+    {
+      "output": "outputs/storefront.json",
+      "required_seed_paths": [
+        "operational_constraints.technical_capability",
+        "operational_constraints.time_to_market",
+        "economic_constraints.price_corridor",
+        "existing_traction.conversion_data"
+      ],
+      "schema": "schemas/storefront.schema.json",
+      "purpose": "Storefront requires execution constraints and pricing context"
     }
   ]
 }

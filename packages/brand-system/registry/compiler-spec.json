@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "id": "COMPILER_SPEC_V1",
+  "version": "1.0.0",
+  "description": "Deterministic compiler specification for the Universal Brand System",
+  "inputs": [
+    "brand-seed.json",
+    "registry/**/*.json",
+    "schemas/**/*.json",
+    "docs/**/*.md"
+  ],
+  "outputs": [
+    "outputs/manifesto.json",
+    "outputs/covenant.json",
+    "outputs/sumi-breath.json",
+    "outputs/tradeoff-ladder.json",
+    "outputs/canon.json",
+    "outputs/choreography.json",
+    "outputs/storefront.json"
+  ],
+  "pipeline": [
+    "sync_defs",
+    "generate_sections",
+    "validate_inputs",
+    "compile_outputs",
+    "validate_outputs",
+    "validate_consistency",
+    "audit_outputs"
+  ],
+  "compiler_version": "1.0.0"
+}

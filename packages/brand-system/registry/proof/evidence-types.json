@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical evidence types for proof stacks",
+  "source_section": "SECTION_COVENANT_THEOFFERARCHITECTURE",
+  "evidence_types": [
+    {
+      "id": "EVIDENCE_MECHANISM",
+      "name": "Mechanism",
+      "purpose": "Explain why it works"
+    },
+    {
+      "id": "EVIDENCE_RESULTS",
+      "name": "Results",
+      "purpose": "Show outcomes and transformation"
+    },
+    {
+      "id": "EVIDENCE_RISK_REVERSAL",
+      "name": "Risk Reversal",
+      "purpose": "Remove fear of loss"
+    },
+    {
+      "id": "EVIDENCE_TESTIMONIAL",
+      "name": "Testimonial",
+      "purpose": "Social proof from real users"
+    },
+    {
+      "id": "EVIDENCE_CLINICAL",
+      "name": "Clinical",
+      "purpose": "External validation by experts"
+    }
+  ]
+}

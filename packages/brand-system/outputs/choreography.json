@@ -9,25 +9,25 @@
         "from": "AWARE_UNAWARE",
         "to": "AWARE_PROBLEM",
         "mechanism": "Pain recognition story",
-        "moment_type": "Discovery Moment"
+        "moment_type_id": "MOMENT_DISCOVERY"
       },
       {
         "from": "AWARE_PROBLEM",
         "to": "AWARE_SOLUTION",
         "mechanism": "Alignment diagnosis and mechanism",
-        "moment_type": "Hope Moment"
+        "moment_type_id": "MOMENT_HOPE"
       },
       {
         "from": "AWARE_SOLUTION",
         "to": "AWARE_PRODUCT",
         "mechanism": "Proof of fit and outcomes",
-        "moment_type": "Bridge Moment"
+        "moment_type_id": "MOMENT_BRIDGE"
       },
       {
         "from": "AWARE_PRODUCT",
         "to": "AWARE_MOST",
         "mechanism": "Guarantee and protocol clarity",
-        "moment_type": "Conviction Moment"
+        "moment_type_id": "MOMENT_CONVICTION"
       }
     ],
     "moments_of_truth": [

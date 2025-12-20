@@ -254,6 +254,105 @@
       "enum": [
         "STACK_HEADLESS_COMMERCE_V1"
       ]
+    },
+    "voice_mode_id": {
+      "type": "string",
+      "enum": [
+        "VOICE_DIAGNOSTIC",
+        "VOICE_MECHANISM",
+        "VOICE_PROOF",
+        "VOICE_INVITATION",
+        "VOICE_THRESHOLD",
+        "VOICE_AFTERCARE"
+      ]
+    },
+    "storyline_id": {
+      "type": "string",
+      "enum": [
+        "STORY_HIDDEN_CAUSE",
+        "STORY_QUIET_FIX",
+        "STORY_FIRST_MORNING",
+        "STORY_RETURN_TO_WORK",
+        "STORY_SKEPTIC_BELIEVER",
+        "STORY_CLINIC_STANDARD"
+      ]
+    },
+    "form_invariant_id": {
+      "type": "string",
+      "enum": [
+        "FORM_SPACE_DOCTRINE",
+        "FORM_TYPOGRAPHIC_POSTURE",
+        "FORM_CHROMA_DISCIPLINE",
+        "FORM_MOTION_DOCTRINE"
+      ]
+    },
+    "motion_token_id": {
+      "type": "string",
+      "enum": [
+        "MOTION_BOW",
+        "MOTION_WHISPER",
+        "MOTION_BREATH",
+        "MOTION_ROOM"
+      ]
+    },
+    "funnel_phase_id": {
+      "type": "string",
+      "enum": [
+        "FUNNEL_DIAGNOSE",
+        "FUNNEL_EXPLAIN",
+        "FUNNEL_OFFER",
+        "FUNNEL_ASCEND"
+      ]
+    },
+    "moment_type_id": {
+      "type": "string",
+      "enum": [
+        "MOMENT_DISCOVERY",
+        "MOMENT_HOPE",
+        "MOMENT_BRIDGE",
+        "MOMENT_CONVICTION"
+      ]
+    },
+    "room_id": {
+      "type": "string",
+      "enum": [
+        "ROOM_TOKONOMA",
+        "ROOM_SHOJI",
+        "ROOM_ENGAWA",
+        "ROOM_SUMI_CUT",
+        "ROOM_WABI_SURFACE",
+        "ROOM_KINTSUGI_STATES",
+        "ROOM_SEASONAL_ACCENT"
+      ]
+    },
+    "artifact_component_id": {
+      "type": "string",
+      "enum": [
+        "ARTIFACT_HERO_PANEL",
+        "ARTIFACT_MECHANISM_DIAGRAM",
+        "ARTIFACT_GUARANTEE_BLOCK"
+      ]
+    },
+    "evidence_type_id": {
+      "type": "string",
+      "enum": [
+        "EVIDENCE_MECHANISM",
+        "EVIDENCE_RESULTS",
+        "EVIDENCE_RISK_REVERSAL",
+        "EVIDENCE_TESTIMONIAL",
+        "EVIDENCE_CLINICAL"
+      ]
+    },
+    "offer_primitive_id": {
+      "type": "string",
+      "enum": [
+        "OFFER_CORE_PROMISE",
+        "OFFER_VEHICLE",
+        "OFFER_PROOF_STACK",
+        "OFFER_BONUS",
+        "OFFER_GUARANTEE",
+        "OFFER_PRICE_ANCHOR"
+      ]
     }
   }
 }

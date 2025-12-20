@@ -10,44 +10,43 @@
       "page_section_inventory": [
         {
           "name": "Pain Quiz Landing",
-          "funnel_stage": "Diagnose",
+          "funnel_stage": "FUNNEL_DIAGNOSE",
           "awareness_level": "AWARE_PROBLEM",
-          "voice_mode": "Diagnostic",
+          "voice_mode": "VOICE_DIAGNOSTIC",
           "lf8_primary": "LF8_PAIN_FREEDOM"
         },
         {
           "name": "Mechanism Explainer",
-          "funnel_stage": "Explain",
+          "funnel_stage": "FUNNEL_EXPLAIN",
           "awareness_level": "AWARE_SOLUTION",
-          "voice_mode": "Mechanism",
+          "voice_mode": "VOICE_MECHANISM",
           "lf8_primary": "LF8_PROTECTION"
         },
         {
           "name": "Offer Page",
-          "funnel_stage": "Offer",
+          "funnel_stage": "FUNNEL_OFFER",
           "awareness_level": "AWARE_PRODUCT",
-          "voice_mode": "Invitation",
+          "voice_mode": "VOICE_INVITATION",
           "lf8_primary": "LF8_PAIN_FREEDOM"
         },
         {
           "name": "Checkout",
-          "funnel_stage": "Offer",
+          "funnel_stage": "FUNNEL_OFFER",
           "awareness_level": "AWARE_MOST",
-          "voice_mode": "Threshold",
+          "voice_mode": "VOICE_THRESHOLD",
           "lf8_primary": "LF8_COMFORT"
         },
         {
           "name": "Onboarding",
-          "funnel_stage": "Ascend",
+          "funnel_stage": "FUNNEL_ASCEND",
           "awareness_level": "AWARE_MOST",
-          "voice_mode": "Aftercare",
+          "voice_mode": "VOICE_AFTERCARE",
           "lf8_primary": "LF8_PROTECTION"
         }
       ],
       "component_architecture": [
         {
-          "component": "Hero Panel",
-          "source_room": "Room 1: Threshold",
+          "source_room": "ROOM_ENGAWA",
           "token_references": [
             "ma_rest",
             "sumi",
@@ -56,22 +55,22 @@
           "usage_contexts": [
             "Landing",
             "Offer"
-          ]
+          ],
+          "component_id": "ARTIFACT_HERO_PANEL"
         },
         {
-          "component": "Mechanism Diagram",
-          "source_room": "Room 3: Proof",
+          "source_room": "ROOM_SHOJI",
           "token_references": [
             "grain",
             "ma_breath"
           ],
           "usage_contexts": [
             "Explainer"
-          ]
+          ],
+          "component_id": "ARTIFACT_MECHANISM_DIAGRAM"
         },
         {
-          "component": "Guarantee Block",
-          "source_room": "Room 6: Assurance",
+          "source_room": "ROOM_KINTSUGI_STATES",
           "token_references": [
             "ma_void",
             "persimmon"
@@ -79,7 +78,8 @@
           "usage_contexts": [
             "Offer",
             "Checkout"
-          ]
+          ],
+          "component_id": "ARTIFACT_GUARANTEE_BLOCK"
         }
       ]
     },
@@ -121,13 +121,13 @@
     },
     "funnel_implementation": [
       {
-        "stage": "Diagnose",
+        "stage": "FUNNEL_DIAGNOSE",
         "traffic_temperature": "Cold",
         "awareness_entry": "AWARE_UNAWARE",
         "awareness_exit": "AWARE_PROBLEM",
         "entry_point": "Meta ad to pain quiz",
         "content_experience": "Pain mirror headline + short quiz",
-        "voice_mode": "Diagnostic",
+        "voice_mode": "VOICE_DIAGNOSTIC",
         "lf8_primary": "LF8_PAIN_FREEDOM",
         "lf8_secondary": "LF8_COMFORT",
         "conversion_mechanism": "Quiz completion",
@@ -154,13 +154,13 @@
         ]
       },
       {
-        "stage": "Explain",
+        "stage": "FUNNEL_EXPLAIN",
         "traffic_temperature": "Warm",
         "awareness_entry": "AWARE_PROBLEM",
         "awareness_exit": "AWARE_SOLUTION",
         "entry_point": "Quiz result page",
         "content_experience": "Mechanism diagram + proof",
-        "voice_mode": "Mechanism",
+        "voice_mode": "VOICE_MECHANISM",
         "lf8_primary": "LF8_PROTECTION",
         "lf8_secondary": "LF8_PAIN_FREEDOM",
         "conversion_mechanism": "Scroll to offer",
@@ -187,13 +187,13 @@
         ]
       },
       {
-        "stage": "Offer",
+        "stage": "FUNNEL_OFFER",
         "traffic_temperature": "Warm",
         "awareness_entry": "AWARE_SOLUTION",
         "awareness_exit": "AWARE_PRODUCT",
         "entry_point": "Offer page",
         "content_experience": "Offer block + guarantee",
-        "voice_mode": "Invitation",
+        "voice_mode": "VOICE_INVITATION",
         "lf8_primary": "LF8_PAIN_FREEDOM",
         "lf8_secondary": "LF8_COMFORT",
         "conversion_mechanism": "Add to cart",
@@ -229,13 +229,13 @@
         ]
       },
       {
-        "stage": "Ascend",
+        "stage": "FUNNEL_ASCEND",
         "traffic_temperature": "Hot",
         "awareness_entry": "AWARE_PRODUCT",
         "awareness_exit": "AWARE_MOST",
         "entry_point": "Checkout and thank-you",
         "content_experience": "Confirmation + onboarding",
-        "voice_mode": "Aftercare",
+        "voice_mode": "VOICE_AFTERCARE",
         "lf8_primary": "LF8_PROTECTION",
         "lf8_secondary": "LF8_COMFORT",
         "conversion_mechanism": "Subscription opt-in",

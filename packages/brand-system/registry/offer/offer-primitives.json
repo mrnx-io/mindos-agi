@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical offer primitives for the Universal Brand System",
+  "source_section": "SECTION_COVENANT_THEOFFERARCHITECTURE",
+  "primitives": [
+    {
+      "id": "OFFER_CORE_PROMISE",
+      "name": "Core Promise",
+      "purpose": "The primary outcome the offer guarantees"
+    },
+    {
+      "id": "OFFER_VEHICLE",
+      "name": "Vehicle",
+      "purpose": "The mechanism or delivery method"
+    },
+    {
+      "id": "OFFER_PROOF_STACK",
+      "name": "Proof Stack",
+      "purpose": "Mechanism + results + risk reversal"
+    },
+    {
+      "id": "OFFER_BONUS",
+      "name": "Bonus",
+      "purpose": "Increase dream outcome without adding effort"
+    },
+    {
+      "id": "OFFER_GUARANTEE",
+      "name": "Guarantee",
+      "purpose": "Remove fear and increase perceived likelihood"
+    },
+    {
+      "id": "OFFER_PRICE_ANCHOR",
+      "name": "Price Anchor",
+      "purpose": "Provide reference for value"
+    }
+  ]
+}
