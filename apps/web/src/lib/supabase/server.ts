@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
 
-export function createSupabaseServerClient() {
+export async function createSupabaseServerClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
@@ -9,7 +9,7 @@ export function createSupabaseServerClient() {
     throw new Error("Supabase server client env vars are missing.")
   }
 
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
 
   return createServerClient(url, key, {
     cookies: {
