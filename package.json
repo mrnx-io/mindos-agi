@@ -20,7 +20,7 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "docker:logs": "docker compose logs -f",
-    "prepare": "git config core.hooksPath .githooks"
+    "prepare": "node -e \"const { execSync } = require('node:child_process'); try { execSync('git config core.hooksPath .githooks', { stdio: 'ignore' }); } catch {}\""
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
