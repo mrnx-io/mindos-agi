@@ -22,7 +22,7 @@ interface TaskRow {
   priority?: number
 }
 
-interface MemoryVectorRow {
+interface SemanticMemoryRow {
   content: unknown
   kind: string
   created_at: string
@@ -310,8 +310,8 @@ export function createWorldModelService(): WorldModelService {
          ORDER BY priority DESC LIMIT 10`,
           [identityId]
         ),
-        query<MemoryVectorRow>(
-          `SELECT content, kind, created_at FROM memory_vectors
+        query<SemanticMemoryRow>(
+          `SELECT content, kind, created_at FROM semantic_memories
          WHERE identity_id = $1
          ORDER BY created_at DESC LIMIT 20`,
           [identityId]

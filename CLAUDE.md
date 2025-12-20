@@ -75,7 +75,7 @@ const result = await ctx.run("operation-name", () => sideEffect())
 
 ## Database
 
-PostgreSQL 16+ with pgvector. Migrations in `db/migrations/`. Key tables: `identities`, `events`, `evidence_records`, `memory_vectors`, `tool_call_requests`.
+PostgreSQL 16+ with pgvector. Migrations in `db/migrations/`. Key tables: `identities`, `events`, `evidence_records`, `semantic_memories`, `tool_call_requests`.
 
 ## Environment
 
