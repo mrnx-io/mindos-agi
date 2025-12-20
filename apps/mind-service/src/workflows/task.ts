@@ -1056,19 +1056,19 @@ export const taskObject = restate.object({
     /**
      * Get task status and progress
      */
-    getStatus: async (
-      ctx: restate.ObjectContext
-    ): Promise<{ status: string; steps: TaskStep[] }> => {
-      const taskId = ctx.key
+    getStatus: restate.handlers.object.shared(
+      async (ctx: restate.ObjectSharedContext): Promise<{ status: string; steps: TaskStep[] }> => {
+        const taskId = ctx.key
 
-      const task = await ctx.run("load-task", () => loadTask(taskId))
-      const steps = await ctx.run("load-steps", () => loadTaskSteps(taskId))
+        const task = await ctx.run("load-task", () => loadTask(taskId))
+        const steps = await ctx.run("load-steps", () => loadTaskSteps(taskId))
 
-      return {
-        status: task?.status ?? "unknown",
-        steps,
+        return {
+          status: task?.status ?? "unknown",
+          steps,
+        }
       }
-    },
+    ),
 
     /**
      * Cancel a running task
