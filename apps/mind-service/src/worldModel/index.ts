@@ -302,30 +302,40 @@ export function createWorldModelService(): WorldModelService {
     log.debug({ identityId, taskId }, "Capturing current world state")
 
     // Gather state from various sources
-    const [activeTasksResult, recentMemoriesResult, currentBeliefsResult, environmentResult] =
-      await Promise.all([
-        query<TaskRow>(
-          `SELECT task_id, goal, status, context FROM tasks
+    const [activeTasksResult, recentMemoriesResult, environmentResult] = await Promise.all([
+      query<TaskRow>(
+        `SELECT task_id, goal, status, context FROM tasks
          WHERE identity_id = $1 AND status IN ('running', 'pending')
          ORDER BY priority DESC LIMIT 10`,
-          [identityId]
-        ),
-        query<SemanticMemoryRow>(
-          `SELECT content, kind, created_at FROM semantic_memories
+        [identityId]
+      ),
+      query<SemanticMemoryRow>(
+        `SELECT content, kind, created_at FROM semantic_memories
          WHERE identity_id = $1
          ORDER BY created_at DESC LIMIT 20`,
-          [identityId]
-        ),
-        query<BeliefRow>(
-          `SELECT statement, confidence, category FROM beliefs
+        [identityId]
+      ),
+      queryOne<IdentityRow>("SELECT core_self, metadata FROM identities WHERE identity_id = $1", [
+        identityId,
+      ]),
+    ])
+
+    let currentBeliefsResult: { rows: BeliefRow[] } = { rows: [] }
+    try {
+      currentBeliefsResult = await query<BeliefRow>(
+        `SELECT statement, confidence, category FROM beliefs
          WHERE identity_id = $1 AND confidence > 0.5
          ORDER BY confidence DESC LIMIT 20`,
-          [identityId]
-        ),
-        queryOne<IdentityRow>("SELECT core_self, metadata FROM identities WHERE identity_id = $1", [
-          identityId,
-        ]),
-      ])
+        [identityId]
+      )
+    } catch (err) {
+      const code = typeof err === "object" && err && "code" in err ? (err as { code?: string }).code : null
+      if (code === "42P01") {
+        log.warn({ identityId }, "Beliefs table missing; skipping belief snapshot")
+      } else {
+        log.warn({ identityId, err }, "Failed to load beliefs; continuing without them")
+      }
+    }
 
     const state: Record<string, unknown> = {
       active_tasks: activeTasksResult.rows,
