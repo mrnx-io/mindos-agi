@@ -7,6 +7,11 @@ import { env } from "./config.js"
 import { logger } from "./logger.js"
 
 const { Pool } = pg
+const { types } = pg
+
+// Ensure timestamp fields are returned as Date objects
+types.setTypeParser(types.builtins.TIMESTAMPTZ, (value) => new Date(value))
+types.setTypeParser(types.builtins.TIMESTAMP, (value) => new Date(`${value}Z`))
 
 // -----------------------------------------------------------------------------
 // Connection Pool
