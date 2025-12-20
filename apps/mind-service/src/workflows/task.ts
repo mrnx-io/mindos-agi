@@ -1663,19 +1663,27 @@ async function recordPredictionAccuracy(
   confidence: number
 ): Promise<void> {
   try {
+    const predictedPayload = {
+      prediction_type: predictionType,
+      predicted,
+    }
+    const actualPayload = {
+      actual,
+    }
+    const accuracy = predicted === actual ? 1 : 0
+
     await query(
       `INSERT INTO world_model_predictions
-       (prediction_id, identity_id, task_id, prediction_type, predicted_outcome, actual_outcome, actual_outcome_match, confidence, created_at, verified_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())`,
+       (prediction_id, identity_id, task_id, predicted_outcome, actual_outcome, confidence, accuracy_score, created_at, verified_at, contributed_to_calibration)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW(), true)`,
       [
         crypto.randomUUID(),
         identityId,
         taskId,
-        predictionType,
-        predicted,
-        actual,
-        predicted === actual,
+        JSON.stringify(predictedPayload),
+        JSON.stringify(actualPayload),
         confidence,
+        accuracy,
       ]
     )
 
@@ -1686,7 +1694,7 @@ async function recordPredictionAccuracy(
         predictionType,
         predicted,
         actual,
-        accurate: predicted === actual,
+        accurate: accuracy === 1,
       },
       "Recorded prediction accuracy"
     )

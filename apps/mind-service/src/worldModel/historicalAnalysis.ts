@@ -306,19 +306,21 @@ async function detectAccuracyAnomalies(
     recent_accuracy: number
   }>(
     `SELECT
-       prediction_type,
-       AVG(actual_outcome_match) as avg_accuracy,
+       COALESCE(predicted_outcome->>'prediction_type', 'unknown') as prediction_type,
+       AVG(accuracy_score) as avg_accuracy,
        COUNT(*) as total_predictions,
-       AVG(CASE WHEN created_at > NOW() - '7 days'::interval THEN actual_outcome_match ELSE NULL END) as recent_accuracy
+       AVG(CASE WHEN created_at > NOW() - '7 days'::interval THEN accuracy_score ELSE NULL END) as recent_accuracy
      FROM world_model_predictions
      WHERE identity_id = $1
        AND created_at > NOW() - $2::interval
-     GROUP BY prediction_type
+       AND accuracy_score IS NOT NULL
+     GROUP BY COALESCE(predicted_outcome->>'prediction_type', 'unknown')
      HAVING COUNT(*) >= 5`,
     [identityId, `${lookbackDays} days`]
   )
 
   for (const pred of predictionAccuracy.rows) {
+    if (pred.prediction_type === "unknown") continue
     if (pred.recent_accuracy === null) continue
     if (Math.abs(pred.avg_accuracy - pred.recent_accuracy) <= 0.15) continue
 
