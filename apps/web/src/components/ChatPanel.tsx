@@ -30,7 +30,7 @@ export default function ChatPanel() {
   const presetIdentityId = process.env.NEXT_PUBLIC_MINDOS_IDENTITY_ID
 
   const [identityId, setIdentityId] = useState<string | null>(presetIdentityId ?? null)
-  const [status, setStatus] = useState<string | null>(null)
+  const [identityStatus, setIdentityStatus] = useState<string | null>(null)
   const [input, setInput] = useState("")
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function ChatPanel() {
     }
 
     const createIdentity = async () => {
-      setStatus("Creating your identity...")
+      setIdentityStatus("Creating your identity...")
       try {
         const response = await fetch("/api/identity", {
           method: "POST",
@@ -57,12 +57,12 @@ export default function ChatPanel() {
         if (data.identityId) {
           localStorage.setItem(STORAGE_KEY, data.identityId)
           setIdentityId(data.identityId)
-          setStatus(null)
+          setIdentityStatus(null)
         } else {
-          setStatus("Identity creation failed. Check backend connectivity.")
+          setIdentityStatus("Identity creation failed. Check backend connectivity.")
         }
       } catch (error) {
-        setStatus("Identity creation failed. Check backend connectivity.")
+        setIdentityStatus("Identity creation failed. Check backend connectivity.")
       }
     }
 
@@ -83,16 +83,17 @@ export default function ChatPanel() {
     })
   }, [identityId])
 
-  const { messages, sendMessage, isLoading } = useChat({
+  const { messages, sendMessage, status: chatStatus } = useChat({
     transport,
   })
+  const isBusy = chatStatus === "submitted" || chatStatus === "streaming"
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     if (!input.trim()) return
 
     if (!identityId) {
-      setStatus("Identity not ready yet. Please wait...")
+      setIdentityStatus("Identity not ready yet. Please wait...")
       return
     }
 
@@ -127,15 +128,15 @@ export default function ChatPanel() {
           </div>
         ))}
       </div>
-      {status ? <p className="notice">{status}</p> : null}
+      {identityStatus ? <p className="notice">{identityStatus}</p> : null}
       <form className="chat-form" onSubmit={handleSubmit}>
         <input
           value={input}
           onChange={(event) => setInput(event.target.value)}
           placeholder="Describe your next mission…"
         />
-        <button type="submit" disabled={isLoading || !identityId}>
-          {isLoading ? "Thinking…" : "Send"}
+        <button type="submit" disabled={isBusy || !identityId}>
+          {isBusy ? "Thinking…" : "Send"}
         </button>
       </form>
     </section>
