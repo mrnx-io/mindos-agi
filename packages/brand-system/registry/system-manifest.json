@@ -430,6 +430,7 @@
     "validate_sections": "bin/validate-sections.py",
     "validate_seed": "bin/validate-seed.py",
     "validate_system": "bin/validate-system.py",
+    "check_system": "bin/check-system.py",
     "seed_sufficiency": "bin/seed-sufficiency.py",
     "sync_defs": "bin/sync-defs.py",
     "compile_system": "bin/compile-system.py",

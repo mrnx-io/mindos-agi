@@ -4,7 +4,10 @@
   "private": true,
   "type": "module",
   "description": "10/10 SOTA AGI Agentic Architecture - Persistent, autonomous, multi-model intelligence",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
@@ -16,7 +19,8 @@
     "db:migrate": "cd db && ./migrate.sh",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
-    "docker:logs": "docker compose logs -f"
+    "docker:logs": "docker compose logs -f",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

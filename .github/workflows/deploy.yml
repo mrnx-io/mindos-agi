@@ -52,8 +52,7 @@ jobs:
 
       - name: Compile brand system
         run: |
-          python3 packages/brand-system/bin/compile-system.py
-          git diff --exit-code packages/brand-system
+          python3 packages/brand-system/bin/check-system.py
 
       - name: Type check
         run: bun run check
