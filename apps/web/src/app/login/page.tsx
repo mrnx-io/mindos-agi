@@ -1,13 +1,15 @@
 import LoginClient from "./LoginClient"
 
 type LoginPageProps = {
-  searchParams?: {
+  searchParams?: Promise<{
     redirectTo?: string | string[]
-  }
+  }>
 }
 
-export default function LoginPage({ searchParams }: LoginPageProps) {
-  const redirectTo = typeof searchParams?.redirectTo === "string" ? searchParams.redirectTo : "/"
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const resolvedSearchParams = await searchParams
+  const redirectTo =
+    typeof resolvedSearchParams?.redirectTo === "string" ? resolvedSearchParams.redirectTo : "/"
 
   return (
     <LoginClient redirectTo={redirectTo} />
