@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical Voice Modes for the Universal Brand System",
+  "source_section": "SECTION_CANON_THESIXVOICEMODES",
+  "modes": [
+    {
+      "id": "VOICE_DIAGNOSTIC",
+      "name": "Diagnostic",
+      "awareness_fit": "AWARE_PROBLEM",
+      "purpose": "Name the pain with precision and empathy",
+      "when_to_use": "Quizzes, first-touch pages, cold traffic"
+    },
+    {
+      "id": "VOICE_MECHANISM",
+      "name": "Mechanism",
+      "awareness_fit": "AWARE_SOLUTION",
+      "purpose": "Explain how the mechanism works without hype",
+      "when_to_use": "Explainers, comparison blocks, proof modules"
+    },
+    {
+      "id": "VOICE_PROOF",
+      "name": "Proof",
+      "awareness_fit": "AWARE_SOLUTION",
+      "purpose": "Provide evidence and outcomes",
+      "when_to_use": "Testimonials, clinical proof, validation"
+    },
+    {
+      "id": "VOICE_INVITATION",
+      "name": "Invitation",
+      "awareness_fit": "AWARE_PRODUCT",
+      "purpose": "Offer a clear next step with calm urgency",
+      "when_to_use": "Offer sections, checkout preface"
+    },
+    {
+      "id": "VOICE_THRESHOLD",
+      "name": "Threshold",
+      "awareness_fit": "AWARE_MOST",
+      "purpose": "Honor the crossing into action",
+      "when_to_use": "Final CTAs, guarantee blocks"
+    },
+    {
+      "id": "VOICE_AFTERCARE",
+      "name": "Aftercare",
+      "awareness_fit": "AWARE_MOST",
+      "purpose": "Reinforce belief and guide first use",
+      "when_to_use": "Thank-you pages, onboarding"
+    }
+  ]
+}

@@ -4,6 +4,7 @@
     "jsx": "preserve",
     "noEmit": true,
     "incremental": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["node"],
     "baseUrl": ".",
     "paths": {

@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical Storylines for the Universal Brand System",
+  "source_section": "SECTION_CANON_THESIXSTORYLINES",
+  "storylines": [
+    {
+      "id": "STORY_LOSS_REDEMPTION",
+      "name": "Loss and Redemption",
+      "structure": "Introduce loss, reveal cause, deliver redemption"
+    },
+    {
+      "id": "STORY_US_VS_THEM",
+      "name": "Us vs. Them",
+      "structure": "Define antagonist, build solidarity, present the solution"
+    },
+    {
+      "id": "STORY_BEFORE_AFTER",
+      "name": "Before and After",
+      "structure": "Contrast old pain with new reality through proof"
+    },
+    {
+      "id": "STORY_AMAZING_DISCOVERY",
+      "name": "Amazing Discovery",
+      "structure": "Reveal a hidden mechanism, show why it changes everything"
+    },
+    {
+      "id": "STORY_SECRET_TELLING",
+      "name": "Secret Telling",
+      "structure": "Tease an insight, withhold, then disclose at the right moment"
+    },
+    {
+      "id": "STORY_THIRD_PARTY_PROOF",
+      "name": "Third-Party Proof",
+      "structure": "Borrow outside authority to validate the claim"
+    }
+  ]
+}
