@@ -18,6 +18,7 @@ const env = {
   PORT: Number.parseInt(process.env.PORT ?? "3003"),
   HOST: process.env.HOST ?? "0.0.0.0",
   DATABASE_URL: process.env.DATABASE_URL ?? "",
+  DATABASE_SSL: process.env.DATABASE_SSL === "true",
   OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? "",
   WIKIPEDIA_API_URL: process.env.WIKIPEDIA_API_URL ?? "https://en.wikipedia.org/api/rest_v1",
   BRAVE_API_KEY: process.env.BRAVE_API_KEY ?? "",
@@ -43,7 +44,10 @@ const logger = pino({
 // -----------------------------------------------------------------------------
 
 const { Pool } = pg
-const pool = new Pool({ connectionString: env.DATABASE_URL })
+const pool = new Pool({
+  connectionString: env.DATABASE_URL,
+  ssl: env.DATABASE_SSL ? { rejectUnauthorized: false } : undefined,
+})
 
 // -----------------------------------------------------------------------------
 // OpenAI Client

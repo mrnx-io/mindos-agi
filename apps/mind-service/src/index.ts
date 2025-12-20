@@ -59,8 +59,14 @@ async function main() {
   logger.info("Database connection verified")
 
   // Start Restate server over HTTP/1.1 (request-response mode)
+  const identityKeys = env.RESTATE_IDENTITY_KEYS
+    ? env.RESTATE_IDENTITY_KEYS.split(",")
+        .map((key) => key.trim())
+        .filter(Boolean)
+    : undefined
   const handler = createEndpointHandler({
     services: [mindObject, taskObject, identityService],
+    ...(identityKeys && identityKeys.length ? { identityKeys } : {}),
   })
 
   const server = http.createServer(async (req, res) => {

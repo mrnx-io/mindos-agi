@@ -19,6 +19,7 @@ const env = {
   PORT: Number.parseInt(process.env.PORT ?? "3005"),
   HOST: process.env.HOST ?? "0.0.0.0",
   DATABASE_URL: process.env.DATABASE_URL ?? "",
+  DATABASE_SSL: process.env.DATABASE_SSL === "true",
   LOG_LEVEL: process.env.LOG_LEVEL ?? "info",
   CONSENSUS_TIMEOUT_MS: Number.parseInt(process.env.CONSENSUS_TIMEOUT_MS ?? "30000"),
   MAX_SWARM_SIZE: Number.parseInt(process.env.MAX_SWARM_SIZE ?? "10"),
@@ -40,7 +41,10 @@ const logger = pino({
 // -----------------------------------------------------------------------------
 
 const { Pool } = pg
-const pool = new Pool({ connectionString: env.DATABASE_URL })
+const pool = new Pool({
+  connectionString: env.DATABASE_URL,
+  ssl: env.DATABASE_SSL ? { rejectUnauthorized: false } : undefined,
+})
 
 // -----------------------------------------------------------------------------
 // Types

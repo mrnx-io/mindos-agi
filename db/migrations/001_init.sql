@@ -185,8 +185,8 @@ CREATE TABLE IF NOT EXISTS semantic_memories (
 );
 
 CREATE INDEX idx_semantic_identity_kind ON semantic_memories(identity_id, kind);
-CREATE INDEX idx_semantic_embedding ON semantic_memories
-  USING ivfflat (embedding vector_cosine_ops) WITH (lists = 200);
+-- NOTE: pgvector index types (ivfflat/hnsw) currently support up to 2000 dimensions.
+-- For 3072-dim embeddings, skip the index to avoid migration failure.
 CREATE INDEX idx_semantic_confidence ON semantic_memories(identity_id, confidence DESC);
 
 -- -----------------------------------------------------------------------------

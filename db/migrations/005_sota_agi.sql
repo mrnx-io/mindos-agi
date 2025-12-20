@@ -198,8 +198,8 @@ CREATE TABLE IF NOT EXISTS world_model_checkpoints (
 
 CREATE INDEX idx_checkpoint_task ON world_model_checkpoints(task_id, step_index);
 CREATE INDEX idx_checkpoint_identity ON world_model_checkpoints(identity_id, created_at DESC);
-CREATE INDEX idx_checkpoint_active ON world_model_checkpoints(task_id)
-  WHERE used_for_rollback = false AND (expires_at IS NULL OR expires_at > now());
+CREATE INDEX idx_checkpoint_active ON world_model_checkpoints(task_id, expires_at)
+  WHERE used_for_rollback = false;
 
 -- -----------------------------------------------------------------------------
 -- World Model Predictions: Track prediction accuracy for calibration

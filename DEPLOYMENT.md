@@ -18,8 +18,8 @@ Deploy MindOS to production using Restate Cloud + Supabase + Fly.io.
    ```
 3. Run migrations:
    ```bash
-   # Set your connection string
-   export DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-us-west-1.pooler.supabase.com:5432/postgres"
+   # Set your connection string (Session pooler for IPv4 networks)
+   export DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-1-us-west-1.pooler.supabase.com:5432/postgres"
 
    # Run migrations
    for f in db/migrations/*.sql; do psql "$DATABASE_URL" -f "$f"; done
@@ -32,6 +32,7 @@ Deploy MindOS to production using Restate Cloud + Supabase + Fly.io.
 3. Note your environment URLs:
    - Ingress URL: `https://[env].env.us.restate.cloud:8080`
    - Admin URL: `https://[env].env.us.restate.cloud:9070`
+4. Copy the request identity public key (`publickeyv1_...`) from Developers → Integration → Security
 4. Generate an API key for deployments
 
 ## Step 3: Fly.io Setup
@@ -57,8 +58,10 @@ Deploy MindOS to production using Restate Cloud + Supabase + Fly.io.
    # For mind-service (needs most secrets)
    cd apps/mind-service
    flyctl secrets set \
-     DATABASE_URL="postgresql://..." \
+     DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-1-us-west-1.pooler.supabase.com:5432/postgres" \
+     DATABASE_SSL=true \
      RESTATE_INGRESS_URL="https://..." \
+     RESTATE_IDENTITY_KEYS="publickeyv1_..." \
      OPENAI_API_KEY="sk-..." \
      ANTHROPIC_API_KEY="sk-ant-..." \
      GOOGLE_AI_API_KEY="..." \
@@ -86,7 +89,7 @@ Or use GitHub Actions by setting these repository secrets:
 - `FLY_API_TOKEN`: From `flyctl tokens create deploy`
 - `RESTATE_CLOUD_API_KEY`: From Restate Cloud dashboard
 - `RESTATE_ADMIN_URL`: Your Restate admin URL
-- `DATABASE_URL_DIRECT`: Direct Supabase connection string
+- `DATABASE_URL_DIRECT`: Direct Supabase connection string (db.[ref].supabase.co)
 
 ## Step 5: Register with Restate Cloud
 

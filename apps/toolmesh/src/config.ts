@@ -13,6 +13,7 @@ import { z } from "zod"
 const EnvSchema = z.object({
   // Database
   DATABASE_URL: z.string().url(),
+  DATABASE_SSL: z.coerce.boolean().default(false),
 
   // Embeddings
   OPENAI_API_KEY: z.string().optional(),

@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS tool_registry (
 );
 
 CREATE INDEX idx_tool_registry_server ON tool_registry(server_id);
-CREATE INDEX idx_tool_registry_embedding ON tool_registry
-  USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
+-- NOTE: pgvector index types (ivfflat/hnsw) currently support up to 2000 dimensions.
+-- For 3072-dim embeddings, skip the index to avoid migration failure.
 CREATE INDEX idx_tool_registry_health ON tool_registry(health_status);
 
 -- -----------------------------------------------------------------------------

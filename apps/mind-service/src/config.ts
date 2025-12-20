@@ -11,6 +11,7 @@ import { z } from "zod"
 const EnvSchema = z.object({
   // Database
   DATABASE_URL: z.string().url(),
+  DATABASE_SSL: z.coerce.boolean().default(false),
 
   // Model API Keys
   OPENAI_API_KEY: z.string().optional(),
@@ -44,6 +45,7 @@ const EnvSchema = z.object({
 
   // Restate
   RESTATE_ADMIN_URL: z.string().url().default("http://localhost:9070"),
+  RESTATE_IDENTITY_KEYS: z.string().optional(),
 
   // Policy Thresholds
   RISK_THRESHOLD_AUTO: z.coerce.number().min(0).max(1).default(0.3),
