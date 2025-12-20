@@ -1,0 +1,267 @@
+{
+  "covenant": {
+    "starving_crowd": {
+      "pain_statement": "My feet are on fire by mid-afternoon and I dread every step.",
+      "who_they_are": "Adults 30-60 who stand or walk for work, runners returning from injury, and caregivers who cannot afford foot pain.",
+      "what_they_suffer": "Chronic heel and arch pain, fatigue from standing, and a loss of confidence in daily movement.",
+      "when_pain_peaks": "Mid-afternoon after hours on hard surfaces and first steps each morning.",
+      "failed_alternatives": [
+        "Cheap gel insoles that flatten within days",
+        "Generic stretching routines without feedback",
+        "Pain medication that masks symptoms"
+      ],
+      "why_still_searching": "They want relief that feels natural and lasting without bulky orthotics or surgery.",
+      "lf8_configuration": {
+        "primary": "LF8_PAIN_FREEDOM",
+        "secondary": "LF8_COMFORT",
+        "tertiary": "LF8_PROTECTION",
+        "hierarchy_rationale": "Pain relief is the gating need, comfort sustains use, and protection reassures long-term safety."
+      },
+      "awareness_level": "AWARE_PROBLEM",
+      "watering_holes": [
+        "r/plantarfasciitis",
+        "Runner's World forums",
+        "Facebook group: Plantar Fasciitis Support",
+        "YouTube: foot pain rehab channels"
+      ],
+      "wallet_evidence": [
+        "200-500 USD on physical therapy",
+        "20-60 USD on drugstore insoles",
+        "80-120 USD on compression sleeves"
+      ],
+      "exclusion_boundary": "Exclude anyone seeking instant miracle cures or unwilling to follow a 14-day break-in protocol."
+    },
+    "grand_slam_offer": {
+      "value_equation": {
+        "dream_outcome": "Walk and stand all day without pain or stiffness.",
+        "perceived_likelihood": "Biomechanical alignment + guided adaptation protocol with clinical fitting proof.",
+        "time_delay": "Noticeable relief within 14 days with daily use.",
+        "effort_sacrifice": "Wear daily and complete a 7-minute mobility routine.",
+        "factor_ids": [
+          "VE_DREAM_OUTCOME",
+          "VE_PERCEIVED_LIKELIHOOD",
+          "VE_TIME_DELAY",
+          "VE_EFFORT_SACRIFICE"
+        ]
+      },
+      "core_promise": "Relief you can feel in two weeks without bulky orthotics.",
+      "vehicle": "Precision-fit insole + guided mobility protocol",
+      "proof_stack": {
+        "mechanism": "Neutral arch support aligns the foot and reduces tissue strain.",
+        "results": "Clinical fittings show consistent reduction in end-of-day pain scores.",
+        "risk_reversal": "30-day wear-and-feel guarantee with simple returns."
+      },
+      "bonuses": [
+        "Foot reset routine (7 minutes daily)",
+        "Standing desk posture guide"
+      ],
+      "psychological_enhancers": {
+        "scarcity": {
+          "id": "ENH_SCARCITY",
+          "application": "Limited batch production to maintain material quality.",
+          "evidence": "Monthly production cap based on manufacturer throughput."
+        },
+        "urgency": {
+          "id": "ENH_URGENCY",
+          "application": "Enrollment window for the guided protocol closes monthly.",
+          "evidence": "Coach scheduling calendar."
+        },
+        "bonuses": [
+          {
+            "id": "ENH_BONUSES",
+            "application": "Posture guide delivered only with first order.",
+            "evidence": "Bonus access tied to purchase date."
+          }
+        ],
+        "guarantee": {
+          "id": "ENH_GUARANTEES",
+          "application": "30-day wear-and-feel guarantee to remove risk.",
+          "evidence": "Written policy and tracked refunds."
+        },
+        "naming": {
+          "id": "ENH_NAMING",
+          "application": "\"Grounded Atlas\" communicates stability and endurance.",
+          "evidence": "Name testing with target audience."
+        }
+      }
+    },
+    "value_ladder": [
+      {
+        "rung_id": "LADDER_BAIT",
+        "rung_label": "Bait",
+        "offer": "Foot pain self-assessment quiz",
+        "price": "Free",
+        "purpose": "Qualify pain type and build trust"
+      },
+      {
+        "rung_id": "LADDER_FRONTEND",
+        "rung_label": "Frontend",
+        "offer": "Precision-fit insole starter kit",
+        "price": "109 USD",
+        "purpose": "First purchase and immediate relief"
+      },
+      {
+        "rung_id": "LADDER_MIDDLE",
+        "rung_label": "Middle",
+        "offer": "Pro insole + mobility coaching",
+        "price": "179 USD",
+        "purpose": "Deeper support and adherence"
+      },
+      {
+        "rung_id": "LADDER_BACKEND",
+        "rung_label": "Backend",
+        "offer": "Clinical fitting session",
+        "price": "299 USD",
+        "purpose": "Premium personalization"
+      },
+      {
+        "rung_id": "LADDER_CONTINUITY",
+        "rung_label": "Continuity",
+        "offer": "Annual replacement subscription",
+        "price": "89 USD/year",
+        "purpose": "Ongoing performance and retention"
+      }
+    ],
+    "attractive_character": {
+      "archetype": "ARCHETYPE_REPORTER",
+      "backstory_elements": [
+        "Former skeptic who proved alignment works",
+        "Built a prototype out of frustration with gimmicks",
+        "Tested on 500 real feet before launch"
+      ],
+      "parables": [
+        "The day the morning steps stopped hurting",
+        "Why softer is not safer"
+      ],
+      "character_flaws": [
+        "Impatient with hype",
+        "Overly direct about weak products"
+      ]
+    },
+    "competitive_position": {
+      "alternatives": {
+        "direct": [
+          "Custom orthotics",
+          "Premium insole brands"
+        ],
+        "indirect": [
+          "Physical therapy only",
+          "Pain medication"
+        ],
+        "do_nothing": "Keep wearing worn-out shoes and accept daily pain"
+      },
+      "weakness_of_alternatives": "Custom orthotics are expensive and slow; premium insoles are generic; meds mask pain without solving alignment.",
+      "winning_dimension": "Precision-fit comfort that feels clinical but lives in everyday shoes.",
+      "positioning_statement": "Grounded Atlas is the precision-fit insole that ends daily foot pain in 14 days without bulky orthotics."
+    },
+    "traffic_architecture": {
+      "temperature_strategy": {
+        "hot": {
+          "channels": [
+            "Retargeting",
+            "Email list"
+          ],
+          "message": "Proof and guarantee to remove last doubt"
+        },
+        "warm": {
+          "channels": [
+            "Search",
+            "YouTube"
+          ],
+          "message": "Mechanism and before-after proof"
+        },
+        "cold": {
+          "channels": [
+            "Meta",
+            "Instagram"
+          ],
+          "message": "Pain recognition and diagnostic quiz"
+        }
+      },
+      "primary_channels": [
+        "Meta ads",
+        "YouTube search",
+        "Google search"
+      ],
+      "content_strategy": "Education-first: pain causes, alignment explanation, and simple tests that lead to the quiz."
+    },
+    "funnel_architecture": {
+      "phases": [
+        {
+          "name": "Diagnose",
+          "purpose": "Identify pain type and build relevance"
+        },
+        {
+          "name": "Explain",
+          "purpose": "Teach mechanism and establish authority"
+        },
+        {
+          "name": "Offer",
+          "purpose": "Present the insole and guarantee"
+        },
+        {
+          "name": "Ascend",
+          "purpose": "Move to coaching and renewal"
+        }
+      ],
+      "entry_points": [
+        "Pain quiz",
+        "Mechanism explainer video",
+        "Search landing page"
+      ],
+      "conversion_events": [
+        "Quiz completion",
+        "Add to cart",
+        "Purchase",
+        "Subscription opt-in"
+      ]
+    },
+    "unit_economics": {
+      "customer_acquisition_cost": 45,
+      "lifetime_value": 280,
+      "ltv_cac_ratio": 6.2,
+      "payback_period": "2 months",
+      "contribution_margin": 45
+    },
+    "derivation_log": {
+      "axiom": "Attention is sacred. Every demand on consciousness must be earned.",
+      "laws": [
+        "Earned Entry",
+        "Pregnant Void",
+        "Living Materials",
+        "Sacred Friction",
+        "The Threshold"
+      ],
+      "source_sections": [
+        "SECTION_COVENANT_THESTARVINGCROWD",
+        "SECTION_COVENANT_THEOFFERARCHITECTURE",
+        "SECTION_COVENANT_THEVALUELADDER",
+        "SECTION_COVENANT_THECOMPETITIVEPOSITION",
+        "SECTION_MANIFESTO_THEAXIOM"
+      ],
+      "chain": [
+        {
+          "decision": "Define the starving crowd as chronic foot-pain sufferers with daily standing exposure.",
+          "derived_from": [
+            "SECTION_COVENANT_THESTARVINGCROWD"
+          ],
+          "rationale": "The pain statement and evidence point to daily, not occasional, discomfort."
+        },
+        {
+          "decision": "Structure the offer around relief within 14 days with a low-effort protocol.",
+          "derived_from": [
+            "SECTION_COVENANT_THEOFFERARCHITECTURE"
+          ],
+          "rationale": "Value equation improves by reducing time delay and effort sacrifice."
+        },
+        {
+          "decision": "Build a five-rung value ladder with a free quiz and a continuity replacement.",
+          "derived_from": [
+            "SECTION_COVENANT_THEVALUELADDER"
+          ],
+          "rationale": "Ascension protects LTV and supports sustainable CAC."
+        }
+      ]
+    }
+  }
+}

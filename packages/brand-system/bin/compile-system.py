@@ -35,6 +35,23 @@ def collect_registry_hashes(manifest):
     return hashes
 
 
+def find_existing_generated_at(manifest):
+    for entry in manifest.get("expected_outputs", []):
+        output_path = ROOT_DIR / entry.get("path", "")
+        if not output_path.exists():
+            continue
+        try:
+            data = load_json(output_path)
+        except Exception:
+            continue
+        metadata = data.get("metadata") if isinstance(data, dict) else None
+        if isinstance(metadata, dict):
+            generated_at = metadata.get("generated_at")
+            if generated_at:
+                return generated_at
+    return None
+
+
 def run_script(script_path):
     subprocess.run(["python3", str(ROOT_DIR / script_path)], check=True)
 
@@ -50,18 +67,21 @@ def main():
     compiler_version = compiler_spec.get("compiler_version", "1.0.0")
     compiler_spec_id = compiler_spec.get("id", "COMPILER_SPEC_V1")
 
-    # pipeline: sync defs + generate sections
-    run_script("bin/sync-defs.py")
-    run_script("bin/generate-sections.py")
-
-    # load manifest + compute hashes
     manifest = load_json(ROOT_DIR / "registry/system-manifest.json")
-    seed_hash = sha256_file(ROOT_DIR / "brand-seed.json")
-    registry_hashes = collect_registry_hashes(manifest)
+    existing_generated_at = find_existing_generated_at(manifest)
 
     generated_at = args.generated_at
     if not generated_at:
-        generated_at = datetime.now(timezone.utc).isoformat()
+        generated_at = existing_generated_at or datetime.now(timezone.utc).isoformat()
+
+    # pipeline: sync defs + generate sections + generate outputs
+    run_script("bin/sync-defs.py")
+    run_script("bin/generate-sections.py")
+    run_script("bin/generate-outputs.py")
+
+    # compute hashes
+    seed_hash = sha256_file(ROOT_DIR / "brand-seed.json")
+    registry_hashes = collect_registry_hashes(manifest)
 
     # apply metadata to outputs
     for entry in manifest.get("expected_outputs", []):

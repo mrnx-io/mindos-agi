@@ -147,46 +147,5 @@
         }
       ]
     }
-  },
-  "metadata": {
-    "seed_hash": "20b3272cbc4f973ee92297d4da830c02660a24c1514e9ebf3c985e01e9772a16",
-    "registry_hashes": {
-      "registry/sections.json": "6c39f45c84b8dfecbf15bb345695b9feecbd1cfcbce186f4327bce325cb28e87",
-      "registry/copywriting-registry.json": "66db10d07a5a12fa035848881daa42d08e2c3ddaae9fa671b7f871e67ba2bc31",
-      "registry/biological/lf8.json": "b792174f1f04372dbfd3c596bc334a48b3c66061aea11527058f466b76bf2fd9",
-      "registry/biological/emotional-bonds.json": "318a08420faf03ee6bfc1809bff47c22c2cdda5ec27c70d9d7cde61e25d93fd6",
-      "registry/awareness/schwartz-awareness.json": "4799c095a21d966a6f5d8efb08a33910bc65436bddbacaf27dd8f471b636e8ab",
-      "registry/awareness/lead-archetypes.json": "e1b4022f81914f6af135f82ceea554cc29a01de9b943c6e1a42c6b385e7baa02",
-      "registry/awareness/brand-archetypes.json": "19945c4784c587bc8978cd740bfb3d20fc9bf849bb649eda390eaa66910959ed",
-      "registry/copywriting/sugarman-elements.json": "acb77e6c92a6435ef8e82d156f53bad611999fb8fc373244e24b69cd3872b999",
-      "registry/copywriting/headline-formulas.json": "468151124e6e2e249f6fa98b86779c409b5d57a08a1be6577a64486a9a943f8b",
-      "registry/copywriting/dr-rules.json": "9885a8083a5911759e8d58983d9befdeb96aa843b43ede5f6baac74e3897b401",
-      "registry/choreography/enhancers.json": "21978fb2c3480ed3545ccdc83050fd95d34f4e6ec43a11ced3f90128e29031b2",
-      "registry/choreography/manana-antidotes.json": "b607672dba40de8c35a89ffc6393b71a131bd3797e17cf165c1e0b10ef72375b",
-      "registry/value/value-equation.json": "b10f1e25b8858cc28faebb0349ea2d137a2dfef5c0665eb6fd297968cb4562a1",
-      "registry/value/value-ladder.json": "f381d29a499761366090d54cc11c23633e3cbab16664c936546fda21fcb9fdde",
-      "registry/stack/headless-commerce-stack.json": "ec638c611265d976bd687ab07470737a756a57a7452de90150db4c8cc95752fc",
-      "registry/seed-sufficiency-map.json": "bfec80c582d6155f64cf453acc92cbbdd615bdc83977681d89cc01c8c3c7dbc9",
-      "registry/compiler-spec.json": "44695d423dc5d50610d716a2d6c142666deb0d4f7f8bfb79fedb2e381f92c1a5",
-      "registry/voice/voice-modes.json": "ed6927ef6c238fea3f72afc08755625c5b60f1d3dd46dc51ce2a59bc1b4e3b66",
-      "registry/voice/storylines.json": "dfcbd816995660a5a765ada19e02332c9a5fe8d4d6bf1ee0ee209cf6fad639d1",
-      "registry/form/form-invariants.json": "57d1334e4acc45fa00a04ffc223d6a3b9c845cf696ab209f5caf882d6f38a4c4",
-      "registry/motion/motion-tokens.json": "658c4c5bda82fd3427c6d4be63686ced8b2d01f964a985855157c3b22b3dda2e",
-      "registry/funnel/funnel-phases.json": "7876d0e67f23520d1d20cdc660f511f6a29edcb1df379b4566ee1da427ead777",
-      "registry/choreography/moment-types.json": "1fab266a3e072389310b47bb05fcba4247c42d04d652777e354cc8f41dca44d4",
-      "registry/sumi/rooms.json": "2e1927b37669b412678910f71d99c86a47933c3e203d58dbaa78a2554beb6905",
-      "registry/storefront/artifacts.json": "b85ab613594f9925a24221829739f571e6a37eedfc8bd3799a04cbca63572ed1",
-      "registry/proof/evidence-types.json": "19da622bafee471c1bd7f899f221d2a7f4c630e73af15666c3a80770439ef194",
-      "registry/offer/offer-primitives.json": "0a2aac0ddd3d1d461131380af7bff5b7d7ea0a9300e63c269f9b350fa6d38f1b"
-    },
-    "compiler_version": "1.0.0",
-    "compiler_spec_id": "COMPILER_SPEC_V1",
-    "generated_at": "2025-12-20T02:04:11.954259+00:00",
-    "source_sections": [
-      "SECTION_SUMI_BREATH_THENEUROAESTHETICAXIOM",
-      "SECTION_SUMI_BREATH_THEFIVELAWSBECOMEFIVECRAFTRITUALS",
-      "SECTION_SUMI_BREATH_MOTIONASBREATH",
-      "SECTION_MANIFESTO_THEAXIOM"
-    ]
   }
 }

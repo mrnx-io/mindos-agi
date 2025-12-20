@@ -2,20 +2,19 @@
   "covenant": {
     "starving_crowd": {
       "pain_statement": "My feet are on fire by mid-afternoon and I dread every step.",
-      "who_they_are": "Adults 30-60 who stand or walk for work, runners returning from injury, and caregivers who cannot afford foot pain.",
-      "what_they_suffer": "Chronic heel and arch pain, fatigue from standing, and a loss of confidence in daily movement.",
-      "when_pain_peaks": "Mid-afternoon after hours on hard surfaces and first steps each morning.",
+      "who_they_are": "Prospects in US and Canada seeking Premium biomechanical insoles that relieve plantar fasciitis and knee pain within 14 days..",
+      "what_they_suffer": "My feet are on fire by mid-afternoon and I dread every step.",
+      "when_pain_peaks": "When the problem interrupts daily life and work.",
       "failed_alternatives": [
-        "Cheap gel insoles that flatten within days",
-        "Generic stretching routines without feedback",
-        "Pain medication that masks symptoms"
+        "Cheap gel insoles flatten in days",
+        "Generic stretching routines with no feedback",
+        "Pain meds that mask but do not fix"
       ],
-      "why_still_searching": "They want relief that feels natural and lasting without bulky orthotics or surgery.",
+      "why_still_searching": "They want relief and reliability from Premium biomechanical insoles that relieve plantar fasciitis and knee pain within 14 days..",
       "lf8_configuration": {
-        "primary": "LF8_PAIN_FREEDOM",
-        "secondary": "LF8_COMFORT",
-        "tertiary": "LF8_PROTECTION",
-        "hierarchy_rationale": "Pain relief is the gating need, comfort sustains use, and protection reassures long-term safety."
+        "primary": "LF8_COMFORT",
+        "secondary": "LF8_PROTECTION",
+        "hierarchy_rationale": "Primary pain relief governs; comfort and protection reinforce commitment."
       },
       "awareness_level": "AWARE_PROBLEM",
       "watering_holes": [
@@ -29,14 +28,14 @@
         "20-60 USD on drugstore insoles",
         "80-120 USD on compression sleeves"
       ],
-      "exclusion_boundary": "Exclude anyone seeking instant miracle cures or unwilling to follow a 14-day break-in protocol."
+      "exclusion_boundary": "Exclude anyone unwilling to follow the protocol."
     },
     "grand_slam_offer": {
       "value_equation": {
-        "dream_outcome": "Walk and stand all day without pain or stiffness.",
-        "perceived_likelihood": "Biomechanical alignment + guided adaptation protocol with clinical fitting proof.",
-        "time_delay": "Noticeable relief within 14 days with daily use.",
-        "effort_sacrifice": "Wear daily and complete a 7-minute mobility routine.",
+        "dream_outcome": "Relief and confidence from Premium biomechanical insoles that relieve plantar fasciitis and knee pain within 14 days..",
+        "perceived_likelihood": "Mechanism + proof + protocol.",
+        "time_delay": "Within a reasonable adaptation window.",
+        "effort_sacrifice": "Follow a simple daily protocol.",
         "factor_ids": [
           "VE_DREAM_OUTCOME",
           "VE_PERCEIVED_LIKELIHOOD",
@@ -44,16 +43,16 @@
           "VE_EFFORT_SACRIFICE"
         ]
       },
-      "core_promise": "Relief you can feel in two weeks without bulky orthotics.",
-      "vehicle": "Precision-fit insole + guided mobility protocol",
+      "core_promise": "Premium biomechanical insoles that relieve plantar fasciitis and knee pain within 14 days.",
+      "vehicle": "Physical product with a guided mobility program",
       "proof_stack": {
-        "mechanism": "Neutral arch support aligns the foot and reduces tissue strain.",
-        "results": "Clinical fittings show consistent reduction in end-of-day pain scores.",
-        "risk_reversal": "30-day wear-and-feel guarantee with simple returns."
+        "mechanism": "After years of plantar fasciitis from standing work, the founder studied biomechanics and built a prototype that finally stopped the pain.",
+        "results": "My feet are on fire by mid-afternoon and I dread every step.",
+        "risk_reversal": "Simple return or reversal policy."
       },
       "bonuses": [
-        "Foot reset routine (7 minutes daily)",
-        "Standing desk posture guide"
+        "Quick-start guide",
+        "Protocol checklist"
       ],
       "psychological_enhancers": {
         "scarcity": {
@@ -89,53 +88,50 @@
       {
         "rung_id": "LADDER_BAIT",
         "rung_label": "Bait",
-        "offer": "Foot pain self-assessment quiz",
+        "offer": "Assessment",
         "price": "Free",
-        "purpose": "Qualify pain type and build trust"
+        "purpose": "Qualify and build trust"
       },
       {
         "rung_id": "LADDER_FRONTEND",
         "rung_label": "Frontend",
-        "offer": "Precision-fit insole starter kit",
-        "price": "109 USD",
-        "purpose": "First purchase and immediate relief"
+        "offer": "Premium biomechanical insoles that relieve plantar fasciitis and knee pain within 14 days.",
+        "price": "89 USD",
+        "purpose": "First purchase"
       },
       {
         "rung_id": "LADDER_MIDDLE",
         "rung_label": "Middle",
-        "offer": "Pro insole + mobility coaching",
-        "price": "179 USD",
-        "purpose": "Deeper support and adherence"
+        "offer": "Premium biomechanical insoles that relieve plantar fasciitis and knee pain within 14 days. + guidance",
+        "price": "149 USD",
+        "purpose": "Deeper support"
       },
       {
         "rung_id": "LADDER_BACKEND",
         "rung_label": "Backend",
-        "offer": "Clinical fitting session",
-        "price": "299 USD",
-        "purpose": "Premium personalization"
+        "offer": "Premium consult",
+        "price": "By invitation",
+        "purpose": "High-touch support"
       },
       {
         "rung_id": "LADDER_CONTINUITY",
         "rung_label": "Continuity",
-        "offer": "Annual replacement subscription",
-        "price": "89 USD/year",
-        "purpose": "Ongoing performance and retention"
+        "offer": "Subscription",
+        "price": "Monthly subscription",
+        "purpose": "Ongoing value"
       }
     ],
     "attractive_character": {
       "archetype": "ARCHETYPE_REPORTER",
       "backstory_elements": [
-        "Former skeptic who proved alignment works",
-        "Built a prototype out of frustration with gimmicks",
-        "Tested on 500 real feet before launch"
+        "After years of plantar fasciitis from standing work, the founder studied biomechanics and built a prototype that finally stopped the pain."
       ],
       "parables": [
-        "The day the morning steps stopped hurting",
-        "Why softer is not safer"
+        "The first turning point"
       ],
       "character_flaws": [
-        "Impatient with hype",
-        "Overly direct about weak products"
+        "Impatient with gimmicks",
+        "Once dismissed orthotics as a crutch"
       ]
     },
     "competitive_position": {
@@ -179,11 +175,12 @@
         }
       },
       "primary_channels": [
-        "Meta ads",
-        "YouTube search",
-        "Google search"
+        "r/plantarfasciitis",
+        "Runner's World forums",
+        "Facebook group: Plantar Fasciitis Support",
+        "YouTube: foot pain rehab channels"
       ],
-      "content_strategy": "Education-first: pain causes, alignment explanation, and simple tests that lead to the quiz."
+      "content_strategy": "Educate, then diagnose, then offer."
     },
     "funnel_architecture": {
       "phases": [
@@ -197,29 +194,28 @@
         },
         {
           "name": "Offer",
-          "purpose": "Present the insole and guarantee"
+          "purpose": "Present the offer and guarantee"
         },
         {
           "name": "Ascend",
-          "purpose": "Move to coaching and renewal"
+          "purpose": "Retention and renewal"
         }
       ],
       "entry_points": [
-        "Pain quiz",
-        "Mechanism explainer video",
-        "Search landing page"
+        "Assessment",
+        "Explainer",
+        "Offer"
       ],
       "conversion_events": [
-        "Quiz completion",
+        "Assessment completed",
         "Add to cart",
-        "Purchase",
-        "Subscription opt-in"
+        "Purchase"
       ]
     },
     "unit_economics": {
       "customer_acquisition_cost": 45,
-      "lifetime_value": 280,
-      "ltv_cac_ratio": 6.2,
+      "lifetime_value": 320,
+      "ltv_cac_ratio": 3.5,
       "payback_period": "2 months",
       "contribution_margin": 45
     },
@@ -283,7 +279,7 @@
       "registry/value/value-ladder.json": "f381d29a499761366090d54cc11c23633e3cbab16664c936546fda21fcb9fdde",
       "registry/stack/headless-commerce-stack.json": "ec638c611265d976bd687ab07470737a756a57a7452de90150db4c8cc95752fc",
       "registry/seed-sufficiency-map.json": "bfec80c582d6155f64cf453acc92cbbdd615bdc83977681d89cc01c8c3c7dbc9",
-      "registry/compiler-spec.json": "16ac69ca08163b8a7c861ce6c68e016468b21f68fbb0bd316b4bb4b9062be65e",
+      "registry/compiler-spec.json": "44695d423dc5d50610d716a2d6c142666deb0d4f7f8bfb79fedb2e381f92c1a5",
       "registry/voice/voice-modes.json": "ed6927ef6c238fea3f72afc08755625c5b60f1d3dd46dc51ce2a59bc1b4e3b66",
       "registry/voice/storylines.json": "dfcbd816995660a5a765ada19e02332c9a5fe8d4d6bf1ee0ee209cf6fad639d1",
       "registry/form/form-invariants.json": "57d1334e4acc45fa00a04ffc223d6a3b9c845cf696ab209f5caf882d6f38a4c4",
@@ -297,7 +293,7 @@
     },
     "compiler_version": "1.0.0",
     "compiler_spec_id": "COMPILER_SPEC_V1",
-    "generated_at": "2025-12-20T01:24:42.348249+00:00",
+    "generated_at": "2025-12-20T02:04:11.954259+00:00",
     "source_sections": [
       "SECTION_COVENANT_THESTARVINGCROWD",
       "SECTION_COVENANT_THEOFFERARCHITECTURE",

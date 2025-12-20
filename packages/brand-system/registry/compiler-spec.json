@@ -22,6 +22,7 @@
     "sync_defs",
     "generate_sections",
     "validate_inputs",
+    "generate_outputs",
     "compile_outputs",
     "validate_outputs",
     "validate_consistency",

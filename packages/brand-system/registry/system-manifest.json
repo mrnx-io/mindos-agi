@@ -193,6 +193,48 @@
       "validate": false
     },
     {
+      "path": "templates/outputs/manifesto.template.json",
+      "type": "json",
+      "role": "output_template",
+      "validate": false
+    },
+    {
+      "path": "templates/outputs/covenant.template.json",
+      "type": "json",
+      "role": "output_template",
+      "validate": false
+    },
+    {
+      "path": "templates/outputs/sumi-breath.template.json",
+      "type": "json",
+      "role": "output_template",
+      "validate": false
+    },
+    {
+      "path": "templates/outputs/tradeoff-ladder.template.json",
+      "type": "json",
+      "role": "output_template",
+      "validate": false
+    },
+    {
+      "path": "templates/outputs/canon.template.json",
+      "type": "json",
+      "role": "output_template",
+      "validate": false
+    },
+    {
+      "path": "templates/outputs/choreography.template.json",
+      "type": "json",
+      "role": "output_template",
+      "validate": false
+    },
+    {
+      "path": "templates/outputs/storefront.template.json",
+      "type": "json",
+      "role": "output_template",
+      "validate": false
+    },
+    {
       "path": "brand-seed.json",
       "type": "json",
       "role": "brand_seed_input",
@@ -384,6 +426,7 @@
   ],
   "scripts": {
     "generate_sections": "bin/generate-sections.py",
+    "generate_outputs": "bin/generate-outputs.py",
     "validate_sections": "bin/validate-sections.py",
     "validate_seed": "bin/validate-seed.py",
     "validate_system": "bin/validate-system.py",

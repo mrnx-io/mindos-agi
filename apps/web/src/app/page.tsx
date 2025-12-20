@@ -1,9 +1,11 @@
+import AuthBar from "../components/AuthBar"
 import ChatPanel from "../components/ChatPanel"
 
 export default function HomePage() {
   return (
     <main>
       <div className="app-shell">
+        <AuthBar />
         <section className="hero">
           <div>
             <div className="stat-title">MindOS Personal Studio</div>
