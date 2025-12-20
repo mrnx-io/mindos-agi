@@ -256,8 +256,9 @@ async function detectProceduralPatterns(
        pm.name as skill_name,
        pm.description,
        COALESCE(
-         (SELECT COUNT(*) FILTER (WHERE sur.outcome = 'success')::float / NULLIF(COUNT(*), 0)
-          FROM skill_usage_records sur WHERE sur.skill_name = pm.name),
+         (SELECT COUNT(*) FILTER (WHERE sur.success IS TRUE)::float / NULLIF(COUNT(*), 0)
+          FROM skill_usage_records sur
+          WHERE sur.skill_name = pm.name AND sur.identity_id = pm.identity_id),
          0.5
        ) as success_rate,
        pm.execution_count as usage_count,
