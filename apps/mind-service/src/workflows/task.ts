@@ -113,6 +113,7 @@ async function initializeTaskExecution(
   if (!task) {
     throw new restate.TerminalError(`Task not found: ${taskId}`)
   }
+  const normalizedTask = normalizeTaskRow(task)
 
   const identity = await ctx.run("load-identity", () => loadIdentity(identityId))
   if (!identity) {
@@ -122,7 +123,7 @@ async function initializeTaskExecution(
   // Update status to running
   await ctx.run("mark-running", () => updateTaskStatus(taskId, "running"))
 
-  return { task, identity }
+  return { task: normalizedTask, identity }
 }
 
 /**
@@ -1471,12 +1472,7 @@ async function loadTask(taskId: string): Promise<TaskRow | null> {
   const row = await queryOne<TaskRow>("SELECT * FROM tasks WHERE task_id = $1", [taskId])
   if (!row) return null
 
-  return {
-    ...row,
-    created_at: coerceDate(row.created_at) ?? new Date(),
-    started_at: coerceDate(row.started_at),
-    completed_at: coerceDate(row.completed_at),
-  }
+  return normalizeTaskRow(row)
 }
 
 async function loadIdentity(identityId: string): Promise<Identity | null> {
@@ -1514,6 +1510,15 @@ async function updateTaskStatus(taskId: string, status: string): Promise<void> {
 function coerceDate(value: Date | string | null | undefined): Date | null {
   if (!value) return null
   return value instanceof Date ? value : new Date(value)
+}
+
+function normalizeTaskRow(task: TaskRow): TaskRow {
+  return {
+    ...task,
+    created_at: coerceDate(task.created_at) ?? new Date(),
+    started_at: coerceDate(task.started_at),
+    completed_at: coerceDate(task.completed_at),
+  }
 }
 
 async function createTaskStep(
