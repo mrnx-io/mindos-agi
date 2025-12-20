@@ -1,26 +1,15 @@
-import { Suspense } from "react"
 import LoginClient from "./LoginClient"
 
-function LoginFallback() {
-  return (
-    <main className="auth-page">
-      <div className="auth-shell">
-        <div className="auth-card">
-          <div className="auth-header">
-            <p className="stat-title">MindOS Studio</p>
-            <h1>Preparing sign-in…</h1>
-            <p className="subtitle">Warming up your secure session.</p>
-          </div>
-        </div>
-      </div>
-    </main>
-  )
+type LoginPageProps = {
+  searchParams?: {
+    redirectTo?: string | string[]
+  }
 }
 
-export default function LoginPage() {
+export default function LoginPage({ searchParams }: LoginPageProps) {
+  const redirectTo = typeof searchParams?.redirectTo === "string" ? searchParams.redirectTo : "/"
+
   return (
-    <Suspense fallback={<LoginFallback />}>
-      <LoginClient />
-    </Suspense>
+    <LoginClient redirectTo={redirectTo} />
   )
 }

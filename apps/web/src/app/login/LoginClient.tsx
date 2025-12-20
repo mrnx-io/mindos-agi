@@ -1,15 +1,17 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser"
 
 type AuthMode = "sign-in" | "sign-up"
 
-export default function LoginClient() {
+type LoginClientProps = {
+  redirectTo: string
+}
+
+export default function LoginClient({ redirectTo }: LoginClientProps) {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const redirectTo = searchParams.get("redirectTo") ?? "/"
 
   const [supabase, setSupabase] = useState<ReturnType<typeof createSupabaseBrowserClient> | null>(
     null
