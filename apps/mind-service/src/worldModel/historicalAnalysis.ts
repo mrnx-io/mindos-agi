@@ -357,15 +357,21 @@ async function detectCausalPatterns(
     occurrences: number
   }>(
     `SELECT
-       original_action,
-       alternatives->0->>'action' as better_alternative,
-       AVG(confidence) as confidence,
+       failed_action->>'description' as original_action,
+       best_alternative->'action'->>'description' as better_alternative,
+       AVG(
+         COALESCE(
+           NULLIF(best_alternative->>'success_probability', '')::float,
+           preventability_score,
+           0.5
+         )
+       ) as confidence,
        COUNT(*) as occurrences
      FROM counterfactual_analyses
      WHERE identity_id = $1
        AND created_at > NOW() - $2::interval
-       AND cardinality(alternatives) > 0
-     GROUP BY original_action, alternatives->0->>'action'
+       AND best_alternative IS NOT NULL
+     GROUP BY failed_action->>'description', best_alternative->'action'->>'description'
      HAVING COUNT(*) >= 2
      ORDER BY COUNT(*) DESC
      LIMIT 5`,
@@ -373,6 +379,7 @@ async function detectCausalPatterns(
   )
 
   for (const causal of causalPatterns.rows) {
+    if (!causal.original_action || !causal.better_alternative) continue
     patterns.push({
       pattern_id: crypto.randomUUID(),
       pattern_type: "causal",
