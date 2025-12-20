@@ -567,12 +567,54 @@ export async function completeJson<T>(
     throw new Error("No content in response")
   }
 
-  try {
-    const data = JSON.parse(result.content) as T
-    return { data, raw: result }
-  } catch {
-    throw new Error(`Failed to parse JSON response: ${result.content}`)
+  const parsed = parseJsonFromText<T>(result.content)
+  if (parsed) {
+    return { data: parsed, raw: result }
   }
+
+  throw new Error(`Failed to parse JSON response: ${result.content}`)
+}
+
+function parseJsonFromText<T>(content: string): T | null {
+  const trimmed = content.trim()
+
+  try {
+    return JSON.parse(trimmed) as T
+  } catch {
+    // continue
+  }
+
+  const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)\s*```/i)
+  if (fenced?.[1]) {
+    try {
+      return JSON.parse(fenced[1].trim()) as T
+    } catch {
+      // continue
+    }
+  }
+
+  const candidates: string[] = []
+  const firstObject = trimmed.indexOf("{")
+  const lastObject = trimmed.lastIndexOf("}")
+  if (firstObject !== -1 && lastObject > firstObject) {
+    candidates.push(trimmed.slice(firstObject, lastObject + 1))
+  }
+
+  const firstArray = trimmed.indexOf("[")
+  const lastArray = trimmed.lastIndexOf("]")
+  if (firstArray !== -1 && lastArray > firstArray) {
+    candidates.push(trimmed.slice(firstArray, lastArray + 1))
+  }
+
+  for (const candidate of candidates) {
+    try {
+      return JSON.parse(candidate) as T
+    } catch {
+      // continue
+    }
+  }
+
+  return null
 }
 
 // -----------------------------------------------------------------------------
