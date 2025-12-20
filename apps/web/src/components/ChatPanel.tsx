@@ -133,7 +133,7 @@ export default function ChatPanel() {
         <input
           value={input}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setInput(event.target.value)
+            setInput(event.currentTarget.value)
           }
           placeholder="Describe your next mission…"
         />
