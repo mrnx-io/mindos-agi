@@ -253,19 +253,19 @@ async function detectProceduralPatterns(
     last_used: Date
   }>(
     `SELECT
-       pm.skill_name,
+       pm.name as skill_name,
        pm.description,
        COALESCE(
          (SELECT COUNT(*) FILTER (WHERE sur.outcome = 'success')::float / NULLIF(COUNT(*), 0)
-          FROM skill_usage_records sur WHERE sur.skill_name = pm.skill_name),
+          FROM skill_usage_records sur WHERE sur.skill_name = pm.name),
          0.5
        ) as success_rate,
-       pm.usage_count,
-       pm.last_used
-     FROM procedural_memory pm
+       pm.execution_count as usage_count,
+       pm.updated_at as last_used
+     FROM skills pm
      WHERE pm.identity_id = $1
        AND pm.description ILIKE $2
-     ORDER BY pm.usage_count DESC
+     ORDER BY pm.execution_count DESC
      LIMIT 20`,
     [identityId, `%${subject}%`]
   )
