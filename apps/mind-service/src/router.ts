@@ -164,16 +164,26 @@ async function callOpenAI(
 ): Promise<CompletionResult> {
   const client = getOpenAI()
   const start = Date.now()
+  const maxTokens = options.maxTokens ?? config.maxTokens
 
   // Build request body, only including properties that have values
   // to satisfy exactOptionalPropertyTypes
   // Explicitly set stream: false to help TypeScript narrow the response type
-  const requestBody: OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming = {
+  const requestBody: OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming & {
+    max_completion_tokens?: number
+  } = {
     model: config.model,
     messages: options.messages,
     temperature: options.temperature ?? config.temperature,
-    max_tokens: options.maxTokens ?? config.maxTokens,
     stream: false,
+  }
+
+  if (typeof maxTokens === "number") {
+    if (usesMaxCompletionTokens(config.model)) {
+      requestBody.max_completion_tokens = maxTokens
+    } else {
+      requestBody.max_tokens = maxTokens
+    }
   }
 
   if (options.tools && options.tools.length > 0) {
@@ -643,12 +653,22 @@ export async function* stream(
 
   if (config.provider === "openai") {
     const client = getOpenAI()
-    const stream = await client.chat.completions.create({
+    const maxTokens = options.maxTokens ?? config.maxTokens
+    const requestBody: OpenAI.Chat.Completions.ChatCompletionCreateParams = {
       model: config.model,
       messages: options.messages,
       temperature: options.temperature ?? config.temperature,
-      max_tokens: options.maxTokens ?? config.maxTokens,
       stream: true,
+    }
+    if (typeof maxTokens === "number") {
+      if (usesMaxCompletionTokens(config.model)) {
+        ;(requestBody as { max_completion_tokens?: number }).max_completion_tokens = maxTokens
+      } else {
+        requestBody.max_tokens = maxTokens
+      }
+    }
+    const stream = await client.chat.completions.create({
+      ...requestBody,
     })
 
     for await (const chunk of stream) {
@@ -661,6 +681,10 @@ export async function* stream(
     const result = await complete(options)
     yield { delta: result.content ?? "", done: true }
   }
+}
+
+function usesMaxCompletionTokens(model: string): boolean {
+  return model.startsWith("gpt-5")
 }
 
 // -----------------------------------------------------------------------------

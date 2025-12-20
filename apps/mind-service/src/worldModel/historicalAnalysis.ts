@@ -136,10 +136,10 @@ export async function getHistoricalContext(
       event_type: string
       created_at: Date
     }>(
-      `SELECT event_type, created_at
+      `SELECT COALESCE(kind, type) as event_type, created_at
        FROM events
        WHERE identity_id = $1
-         AND (event_type ILIKE $2 OR payload::text ILIKE $2)
+         AND (COALESCE(kind, type) ILIKE $2 OR payload::text ILIKE $2)
          AND created_at > NOW() - '30 days'::interval
        ORDER BY created_at DESC
        LIMIT 50`,
@@ -190,13 +190,13 @@ async function detectTrendPatterns(
     payload: Record<string, unknown>
     created_at: Date
   }>(
-    `SELECT event_id, event_type, payload, created_at
+    `SELECT event_id, COALESCE(kind, type) as event_type, payload, created_at
      FROM events
      WHERE identity_id = $1
        AND created_at > NOW() - $2::interval
        AND (
          payload::text ILIKE $3
-         OR event_type ILIKE $3
+         OR COALESCE(kind, type) ILIKE $3
        )
      ORDER BY created_at DESC
      LIMIT 100`,
@@ -428,7 +428,7 @@ async function findSimilarTasks(
       `SELECT t.task_id, t.goal, t.status, e.payload as reflection_data
        FROM tasks t
        LEFT JOIN events e ON e.identity_id = t.identity_id
-         AND e.event_type = 'task_completed'
+         AND COALESCE(e.kind, e.type) = 'task_completed'
          AND (e.payload->>'task_id')::uuid = t.task_id
        WHERE t.task_id = $1`,
       [metadata.task_id]
