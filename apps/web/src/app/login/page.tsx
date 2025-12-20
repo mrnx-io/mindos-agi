@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser"
 
@@ -11,7 +11,9 @@ export default function LoginPage() {
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get("redirectTo") ?? "/"
 
-  const supabase = useMemo(() => createSupabaseBrowserClient(), [])
+  const [supabase, setSupabase] = useState<ReturnType<typeof createSupabaseBrowserClient> | null>(
+    null
+  )
 
   const [mode, setMode] = useState<AuthMode>("sign-in")
   const [email, setEmail] = useState("")
@@ -20,10 +22,20 @@ export default function LoginPage() {
   const [status, setStatus] = useState<string | null>(null)
   const [isBusy, setIsBusy] = useState(false)
 
+  useEffect(() => {
+    setSupabase(createSupabaseBrowserClient())
+  }, [])
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     setError(null)
     setStatus(null)
+
+    if (!supabase) {
+      setError("Authentication is initializing. Please retry in a moment.")
+      return
+    }
+
     setIsBusy(true)
 
     try {
@@ -105,13 +117,15 @@ export default function LoginPage() {
             {error ? <p className="auth-error">{error}</p> : null}
             {status ? <p className="auth-status">{status}</p> : null}
 
-            <button className="auth-submit" type="submit" disabled={isBusy}>
-              {isBusy
-                ? "Working..."
+            <button className="auth-submit" type="submit" disabled={isBusy || !supabase}>
+            {isBusy
+              ? "Working..."
+              : !supabase
+                ? "Initializing..."
                 : mode === "sign-in"
                   ? "Sign in"
                   : "Create account"}
-            </button>
+          </button>
           </form>
           <div className="auth-toggle">
             <span>

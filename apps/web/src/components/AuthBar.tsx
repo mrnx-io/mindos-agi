@@ -1,19 +1,27 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import type { User } from "@supabase/supabase-js"
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser"
 
 export default function AuthBar() {
   const router = useRouter()
-  const supabase = useMemo(() => createSupabaseBrowserClient(), [])
+  const [supabase, setSupabase] = useState<ReturnType<typeof createSupabaseBrowserClient> | null>(
+    null
+  )
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setSupabase(createSupabaseBrowserClient())
+  }, [])
+
+  useEffect(() => {
+    if (!supabase) return
     let isMounted = true
 
+    setLoading(true)
     supabase.auth.getUser().then(({ data }) => {
       if (!isMounted) return
       setUser(data.user ?? null)
@@ -32,6 +40,7 @@ export default function AuthBar() {
   }, [supabase])
 
   const handleSignOut = async () => {
+    if (!supabase) return
     await supabase.auth.signOut()
     router.refresh()
     router.push("/login")
